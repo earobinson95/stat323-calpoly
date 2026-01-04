@@ -1,0 +1,786 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  11pt,
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage[]{mathpazo}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Stat 323/523: Design and Analysis of Experiments I},
+  pdfauthor={Dr.~Emily Robinson},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Stat 323/523: Design and Analysis of Experiments I}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Cal Poly - San Luis Obispo, Winter 2026}
+\author{Dr.~Emily Robinson}
+\date{}
+\begin{document}
+\maketitle
+
+
+\subsection{Communication}\label{communication}
+
+\includegraphics[width=1em,height=1em]{stat323-syllabus-W2026_files/figure-pdf/fa-icon-a7ff419e70980f9f1a65816048d94526.pdf}
+Email:
+\href{mailto:erobin17@calpoly.edu?subject=Stat\%20323}{erobin17@calpoly.edu}
+
+\includegraphics[width=0.75em,height=1em]{stat323-syllabus-W2026_files/figure-pdf/fa-icon-443d06266e96702cc4dd4ffb1304f584.pdf}
+Office: Building 25 Office 103 (by Statistics Department Office)
+
+\textbf{Discord Discussion Board:}
+
+For questions of general interest, such as course clarifications or
+conceptual questions, please use the Discord page for discussion (join
+via Canvas). I encourage you to give your post a concise and informative
+post title/first sentence, so that other people can find it. For
+example, \emph{``How do I determine the treatment structure?''} is a
+better title than \emph{``help with activity 1''}.
+
+\includegraphics[width=0.62em,height=1em]{stat323-syllabus-W2026_files/figure-pdf/fa-icon-37ad7c564657af6a696c5f96e99a441a.pdf}
+While your posts are not anonymous, in this case there is no such thing
+as a bad question!
+
+\subsection{Course Logistics}\label{course-logistics}
+
+\textbf{Class Meeting Time:} Tuesday/Thursday
+
+\begin{itemize}
+\tightlist
+\item
+  Section 70 at 2:10 - 4:00pm
+\item
+  Section 71 at 4:10 - 6:00pm
+\end{itemize}
+
+\textbf{Room:} Erhart Agriculture (Building 10-225)
+
+\textbf{Office Hours} are held in my office (25-103) during the
+following times:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Day & Time \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Tuesday & 9:30 - 11:00am \\
+Thursday & 9:30 - 11:00am \\
+\end{longtable}
+
+Note that office hours are not just for when you have content questions.
+Stop by to introduce yourself, ask questions about the broader field of
+statistics, or share what you are working on!
+
+\section{Course Description}\label{course-description}
+
+Stat 323/523 is designed to engage you in the principles, construction
+and analysis of experimental designs. Completely randomized, randomized
+complete block, Latin squares, Graeco Latin squares, factorial, and
+nested designs. Fixed and random effects, expected mean squares,
+multiple comparisons, and analysis of covariance.
+
+\textbf{Prerequisites}: Entrance to STAT 323/523 requires completion of
+STAT 302.
+
+\section{Learning Objectives}\label{learning-objectives}
+
+By the end of the course, you should:
+
+\begin{itemize}
+\tightlist
+\item
+  understand the single factor fixed effects model, and be able to carry
+  out the analysis culminating in the F-test and appropriate multiple
+  comparisons.
+\item
+  understand the difference between fixed and random effects.
+\item
+  understand the rationale behind the use of blocking, Latin squares,
+  and other noise-reducing designs.
+\item
+  be able to recognize different designs.
+\item
+  be able to perform the statistical computations and express the
+  results of the quantitative work through your writing skills.
+\end{itemize}
+
+\section{Course Materials \& Tools}\label{course-materials-tools}
+
+For each topic, you will prepare for class by
+\includegraphics[width=1.12em,height=1em]{stat323-syllabus-W2026_files/figure-pdf/fa-icon-c79e848d9a3d708b9ec27f2a8e82e493.pdf}
+watching 1-3 short lecture videos following a set of \emph{lecture slide
+notes}
+\includegraphics[width=0.88em,height=1em]{stat323-syllabus-W2026_files/figure-pdf/fa-icon-5ea3361430ab42477e0145b37bf037cc.pdf}
+containing definitions and examples. You are expected to either print
+\includegraphics[width=1em,height=1em]{stat323-syllabus-W2026_files/figure-pdf/fa-icon-dba2621d70df0db026d72b64f2337f91.pdf}
+or save
+\includegraphics[width=0.88em,height=1em]{stat323-syllabus-W2026_files/figure-pdf/fa-icon-20302663c48760596ae954f808544c3c.pdf}
+the lecture slide notes to your device and follow along, filling
+\includegraphics[width=1em,height=1em]{stat323-syllabus-W2026_files/figure-pdf/fa-icon-2eafe8fc521887db57e4cf342e07d14a.pdf}
+out your set of notes while watching the videos.
+
+During class, I will highlight any key points from the lecture videos
+and we will complete activities meant to reinforce the ideas learned in
+the videos.
+
+Supplemental reading from
+\includegraphics[width=0.88em,height=1em]{stat323-syllabus-W2026_files/figure-pdf/fa-icon-5ea3361430ab42477e0145b37bf037cc.pdf}
+\href{http://users.stat.umn.edu/\%7Egary/book/fcdae.pdf}{A First Course
+in Design and Analysis of Experiments} by Gary W. Oehlert will be
+recommended.
+
+Tools and statistical software you will need for this course:
+
+\includegraphics[width=1.25em,height=1em]{stat323-syllabus-W2026_files/figure-pdf/fa-icon-200198f1a0ee0bd3b2404fd0ddb4d488.pdf}
+Laptop
+
+\includegraphics[width=1.25em,height=1em]{stat323-syllabus-W2026_files/figure-pdf/fa-icon-f777b47c941027ab3d8eb3c0d2458974.pdf}
+Statistical software -- R/RStudio or JMP
+
+\includegraphics[width=1em,height=1em]{stat323-syllabus-W2026_files/figure-pdf/fa-icon-fc9104599277ccb91d4e70e2088fe75b.pdf}
+Gradescope -- an app on your phone or computer browser
+
+\section{Class Schedule \& Topic
+Outline}\label{class-schedule-topic-outline}
+
+This schedule is tentative and subject to change.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{stat323-syllabus-W2026_files/figure-pdf/calendar-1.pdf}
+
+}
+
+\caption{Note: Tuesday, January 20th follows a Monday schedule.}
+
+\end{figure}%
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Tentative schedule of class topics:}\tabularnewline
+\toprule\noalign{}
+Date & Topic \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Date & Topic \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Jan 6, Jan 8 & Module 1: Intro to Design of Experiments (DOE) \\
+Jan 13, Jan 15 & Module 2: Completely Randomized Designs (CRD) \\
+Jan 22 & Module 3: Power \\
+Jan 27, Jan 29 & Module 4: Factorials \\
+Feb 5 & Module 5: Randomized Complete Block Designs (RCBD) \\
+Feb 3 & Midterm Exam 1 \\
+Feb 10, Feb 12 & Module 6: Random Effects \& Mixed Models \\
+Feb 17, Feb 19 & Module 7: Extensions to Block Designs \\
+Feb 26 & Module 8: Nonparametric Tests \\
+Feb 24 & Midterm Exam 2 \\
+Mar 3, Mar 5 & Final Project Worktime \\
+Mar 10, Mar 12 & Final Project Presentations \\
+Mar 17 & Common Final Exam \\
+\end{longtable}
+
+\newpage
+
+\section{Course Policies}\label{course-policies}
+
+\subsection{Assessment/Grading}\label{assessmentgrading}
+
+Your grade in STAT 323/523 will contain the following components:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Category & Percent \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Class Preparatin, Participation, \& Professionalism & 5\% \\
+In-class Activities & 10\% \\
+Island Labs & 15\% \\
+Final Project & 15\% \\
+Midterm Exam 1 & 17.5\% \\
+Midterm Exam 2 & 17.5\% \\
+Final Exam & 20\% \\
+\end{longtable}
+
+Lower bounds for grade cutoffs are shown in the following table. I will
+not ``round up'' grades at the end of the quarter. See this
+\href{https://twitter.com/drseanmullen/status/1604212304622518272?s=46&t=II3oNLTSSrljVPqptoe21g}{thread}
+for advice on \emph{``Playing the lines. Don't be there.''}
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule\noalign{}
+Letter grade & X + & X & X - \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+A & . & 93 & 90 \\
+B & 87 & 83 & 80 \\
+C & 77 & 73 & 70 \\
+D & 67 & 63 & 60 \\
+F & \textless60 & & \\
+\end{longtable}
+
+Interpretation of this table:
+
+\begin{itemize}
+\tightlist
+\item
+  A grade of 85 will receive a B.
+\item
+  A grade of 77 will receive a C+.
+\item
+  A grade of 70 will receive a C-.
+\item
+  Anything below a 60 will receive an F.
+\end{itemize}
+
+\subsubsection{General Evaluation
+Criteria}\label{general-evaluation-criteria}
+
+In every assignment, discussion, and written component of this class,
+you are expected to demonstrate that you are intellectually engaging
+with the material. I will evaluate you based on this engagement, which
+means that technically correct but low effort answers which do not
+demonstrate engagement or understanding will receive no credit.
+
+While this is not an English class, grammar and spelling are important,
+as is your ability to communicate technical information in writing; both
+of these criteria will be used in addition to assignment-specific
+rubrics to evaluate your work.
+
+\subsection{Assignment Breakdown}\label{assignment-breakdown}
+
+\subsubsection{Class Preparation, Participation, \&
+Professionalism}\label{class-preparation-participation-professionalism}
+
+This course uses a flipped classroom model. Core content is introduced
+before class through assigned videos or readings, and class time is
+devoted to activities and practice. Coming to class prepared is
+essential for your own learning and for your group's success.
+Preparation may occasionally be checked using short, closed-note
+\emph{learning quizzes} or \emph{entry/exit tickets}
+
+Participation credit is earned by being present, prepared, and engaged
+during class. You must be in class to receive participation credit. Part
+of this grade also reflects professionalism, including arriving on time,
+being mentally present, treating others with respect, and contributing
+constructively to group work.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{2} participation grades will be dropped; think of these as
+  ``sick days''.
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, breakable, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, left=2mm, titlerule=0mm, colback=white, opacityback=0, toprule=.15mm, opacitybacktitle=0.6, toptitle=1mm, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, coltitle=black, colframe=quarto-callout-note-color-frame]
+
+If you are feeling ill, please \emph{do not come to class}. You do not
+need to notify me, but instead do your best to complete the in-class
+activity found on Canvas. Then check with a group member anything missed
+in class. Stop by office hours after you are feeling better if you have
+any questions.
+
+\end{tcolorbox}
+
+\subsubsection{In-class Activities}\label{in-class-activities}
+
+Most class meetings will include in-class activities designed to
+reinforce and apply course content. Class time will be dedicated to
+working on these activities. You may collaborate with your group
+members; however, each student must submit their own original work.
+
+\begin{itemize}
+\tightlist
+\item
+  In-class activities will be submitted and graded through Gradescope,
+  which is integrated with Canvas.
+\item
+  Unless otherwise noted, activities are due at the \textbf{beginning of
+  the next class meeting (2:00pm)}.
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, breakable, leftrule=.75mm, colbacktitle=quarto-callout-note-color!10!white, bottomtitle=1mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, left=2mm, titlerule=0mm, colback=white, opacityback=0, toprule=.15mm, opacitybacktitle=0.6, toptitle=1mm, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, coltitle=black, colframe=quarto-callout-note-color-frame]
+
+Cal Poly provides access to
+\href{https://www.gradescope.com/}{Gradescope}. This course will use
+Gradescope for the first time this quarter, and we will work through the
+process together as needed.
+
+\end{tcolorbox}
+
+\subsubsection{Lab Reports}\label{lab-reports}
+
+You will complete 4 lab assignments in groups of 3-4. Each lab will
+involve designing a study and collecting data, often using
+\href{https://islands.smp.uq.edu.au/}{The Islands}. A written report
+summarizing your methods and findings will be submitted for each lab.
+More details will be provided in class.
+
+\begin{itemize}
+\tightlist
+\item
+  One report per group should be submitted as a PDF on Canvas.
+\item
+  Lab reports are tentatively due on \textbf{Thursdays at 11:59 PM}.
+\end{itemize}
+
+\subsubsection{Final Project}\label{final-project}
+
+You will complete a paired final project in which you design and propose
+an experiment, including all necessary details. The project will
+culminate in a 10-minute presentation during Week 10 of the quarter.
+Additional details and expectations will be provided later in the term.
+
+\subsubsection{Exams}\label{exams}
+
+There will be two midterm exams and a final exam, designed to assess
+your individual understanding and progress in the course. You may bring
+a one-sided notesheet to each midterm exams and a two-sided notesheet to
+the final exam. Exam dates are listed in the course calendar. If you are
+unable to attend an exam, you must \textbf{notify me in advance.}
+
+\subsection{Late Policy}\label{late-policy}
+
+We are living through a challenging time with unique, unusual
+circumstances. I do not want class deadlines to cause you extreme stress
+or anxiety. I offer \textbf{3 ``grace days''} -- 24 hours to turn in the
+assignment late without a penalty. These can be used on the in-class
+activities and lab assignments (a single group member must be willing to
+use one of their grace days for the entire group), but not
+participation, exams, or final project presentations. These ``grace
+days'' can be stacked and used all at once on a single assignment or
+spread out and used on separate assignments throughout the quarter.
+Simply send me an email to let me know you how many ``grace days'' you
+want to use on the assignment.
+
+After using up your ``grace days'', late work will be accepted with a
+20\% grade penalty for each day late (including weekends).
+
+\begin{tcolorbox}[enhanced jigsaw, breakable, leftrule=.75mm, colbacktitle=quarto-callout-warning-color!10!white, bottomtitle=1mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Automatic Canvas Settings}, left=2mm, titlerule=0mm, colback=white, opacityback=0, toprule=.15mm, opacitybacktitle=0.6, toptitle=1mm, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, coltitle=black, colframe=quarto-callout-warning-color-frame]
+
+Canvas is set up to automatically input 0\% for missing assignments (as
+an incentive to go complete the assignment) and apply the 20\% grade
+deduction policy. I will need to manually adjust your grade when you use
+your grace days so it is important for you to leave a note on your
+assignment and email me. You are responsible for double checking your
+grade.
+
+\end{tcolorbox}
+
+If you find yourself with extenuating circumstances beyond the defined
+late policy, please email me before the due date.
+
+\section{Course Expectations}\label{course-expectations}
+
+You will get out of this course what you put in. The following excerpt
+was taken from Rob Jenkins' article ``Defining the Relationship'' which
+was published in The Chronicle of Higher Education (August 8, 2016).
+This accurately summarizes what I expect of you in my classroom (and
+also what you should expect of me).
+
+\emph{``I'd like to be your partner. More than anything, I'd like for us
+to form a mutually beneficial alliance in this endeavor we call
+education.}
+
+\emph{I pledge to do my part. I will:}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Stay abreast of the latest ideas in my field.}
+\item
+  \emph{Teach you what I believe you need to know; with all the
+  enthusiasm I possess.}
+\item
+  \emph{Invite your comments and questions and respond constructively.}
+\item
+  \emph{Make myself available to you outside of class (within reason).}
+\item
+  \emph{Evaluate your work carefully and return it promptly with
+  feedback.}
+\item
+  \emph{Be as fair, respectful, and understanding as I can humanly be.}
+\item
+  \emph{If you need help beyond the scope of this course, I will do my
+  best to provide it or see that you get it.}
+\end{itemize}
+
+\emph{In return, I expect you to:}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Show up for class each day or let me know (preferably in
+  advance) if you have some good reason to be absent.}
+\item
+  \emph{Do your reading and other assignments outside of class and be
+  prepared for each class meeting.}
+\item
+  \emph{Focus during class on the work we're doing and not on extraneous
+  matters (like whoever or whatever is on your phone at the moment).}
+\item
+  \emph{Participate in class discussions.}
+\item
+  \emph{Be respectful of your fellow students and their points of view.}
+\item
+  \emph{In short, I expect you to devote as much effort to learning as I
+  devote to teaching.}
+\end{itemize}
+
+\emph{What you get out of this relationship is that you'll be better
+equipped to succeed in this and other college courses, work-related
+assignments, and life in general. What I get is a great deal of
+professional and personal satisfaction. Because I do really like you
+{[}all{]} and want the best for you.''}
+
+\section{Learning Environment and
+Support}\label{learning-environment-and-support}
+
+I am committed to creating a safe and inclusive learning environment
+where all students feel respected and supported. If there are any ways I
+can improve the classroom environment to make it more welcoming for you,
+please don't hesitate to let me know.
+
+If you have a disability and require accommodations to fully participate
+in the course, please contact me as soon as possible to discuss how I
+can best support you. I also encourage you to register with Cal Poly's
+Disability Resource Center (Building 124, Room 119 or at 805-756-1395)
+to explore additional accommodations that may be available to you.
+
+If you are experiencing food insecurity, housing instability, or other
+challenges that may impact your ability to succeed in this course,
+please refer to the resources listed on Canvas under ``Student Support
+Services at Cal Poly.'' These resources provide a range of essential
+support services, including emergency financial assistance, counseling,
+and academic support.
+
+I am committed to working with you to ensure that you have the resources
+and support you need to succeed in this course. Let's work together to
+create a positive and inclusive learning environment for all students.
+
+\section{Academic Integrity and Class
+Conduct}\label{academic-integrity-and-class-conduct}
+
+Academic integrity is a fundamental value of this course and of the
+university. Simply put, I will not tolerate cheating, plagiarism, or any
+other form of academic dishonesty.
+
+Any incident of academic misconduct, including dishonesty, copying, or
+plagiarism, will be reported to the Office of Student Rights and
+Responsibilities.
+
+Cheating will earn you a grade of 0 on the assignment and an overall
+grade penalty of at least 10\%. In circumstances of flagrant cheating,
+you may be given a grade of F in the course.
+
+It is important to note that paraphrasing or quoting another's work
+without proper citation is a form of academic misconduct. This includes
+using Chat GPT, which should only be used to generate ideas, provide
+feedback suggestions to improve your lab reports, and not as a
+substitute for your own work and writing. See more details below.
+
+To ensure academic integrity, please be sure to cite all sources
+appropriately and only use Chat GPT in an ethical manner. For more
+information on academic misconduct and what constitutes cheating and
+plagiarism, please see
+\href{https://academicprograms.calpoly.edu/content/academicpolicies/Cheating}{academicprograms.calpoly.edu/content/academicpolicies/Cheating}.
+
+\section{ChatGPT}\label{chatgpt}
+
+Use AI as a glorified tutor, not a ghostwriter. In this course, the
+value of AI tools is in helping you learn, practice, and clarify. They
+are not meant to produce work for you. Interpretation and critical
+thinking are important and simply copying AI output will not meet
+expectations and may constitute academic misconduct.
+
+\textbf{What's encouraged:}
+
+\begin{itemize}
+\tightlist
+\item
+  Concept help \& explanations: Ask AI to re-explain ideas in plain
+  language, give alternative examples, or break down statistical terms.
+\item
+  R support: Use AI to clarify error messages, suggest functions, or
+  outline strategies. Always run, test, and annotate the code yourself.
+\item
+  Feedback on your work: Ask AI to critique your draft code or writing
+  for clarity, not to write an introduction for you.
+\end{itemize}
+
+\textbf{What's not allowed:}
+
+\begin{itemize}
+\tightlist
+\item
+  No AI-written answers submitted as your own. Interpretation is your
+  responsibility.
+\item
+  No copying/pasting code or text without understanding. Code can fail
+  silently or even introduce harmful commands. You should always
+  understand and adapt before running anything.
+\item
+  No quiz use. In-person quizzes are closed note/book, and AI is
+  prohibited.
+\item
+  No uncredited use. Any substantive AI assistance must be disclosed
+  (see below).
+\end{itemize}
+
+\textbf{CSU System Policy}
+
+Cal Poly and all CSU campuses have access to ChatGPT Edu, provided
+through the CSU system. This version:
+
+\begin{itemize}
+\tightlist
+\item
+  Provides advanced AI capabilities tailored for CSU students and
+  employees.
+\item
+  Includes privacy, security, and data protections (similar to email,
+  Google Workspace, and Microsoft 365).
+\item
+  Offers single sign-on (SSO) and campus workspaces for sharing.
+\item
+  Protects confidentiality, though CSU has legal/operational obligations
+  that may require access to user data. These activities are not
+  intended to monitor legitimate academic use.
+\end{itemize}
+
+For details, see:
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://genai.calstate.edu/guidelines-safe-and-responsible-use-generative-ai-tools}{CSU
+  Safe and Responsible Use Guidelines}
+\item
+  \href{https://genai.calstate.edu/communities/students}{CSU Student
+  Community Resources}
+\end{itemize}
+
+\textbf{Your responsibilities:}
+
+\begin{itemize}
+\tightlist
+\item
+  Think critically. If you can't explain a result in your own words, you
+  don't understand it.
+\item
+  Demonstrate engagement. Work that is technically correct but shows no
+  reasoning or interpretation will not receive full credit.
+\item
+  Acknowledge \emph{extensive} AI use. At the end of any assignment
+  where you used AI, include a brief disclosure. Example:
+\end{itemize}
+
+\begin{quote}
+AI assistance: Consulted ChatGPT for debugging the \texttt{lm()}
+function syntax and clarifying the difference between a CRD and RCBD.
+\end{quote}
+
+\textbf{Reminder:} In-person exams and verbal presentations exist for a
+reason. This class emphasizes your connection of research questions to
+experimental designs and statistical interpretations.
+
+
+
+
+\end{document}

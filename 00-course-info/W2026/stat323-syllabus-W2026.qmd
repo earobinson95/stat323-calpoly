@@ -317,7 +317,7 @@ Your grade in STAT 323/523 will contain the following components:
 
 tribble(
   ~Category,  ~Percent,
-  "Class Preparatin, Participation, & Professionalism", "5%",
+  "Class Preparation, Participation, & Professionalism", "5%",
   "In-class Activities", "10%",
   "Island Labs", "15%",
   "Final Project", "15%",

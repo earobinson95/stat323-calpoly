@@ -1,0 +1,137 @@
+---
+title: "Module 2: Completely Randomized Designs"
+subtitle: "Designing a CRD"
+format: 
+  revealjs:
+    theme: simple # other modern-ish options: dark, simple, solarized
+    slide-number: c/t 
+    chalkboard: true # lets you draw on top of slides (keyboard: c) or open a board (b)
+    width: 1200
+    height: 675
+    css: modern-slides.css
+# format: 
+#   html:
+#     toc: true
+#   pdf:
+#     toc: false
+execute: 
+  warning: false
+  message: false
+---
+
+## Completely Randomized Design (CRD)
+
++ The simplest experimental design
++ Treatments are assigned to experimental units **completely at random**
+
+## What Makes a Design a CRD?
+
++ No blocking or grouping  
++ Random assignment only  
+
+All unexplained variability goes into the **experimental error**
+
+## When Is a CRD Appropriate?
+
+A CRD works best when:
+
++ Experimental units are relatively homogeneous  
++ The experiment is small  
++ Few extraneous variables are present
+
+## Advantages of a CRD
+
++ Very flexible  
++ Unequal sample sizes allowed  
++ Analysis remains straightforward  
++ Missing data is not catastrophic
+
+## Disadvantages of a CRD
+
++ Sensitive to heterogeneity  
++ Larger experimental error when experimental units differ
+
+## Example 2.1: Running Shoes
+
+An experiment is conducted to investigate how different **running shoes** affect running performance (measured in seconds to complete a fixed route). We have three shoe types that we want to compare: *Control (regular trainers)*, *Lightweight shoes*, and *Stability shoes*. There are only 6 runners available for the experiment, so we will use two runners for each shoe type. The 6 runners gather at a track, and before beginning the trial they are each randomly assigned one shoe type. Each runner completes the same 400-meter route once, and their lap time is recorded.
+
+## Example 2.1: Running Shoes (Blueprint)
+
+```{r}
+#| fig-align: center
+knitr::include_graphics("images/021-blueprint-shoe-type.png")
+```
+
+## Example 2.1: Running Shoes
+
+**Response:** Lap time (seconds)
+
+**Treatment structure:** One-way treatment structure with 3 levels of shoe type (control, lightweight, and stability) making up the t=3 treatments.
+
+**Experimental structure:** Shoe type is assigned to individuals (e.u.) in a CRD with r = 2 (N = 6). The lap time (seconds) is measured once for each individual (m.u.). 
+
+## CRD Randomization (in R)
+
+```{r}
+#| include: false
+set.seed(904)
+```
+
+:::: columns
+::: {.column width="70%"}
+```{r}
+#| echo: true
+#| results: hide
+
+library(edibble)
+
+crd_des <- design(name = "Shoe Type") |>
+   set_units(runner = 6) |>                    
+   set_trts(shoe_type = c("Control", 
+                          "Lightweight", 
+                          "Stability")
+            ) |>  
+   allot_trts(shoe_type ~ runner) |>                     
+   assign_trts("random")
+
+crd_table <- serve_table(crd_des)
+crd_table
+```
+:::
+::: {.column width="30%"}
+```{r}
+#| echo: false
+crd_table
+```
+:::
+::::
+
+## CRD Randomization (in R)
+:::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| results: hide
+library(dplyr)
+
+crd_table2 <- crd_table |> 
+  mutate(laptime_s = NA)
+
+crd_table2
+```
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: false
+crd_table2
+```
+:::
+::::
+
++ Alternatively, use `bind_cols()` to add the CRD assignment to an already existing data set.
++ Use `write_csv()` or `write_xlsx()` to export your design for data entry.
+
+## CRD Randomization (in JMP)
+
+Follow the [Scribe tutorial](https://scribehow.com/viewer/CRD_Randomization_JMP__UAutGYFvQQyU9I3L2qWfxw) using `DOE > Classical > Full Factorial Design` in JMP to create a randomization of treatments.
+

@@ -1,0 +1,284 @@
+---
+title: "Module 2: Completely Randomized Designs"
+subtitle: "Analyzing a CRD (ANOVA)"
+format: 
+  revealjs:
+    theme: simple # other modern-ish options: dark, simple, solarized
+    slide-number: c/t 
+    chalkboard: true # lets you draw on top of slides (keyboard: c) or open a board (b)
+    width: 1200
+    height: 675
+    css: modern-slides.css
+    auto-stretch: false
+# format: 
+#   html:
+#     toc: true
+#   pdf:
+#     toc: false
+execute: 
+  warning: false
+  message: false
+---
+
+## From Design to Analysis
+
+
+```{r}
+#| include: false
+library(tidyverse)
+```
+
+In a CRD, we assume:
+
++ The systematic source of variation comes from the treatments
++ All other variation is experimental error  
+
+**Big idea:** Does accounting for treatment reduce unexplained variability by more than we would expect by chance?
+
+## Example 2.1: Running Shoes
+
+:::: columns
+::: column
+**Response:** Lap time (seconds)
+
+**Treatment structure:** 
+
++ One-way
++ Factor: Shoe type 
++ 3 Levels: control, lightweight, and stability
++ t = 3
+:::
+::: column
+**Experimental structure:** 
+
++ CRD
++ Experimental Unit: Individual (r = 2) 
++ Measurement Unit: Individual (N = 6)
+:::
+::::
+
+**Goal:** Determine whether shoe type affects mean lap time.
+
+## Example 2.1: Running Shoes (Blueprint)
+
+```{r}
+#| fig-align: center
+#| out-height: "100%"
+knitr::include_graphics("images/021-blueprint-shoe-type.png")
+```
+
+## Notation - $y_{ij}$
+
+::: callout-note
+Suppose that $y_{ij}$ represents the response value for the  $j^{th}$ observation taken under the $i^{th}$ treatment.  In general, we have $t$ treatments and $r$ observations under the $i^{th}$ treatment (number of replications).
+
++ $\bar y_{\cdot\cdot}$ -- overall mean
++ $\bar y_{i\cdot}$ -- treatment mean
+:::
+
+## Example 2.1: Running Shoes `02-shoes.csv`
+
+Suppose the experiment was carried out, and the following lap times were recorded:
+
+```{r}
+#| echo: false
+shoe_data <- read_csv("data/02-shoes.csv")
+shoe_data |> 
+  knitr::kable()
+```
+
+## Example 2.1: Running Shoes
+
+:::: columns
+::: {.column width="70%"}
+Suppose shoe has **no effect**
+
++ All runners share the same mean lap time  
++ Differences are due to random variation
+
+If we **ignore shoe type**, our best guess for any runner is the *overall average lap time*
+
+$$\bar y_{\cdot\cdot} =$$
+
+Error = observed - overall mean
+:::
+::: {.column width="30%"}
+```{r}
+#| out-width: "100%"
+knitr::include_graphics("images/022-shoe-type-ignore.png")
+```
+:::
+::::
+
+## Total Sum of Squares
+
+:::: columns
+::: {.column width="70%"}
+Total variability measures how far observations are from the overall mean.
+
+<div style="font-size: 80%;">
+$$SST = \sum_{i=1}^t\sum_{j=1}^r(y_{ij}-\bar y_{\cdot\cdot})^2 = $$
+
+$$(-2)^2+(0)^2+(6)^2+(8)^2+(-4)^2+(-8)^2=$$
+</div>
+
+:::
+::: {.column width="30%"}
+```{r}
+#| out-width: "100%"
+knitr::include_graphics("images/022-shoe-type-ignore.png")
+```
+:::
+::::
+
+## Example 2.1: Running Shoes
+
+:::: columns
+::: {.column width="70%"}
+Now suppose shoe *does* matter. If shoe has an effect:
+
++ Runners wearing the same shoe should have similar lap times
++ Different shoes may have different mean lap times
+
+Best guess for a runner is the mean lap time for their shoe - $\bar y_{i\cdot}$
+
+Error = observed - treatment mean
+:::
+::: {.column width="30%"}
+```{r}
+#| out-width: "100%"
+knitr::include_graphics("images/022-shoe-type-account.png")
+```
+:::
+::::
+
+## Sum of Squares Error (SSE)
+
+:::: columns
+::: {.column width="70%"}
+This remaining variability is:
+
++ Variation *within* shoe types  
++ Experimental error 
+
+<div style="font-size: 80%;">
+$$SSE = \sum_{i=1}^t\sum_{j=1}^r(y_{ij}-\bar y_{i\cdot})^2 =$$
+
+$$(-1)^2+(1)^2+(-1)^2+(1)^2(2)^2+(-2)^2=$$
+</div>
+:::
+::: {.column width="30%"}
+```{r}
+#| out-width: "100%"
+knitr::include_graphics("images/022-shoe-type-account.png")
+```
+:::
+::::
+
+## Sum of Square Treatment (SSTrt or SSG)
+
+**What did we gain?** By considering shoe total variability is reduced and the reduction is attributed to treatment.
+
+<div style="font-size: 80%;">
+$$SSTrt = SST - SSE = $$
+</div>
+
+Is this reduction in error big enough to claim shoe has an effect on lap time?
+
+<div style="font-size: 80%;">
+$$SSTrt = \sum_{i=1}^t\sum_{j=1}^r(\bar y_{i\cdot}-\bar y_{\cdot\cdot})^2=$$
+$$2(61-62)^2+2(69-62)^2+2(56-62)^2 =$$
+</div>
+
+## Analysis of Variance (ANOVA)
+
+Note that $SST = SSTrt + SSE$. Thus, we have partitioned the total sums of squares into two parts:
+
++ SSTrt: The variation between factor level means (*betweeen* treatments)
++ SSE: The variation due to experimental error (*within* treatments)
+
+## ANOVA Table
+
+| Source     | df    | SS    | MS                 | F          |
+|------------|-------|-------|--------------------|------------|
+| Treatments | t − 1 | SSTrt | MSTrt = SSTrt/(t−1) | MSTrt/MSE  |
+| Error      | N − t | SSE   | MSE = SSE/(N−t)    |            |
+| Total      | N − 1 | SST   |                    |            |
+
+- **Large F**: treatment explains substantial variability  
+- **F ≈ 1**: treatment explains little beyond noise
+
+## Example 1.1: Running Shoes
+
+| Source     | df                     | SS  | MS             | F             |
+|------------|--------------|-----|----------------|---------------|
+| Treatments | &nbsp;&nbsp; | 172 | 172 / 2 = 86   | 86 / 4 = 21.5 |
+| Error      | &nbsp;&nbsp; | 12  | 12 / 3 = 4     |               |
+| Total      | &nbsp;&nbsp; | 184 |                |               |
+
+
+## Skeleton ANOVA (use context!)
+
+:::: columns
+::: column
+```{r}
+#| fig-align: center
+knitr::include_graphics("images/021-blueprint-shoe-type.png")
+```
+:::
+::: column
+| SV                      | df                    |
+|-------------------------|-----------------------|
+| $\phantom{\text{Treatments}}$ | $\phantom{N-t\;\;\;\;}$ |
+
+:::
+::::
+                       
+## What ANOVA Answers:
+
+Do **any** treatment means differ?
+
+$$H_0: \mu_{Control}=\mu_{Lightweight}=\mu_{Stability}$$
+
+$$H_A: \text{At least one } \mu_i \text{ differs}$$ 
+
+## F-distribution (assuming the null is true)
+
+:::: columns
+::: {.column width="65%"}
+- Large $F$ is evidence to reject $H_0$
+- Under $H_0$: $F \sim F_{(t-1,\;N-t)}$
+:::
+::: {.column width="35%"}
+```{r}
+#| fig-align: center
+#| out-width: 100%
+knitr::include_graphics("images/F-distribution.jpg")
+```
+:::
+::::
+
+## Analyzing a One-way ANOVA in R
+
+```{r}
+#| echo: true
+shoe_mod <- lm(`Lap Time (seconds)` ~ Shoe, data = shoe_data)
+anova(shoe_mod)
+```
+
+## Analyzing a One-way ANOVA in JMP
+
+`Analyze` > `Fit Model` > `assign variables(Y = Lap Time, Add = Shoe)` > `Emphasis “Effect Leverage”` > `Run`
+
+```{r}
+#| fig-align: center
+#| out-width: "65%"
+knitr::include_graphics("images/022-shoe-type-anova-jmp.png")
+```
+
+## Example 2.1: Running Shoes (Conclusion)
+
+At an $\alpha = 0.05$, we have evidence to conclude there is an effect of shoe type on lap time (seconds) for all runners similar to those in our study (F = 21.5; df = 2,3; p = 0.017).
+
+**Alternative conclusion:** At an $\alpha = 0.05$, we have evidence to conclude the mean lap time (seconds) differs for at least one shoe type for all runners similar to those in our study (F = 21.5; df = 2,3; p = 0.017).
+

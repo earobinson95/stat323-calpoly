@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="022-slides-analyzing-a-crd-anova_files/libs/clipboard/clipboard.min.js"></script>
-<script src="022-slides-analyzing-a-crd-anova_files/libs/quarto-html/tabby.min.js"></script>
-<script src="022-slides-analyzing-a-crd-anova_files/libs/quarto-html/popper.min.js"></script>
-<script src="022-slides-analyzing-a-crd-anova_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="022-slides-analyzing-a-crd-anova_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="022-slides-analyzing-a-crd-anova_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="022-slides-analyzing-a-crd-anova_files/libs/quarto-html/quarto-syntax-highlighting-226bd0f977fa82dfae4534cac220d79a.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="023-slides-statistical-modeling-crd_files/libs/clipboard/clipboard.min.js"></script>
+<script src="023-slides-statistical-modeling-crd_files/libs/quarto-html/tabby.min.js"></script>
+<script src="023-slides-statistical-modeling-crd_files/libs/quarto-html/popper.min.js"></script>
+<script src="023-slides-statistical-modeling-crd_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="023-slides-statistical-modeling-crd_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="023-slides-statistical-modeling-crd_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="023-slides-statistical-modeling-crd_files/libs/quarto-html/quarto-syntax-highlighting-226bd0f977fa82dfae4534cac220d79a.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.23">
 
   <title>Module 2: Completely Randomized Designs</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="022-slides-analyzing-a-crd-anova_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="022-slides-analyzing-a-crd-anova_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="023-slides-statistical-modeling-crd_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="023-slides-statistical-modeling-crd_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -94,14 +94,14 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="022-slides-analyzing-a-crd-anova_files/libs/revealjs/dist/theme/quarto-250687541b6fd0303e6fa9a425de9713.css">
+  <link rel="stylesheet" href="023-slides-statistical-modeling-crd_files/libs/revealjs/dist/theme/quarto-250687541b6fd0303e6fa9a425de9713.css">
   <link rel="stylesheet" href="modern-slides.css">
-  <link href="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link href="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -196,20 +196,28 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Module 2: Completely Randomized Designs</h1>
-  <p class="subtitle">Analyzing a CRD (ANOVA)</p>
+  <p class="subtitle">Statistical Model for a CRD</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="from-design-to-analysis" class="slide level2">
-<h2>From Design to Analysis</h2>
-<p>In a CRD, we assume:</p>
+<section id="from-anova-to-a-statistical-model" class="slide level2">
+<h2>From ANOVA to a Statistical Model</h2>
+<p>ANOVA answers whether treatments differ.</p>
+<p>A statistical model explains:</p>
 <ul>
-<li>The systematic source of variation comes from the treatments</li>
-<li>All other variation is experimental error</li>
+<li>Where variability comes from<br>
+</li>
+<li>How treatment effects are represented</li>
+<li>What parameters/coefficients we estimate</li>
 </ul>
-<p><strong>Big idea:</strong> Does accounting for treatment reduce unexplained variability by more than we would expect by chance?</p>
+</section>
+<section id="modeling-the-response" class="slide level2">
+<h2>Modeling the Response</h2>
+<p>For a CRD, each observation can be written as:</p>
+<p><span class="math display">\[y_{ij} = \text{systematic part} + \text{random error}\]</span></p>
+<p>The model separates signal from noise.</p>
 </section>
 <section id="example-2.1-running-shoes" class="slide level2">
 <h2>Example 2.1: Running Shoes</h2>
@@ -245,336 +253,224 @@
 </div>
 </div>
 </section>
-<section id="notation---y_ij" class="slide level2">
-<h2>Notation - <span class="math inline">\(y_{ij}\)</span></h2>
-<div class="callout callout-note callout-titled callout-style-default">
+<section id="cell-means-model" class="slide level2">
+<h2>Cell Means Model</h2>
+<p><span class="math display">\[y_{ij} = \mu + \varepsilon_{ij} \text{ with } \varepsilon_{ij} \text{ iid } \sim N(0, \sigma^2)\]</span> for <span class="math inline">\(i = 1, 2, 3\)</span> and <span class="math inline">\(j = 1, 2\)</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(y_{ij}\)</span> - the <em>observed</em> lap time for the <span class="math inline">\(j^{th}\)</span> runner wearing the <span class="math inline">\(i^{th}\)</span> shoe type.</p></li>
+<li><p><span class="math inline">\(\mu_i\)</span> - the mean lap time for runners wearing the <span class="math inline">\(i^{th}\)</span> shoe type.</p></li>
+<li><p><span class="math inline">\(\epsilon_{ij}\)</span> - the experimental error associated with the <span class="math inline">\(j^{th}\)</span> runner wearing the <span class="math inline">\(i^{th}\)</span> shoe type.</p></li>
+</ul>
+</section>
+<section id="effects-model" class="slide level2">
+<h2>Effects Model</h2>
+<p><span class="math display">\[y_{ij} = \mu + \tau_i + \varepsilon_{ij} \text{ with } \varepsilon_{ij} \text{ iid } \sim N(0, \sigma^2)\]</span> for <span class="math inline">\(i = 1, 2, 3\)</span> and <span class="math inline">\(j = 1, 2\)</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(y_{ij}\)</span> - the <em>observed</em> lap time for the <span class="math inline">\(j^{th}\)</span> runner wearing the <span class="math inline">\(i^{th}\)</span> shoe type.</p></li>
+<li><p><span class="math inline">\(\mu\)</span> - the overall mean lap time.</p></li>
+<li><p><span class="math inline">\(\tau_i\)</span> - the effect of the <span class="math inline">\(i^{th}\)</span> shoe type.</p></li>
+<li><p><span class="math inline">\(\epsilon_{ij}\)</span> - the experimental error associated with the <span class="math inline">\(j^{th}\)</span> runner wearing the <span class="math inline">\(i^{th}\)</span> shoe type.</p></li>
+</ul>
+</section>
+<section id="assumptions-varepsilon_ij-text-iid-sim-n0-sigma2" class="slide level2">
+<h2>Assumptions: <span class="math inline">\(\varepsilon_{ij} \text{ iid } \sim N(0, \sigma^2)\)</span></h2>
+<p>We assume:</p>
+<ul>
+<li>Errors are independent and normally distributed <em>(iid ~ = identically and independently distributed)</em></li>
+<li>Mean zero<br>
+</li>
+<li>Constant variance <span class="math inline">\(\sigma^2\)</span> (e.g., pooled t-test)</li>
+</ul>
+<p>All ANOVA inference depends on these assumptions.</p>
+</section>
+<section id="checking-model-assumptions-constant-variance" class="slide level2">
+<h2>Checking Model Assumptions: Constant Variance</h2>
+<p><strong>Type of Plot:</strong> Look at the residuals vs fitted/predicted values</p>
+<p><strong>Ideal Plot:</strong> Equally spread in residuals across all treatments (e.g., horizontal band)</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="images/023-shoe-type-jmp-residual-vs-fitted.png" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="checking-model-assumptions-normality" class="slide level2">
+<h2>Checking Model Assumptions: Normality</h2>
+<p><strong>Type of Plot:</strong> Normal probability plot of the residuals (QQ-plot)</p>
+<p><strong>Ideal Plot:</strong> Points fall close to the reference line</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="images/023-shoe-type-jmp-qq-plot.png" style="width:40.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="estimating-model-parameterscoefficients" class="slide level2">
+<h2>Estimating Model Parameters/Coefficients</h2>
+<p><strong>Recall:</strong> <span class="math inline">\(y_{ij} = \mu + \tau_i + \varepsilon_{ij} \text{ with } \varepsilon_{ij} \text{ iid } \sim N(0, \sigma^2)\)</span></p>
+<p><strong>Goal:</strong> Use data to <em>estimate</em>:</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span> (denoted <span class="math inline">\(\hat \mu\)</span>),</li>
+<li><span class="math inline">\(\tau\)</span> (denoted <span class="math inline">\(\hat \tau\)</span>), and</li>
+<li><span class="math inline">\(\sigma^2\)</span> (denoted <span class="math inline">\(\hat \sigma^2\)</span>)</li>
+</ul>
+<p>Then we can make predictions/estimates with <span class="math inline">\(\hat y_i = \hat \mu + \hat \tau_i\)</span>.</p>
+</section>
+<section id="identifiability-problem" class="slide level2">
+<h2>Identifiability Problem</h2>
+<p>The model parameters are not unique unless we add a constraint.</p>
+<p><strong>Solutions:</strong> Impose a constraint on <span class="math inline">\(\tau_i\)</span></p>
+<ul>
+<li>Sum to zero (JMP default) <em>what we will use in this class</em></li>
+<li>Set to zero (R default) <em>need to change R settings when analyzing data</em></li>
+</ul>
+</section>
+<section id="sum-to-zero" class="slide level2">
+<h2>Sum to Zero</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Constraint: <span class="math inline">\(\sum_i^t \tau_i = 0\)</span></p>
+<div style="font-size: 70%;">
+<ul>
+<li><span class="math inline">\(\hat \mu =\)</span> _______ (overall mean)</li>
+<li><span class="math inline">\(\hat \tau_1 =\)</span> _______ (deviation of trt mean from overall mean)</li>
+<li><span class="math inline">\(\hat \tau_2 =\)</span> _______</li>
+<li><span class="math inline">\(\hat \tau_3 =\)</span> _______</li>
+</ul>
+<p>Then:</p>
+<ul>
+<li><span class="math inline">\(\hat \mu_1 =\)</span> _______</li>
+<li><span class="math inline">\(\hat \mu_2 =\)</span> _______</li>
+<li><span class="math inline">\(\hat \mu_3 =\)</span> _______</li>
+</ul>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="images/023-shoe-type-sum-to-zero.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="set-to-zero" class="slide level2">
+<h2>Set to Zero</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Constraint: Set <span class="math inline">\(\tau_1 = 0\)</span> (or another reference level, e.g.&nbsp;<span class="math inline">\(\tau_3=0\)</span>)</p>
+<div style="font-size: 70%;">
+<ul>
+<li><span class="math inline">\(\hat \mu =\)</span> _______ (mean of reference level, e.g.&nbsp;<span class="math inline">\(\hat \mu_1\)</span>)</li>
+<li><span class="math inline">\(\hat \tau_1 =\)</span> _______ (deviation of trt mean from mean of reference level)</li>
+<li><span class="math inline">\(\hat \tau_2 =\)</span> _______</li>
+<li><span class="math inline">\(\hat \tau_3 =\)</span> _______</li>
+</ul>
+<p>Then:</p>
+<ul>
+<li><span class="math inline">\(\hat \mu_1 =\)</span> _______</li>
+<li><span class="math inline">\(\hat \mu_2 =\)</span> _______</li>
+<li><span class="math inline">\(\hat \mu_3 =\)</span> _______</li>
+</ul>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="images/023-shoe-type-set-to-zero.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="r-set-to-zero-estimating-parameters" class="slide level2">
+<h2>R (set to zero): Estimating Parameters</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>shoe_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="st">`</span><span class="at">Lap Time (seconds)</span><span class="st">`</span> <span class="sc">~</span> Shoe, <span class="at">data =</span> shoe_data)</span>
+<span id="cb1-2"><a href=""></a><span class="fu">summary</span>(shoe_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = `Lap Time (seconds)` ~ Shoe, data = shoe_data)
+
+Residuals:
+ 1  2  3  4  5  6 
+-1  1 -1  1  2 -2 
+
+Coefficients:
+                Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       61.000      1.414   43.13 2.74e-05 ***
+ShoeLightweight    8.000      2.000    4.00   0.0280 *  
+ShoeStability     -5.000      2.000   -2.50   0.0877 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2 on 3 degrees of freedom
+Multiple R-squared:  0.9348,    Adjusted R-squared:  0.8913 
+F-statistic:  21.5 on 2 and 3 DF,  p-value: 0.01666</code></pre>
+</div>
+</div>
+</section>
+<section id="r-sum-to-zero-estimating-parameters" class="slide level2">
+<h2>R (sum to zero): Estimating Parameters</h2>
+<div class="callout callout-caution callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Note</strong></p>
+<p><strong>Change default settings to “sum to zero”</strong></p>
 </div>
 <div class="callout-content">
-<p>Suppose that <span class="math inline">\(y_{ij}\)</span> represents the response value for the <span class="math inline">\(j^{th}\)</span> observation taken under the <span class="math inline">\(i^{th}\)</span> treatment. In general, we have <span class="math inline">\(t\)</span> treatments and <span class="math inline">\(r\)</span> observations under the <span class="math inline">\(i^{th}\)</span> treatment (number of replications).</p>
-<ul>
-<li><span class="math inline">\(\bar y_{\cdot\cdot}\)</span> – overall mean</li>
-<li><span class="math inline">\(\bar y_{i\cdot}\)</span> – treatment mean</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section id="example-2.1-running-shoes-02-shoes.csv" class="slide level2">
-<h2>Example 2.1: Running Shoes <code>02-shoes.csv</code></h2>
-<p>Suppose the experiment was carried out, and the following lap times were recorded:</p>
 <div class="cell">
-<div class="cell-output-display">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: right;">Runner</th>
-<th style="text-align: left;">Shoe</th>
-<th style="text-align: right;">Lap Time (seconds)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">Control</td>
-<td style="text-align: right;">60</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">6</td>
-<td style="text-align: left;">Control</td>
-<td style="text-align: right;">62</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">Lightweight</td>
-<td style="text-align: right;">68</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">5</td>
-<td style="text-align: left;">Lightweight</td>
-<td style="text-align: right;">70</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">Stability</td>
-<td style="text-align: right;">58</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">Stability</td>
-<td style="text-align: right;">54</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb3" data-code-line-numbers="1,4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">options</span>(<span class="at">contrasts =</span> <span class="fu">c</span>(<span class="st">"contr.sum"</span>, <span class="st">"contr.poly"</span>))</span>
+<span id="cb3-2"><a href=""></a>shoe_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="st">`</span><span class="at">Lap Time (seconds)</span><span class="st">`</span> <span class="sc">~</span> Shoe, <span class="at">data =</span> shoe_data)</span>
+<span id="cb3-3"><a href=""></a><span class="fu">summary</span>(shoe_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = `Lap Time (seconds)` ~ Shoe, data = shoe_data)
+
+Residuals:
+ 1  2  3  4  5  6 
+-1  1 -1  1  2 -2 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  62.0000     0.8165  75.934 5.03e-06 ***
+Shoe1        -1.0000     1.1547  -0.866  0.45018    
+Shoe2         7.0000     1.1547   6.062  0.00901 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2 on 3 degrees of freedom
+Multiple R-squared:  0.9348,    Adjusted R-squared:  0.8913 
+F-statistic:  21.5 on 2 and 3 DF,  p-value: 0.01666</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5" data-code-line-numbers="1,4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">options</span>(<span class="at">contrasts =</span> <span class="fu">c</span>(<span class="st">"contr.treatment"</span>, <span class="st">"contr.poly"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </div>
 </div>
 </section>
-<section id="example-2.1-running-shoes-1" class="slide level2">
-<h2>Example 2.1: Running Shoes</h2>
-<div class="columns">
-<div class="column" style="width:70%;">
-<p>Suppose shoe has <strong>no effect</strong></p>
-<ul>
-<li>All runners share the same mean lap time<br>
-</li>
-<li>Differences are due to random variation</li>
-</ul>
-<p>If we <strong>ignore shoe type</strong>, our best guess for any runner is the <em>overall average lap time</em></p>
-<p><span class="math display">\[\bar y_{\cdot\cdot} =\]</span></p>
-<p>Error = observed - overall mean</p>
-</div><div class="column" style="width:30%;">
+<section id="r-estimating-hat-sigma2" class="slide level2">
+<h2>R: Estimating <span class="math inline">\(\hat \sigma^2\)</span></h2>
 <div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="images/022-shoe-type-ignore.png" style="width:70.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-<section id="total-sum-of-squares" class="slide level2">
-<h2>Total Sum of Squares</h2>
-<div class="columns">
-<div class="column" style="width:70%;">
-<p>Total variability measures how far observations are from the overall mean.</p>
-<div style="font-size: 80%;">
-<p><span class="math display">\[SST = \sum_{i=1}^t\sum_{j=1}^r(y_{ij}-\bar y_{\cdot\cdot})^2 = \]</span></p>
-<p><span class="math display">\[(-2)^2+(0)^2+(6)^2+(8)^2+(-4)^2+(-8)^2=\]</span></p>
-</div>
-</div><div class="column" style="width:30%;">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="images/022-shoe-type-ignore.png" style="width:70.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-<section id="example-2.1-running-shoes-2" class="slide level2">
-<h2>Example 2.1: Running Shoes</h2>
-<div class="columns">
-<div class="column" style="width:70%;">
-<p>Now suppose shoe <em>does</em> matter. If shoe has an effect:</p>
-<ul>
-<li>Runners wearing the same shoe should have similar lap times</li>
-<li>Different shoes may have different mean lap times</li>
-</ul>
-<p>Best guess for a runner is the mean lap time for their shoe - <span class="math inline">\(\bar y_{i\cdot}\)</span></p>
-<p>Error = observed - treatment mean</p>
-</div><div class="column" style="width:30%;">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="images/022-shoe-type-account.png" style="width:70.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-<section id="sum-of-squares-error-sse" class="slide level2">
-<h2>Sum of Squares Error (SSE)</h2>
-<div class="columns">
-<div class="column" style="width:70%;">
-<p>This remaining variability is:</p>
-<ul>
-<li>Variation <em>within</em> shoe types<br>
-</li>
-<li>Experimental error</li>
-</ul>
-<div style="font-size: 80%;">
-<p><span class="math display">\[SSE = \sum_{i=1}^t\sum_{j=1}^r(y_{ij}-\bar y_{i\cdot})^2 =\]</span></p>
-<p><span class="math display">\[(-1)^2+(1)^2+(-1)^2+(1)^2(2)^2+(-2)^2=\]</span></p>
-</div>
-</div><div class="column" style="width:30%;">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="images/022-shoe-type-account.png" style="width:70.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-<section id="sum-of-square-treatment-sstrt-or-ssg" class="slide level2">
-<h2>Sum of Square Treatment (SSTrt or SSG)</h2>
-<p><strong>What did we gain?</strong> By considering shoe total variability is reduced and the reduction is attributed to treatment.</p>
-<div style="font-size: 80%;">
-<p><span class="math display">\[SSTrt = SST - SSE = \]</span></p>
-</div>
-<p>Is this reduction in error big enough to claim shoe has an effect on lap time?</p>
-<div style="font-size: 80%;">
-<p><span class="math display">\[SSTrt = \sum_{i=1}^t\sum_{j=1}^r(\bar y_{i\cdot}-\bar y_{\cdot\cdot})^2=\]</span> <span class="math display">\[2(61-62)^2+2(69-62)^2+2(56-62)^2 =\]</span></p>
-</div>
-</section>
-<section id="analysis-of-variance-anova" class="slide level2">
-<h2>Analysis of Variance (ANOVA)</h2>
-<p>Note that <span class="math inline">\(SST = SSTrt + SSE\)</span>. Thus, we have partitioned the total sums of squares into two parts:</p>
-<ul>
-<li>SSTrt: The variation between factor level means (<em>betweeen</em> treatments)</li>
-<li>SSE: The variation due to experimental error (<em>within</em> treatments)</li>
-</ul>
-</section>
-<section id="anova-table" class="slide level2">
-<h2>ANOVA Table</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Source</th>
-<th>df</th>
-<th>SS</th>
-<th>MS</th>
-<th>F</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Treatments</td>
-<td>t − 1</td>
-<td>SSTrt</td>
-<td>MSTrt = SSTrt/(t−1)</td>
-<td>MSTrt/MSE</td>
-</tr>
-<tr class="even">
-<td>Error</td>
-<td>N − t</td>
-<td>SSE</td>
-<td>MSE = SSE/(N−t)</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Total</td>
-<td>N − 1</td>
-<td>SST</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>Large F</strong>: treatment explains substantial variability<br>
-</li>
-<li><strong>F ≈ 1</strong>: treatment explains little beyond noise</li>
-</ul>
-</section>
-<section id="example-1.1-running-shoes" class="slide level2">
-<h2>Example 1.1: Running Shoes</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 19%">
-<col style="width: 22%">
-<col style="width: 8%">
-<col style="width: 25%">
-<col style="width: 24%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Source</th>
-<th>df</th>
-<th>SS</th>
-<th>MS</th>
-<th>F</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Treatments</td>
-<td>&nbsp;&nbsp;</td>
-<td>172</td>
-<td>172 / 2 = 86</td>
-<td>86 / 4 = 21.5</td>
-</tr>
-<tr class="even">
-<td>Error</td>
-<td>&nbsp;&nbsp;</td>
-<td>12</td>
-<td>12 / 3 = 4</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Total</td>
-<td>&nbsp;&nbsp;</td>
-<td>184</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="skeleton-anova-use-context" class="slide level2">
-<h2>Skeleton ANOVA (use context!)</h2>
-<div class="columns">
-<div class="column">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/021-blueprint-shoe-type.png" class="quarto-figure quarto-figure-center" width="526"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>SV</th>
-<th>df</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\(\phantom{\text{Treatments}}\)</span></td>
-<td><span class="math inline">\(\phantom{N-t\;\;\;\;}\)</span></td>
-</tr>
-</tbody>
-</table>
-</div></div>
-</section>
-<section id="what-anova-answers" class="slide level2">
-<h2>What ANOVA Answers:</h2>
-<p>Do <strong>any</strong> treatment means differ?</p>
-<p><span class="math display">\[H_0: \mu_{Control}=\mu_{Lightweight}=\mu_{Stability}\]</span></p>
-<p><span class="math display">\[H_A: \text{At least one } \mu_i \text{ differs}\]</span></p>
-</section>
-<section id="f-distribution-assuming-the-null-is-true" class="slide level2">
-<h2>F-distribution (assuming the null is true)</h2>
-<div class="columns">
-<div class="column" style="width:65%;">
-<ul>
-<li>Large <span class="math inline">\(F\)</span> is evidence to reject <span class="math inline">\(H_0\)</span></li>
-<li>Under <span class="math inline">\(H_0\)</span>: <span class="math inline">\(F \sim F_{(t-1,\;N-t)}\)</span></li>
-</ul>
-</div><div class="column" style="width:35%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/F-distribution.jpg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-<section id="analyzing-a-one-way-anova-in-r" class="slide level2">
-<h2>Analyzing a One-way ANOVA in R</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>shoe_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="st">`</span><span class="at">Lap Time (seconds)</span><span class="st">`</span> <span class="sc">~</span> Shoe, <span class="at">data =</span> shoe_data)</span>
-<span id="cb1-2"><a href=""></a><span class="fu">anova</span>(shoe_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">options</span>(<span class="at">contrasts =</span> <span class="fu">c</span>(<span class="st">"contr.sum"</span>, <span class="st">"contr.poly"</span>))</span>
+<span id="cb6-2"><a href=""></a>shoe_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="st">`</span><span class="at">Lap Time (seconds)</span><span class="st">`</span> <span class="sc">~</span> Shoe, <span class="at">data =</span> shoe_data)</span>
+<span id="cb6-3"><a href=""></a><span class="fu">anova</span>(shoe_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -587,23 +483,44 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="analyzing-a-one-way-anova-in-jmp" class="slide level2">
-<h2>Analyzing a One-way ANOVA in JMP</h2>
-<p><code>Analyze</code> &gt; <code>Fit Model</code> &gt; <code>assign variables(Y = Lap Time, Add = Shoe)</code> &gt; <code>Emphasis “Effect Leverage”</code> &gt; <code>Run</code></p>
-<div class="cell" data-layout-align="center">
+<section id="jmp-sum-to-zero-estimating-parameters" class="slide level2">
+<h2>JMP (sum to zero): Estimating Parameters</h2>
+<p><code>Analyze</code> &gt; <code>Fit Model</code> &gt; <code>Fill in Y (response) and Add (factor) + Effect Leverage Emphasis</code> &gt; <code>Run</code></p>
+<p><svg aria-hidden="true" role="img" viewbox="0 0 320 512" style="height:1em;width:0.62em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:red;overflow:visible;position:relative;"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"></path></svg> <code>Expanded Estimates</code></p>
+<div class="columns">
+<div class="column">
+<div class="cell">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div>
 <figure>
-<p><img data-src="images/022-shoe-type-anova-jmp.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+<p><img data-src="images/023-shoe-type-jmp-estimates.png" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
 </div>
+</div><div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="images/023-shoe-type-jmp-expanded-estimates.png" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
 </section>
-<section id="example-2.1-running-shoes-conclusion" class="slide level2">
-<h2>Example 2.1: Running Shoes (Conclusion)</h2>
-<p>At an <span class="math inline">\(\alpha = 0.05\)</span>, we have evidence to conclude there is an effect of shoe type on lap time (seconds) for all runners similar to those in our study (F = 21.5; df = 2,3; p = 0.017).</p>
-<p><strong>Alternative conclusion:</strong> At an <span class="math inline">\(\alpha = 0.05\)</span>, we have evidence to conclude the mean lap time (seconds) differs for at least one shoe type for all runners similar to those in our study (F = 21.5; df = 2,3; p = 0.017).</p>
+<section id="jmp-estimating-hat-sigma2" class="slide level2">
+<h2>JMP: Estimating <span class="math inline">\(\hat \sigma^2\)</span></h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/022-shoe-type-anova-jmp.png" class="quarto-figure quarto-figure-center" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 
 </section>
     </div>
@@ -614,20 +531,20 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="022-slides-analyzing-a-crd-anova_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="023-slides-statistical-modeling-crd_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="022-slides-analyzing-a-crd-anova_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="023-slides-statistical-modeling-crd_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

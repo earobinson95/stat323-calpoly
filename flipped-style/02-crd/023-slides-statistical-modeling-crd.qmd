@@ -1,0 +1,275 @@
+---
+title: "Module 2: Completely Randomized Designs"
+subtitle: "Statistical Model for a CRD"
+format: 
+  revealjs:
+    # theme: simple # other modern-ish options: dark, simple, solarized
+    theme: simple
+    slide-number: c/t 
+    chalkboard: true # lets you draw on top of slides (keyboard: c) or open a board (b)
+    width: 1200
+    height: 675
+    css: modern-slides.css
+    auto-stretch: false
+# format: 
+#   html:
+#     toc: true
+#   pdf:
+#     toc: false
+execute: 
+  warning: false
+  message: false
+---
+
+## From ANOVA to a Statistical Model
+
+ANOVA answers whether treatments differ.
+
+A statistical model explains:
+
+- Where variability comes from  
+- How treatment effects are represented 
+- What parameters/coefficients we estimate
+
+## Modeling the Response
+
+For a CRD, each observation can be written as:
+
+$$y_{ij} = \text{systematic part} + \text{random error}$$
+
+The model separates signal from noise.
+
+## Example 2.1: Running Shoes
+
+```{r}
+#| include: false
+library(tidyverse)
+shoe_data <- read_csv("data/02-shoes.csv")
+```
+
+:::: columns
+::: column
+**Response:** Lap time (seconds)
+
+**Treatment structure:** 
+
++ One-way
++ Factor: Shoe type 
++ 3 Levels: control, lightweight, and stability
++ t = 3
+:::
+::: column
+**Experimental structure:** 
+
++ CRD
++ Experimental Unit: Individual (r = 2) 
++ Measurement Unit: Individual (N = 6)
+:::
+::::
+
+**Goal:** Determine whether shoe type affects mean lap time.
+
+## Example 2.1: Running Shoes (Blueprint)
+
+```{r}
+#| fig-align: center
+#| out-height: "100%"
+knitr::include_graphics("images/021-blueprint-shoe-type.png")
+```
+
+## Cell Means Model
+
+$$y_{ij} = \mu + \varepsilon_{ij} \text{ with } \varepsilon_{ij} \text{ iid } \sim N(0, \sigma^2)$$
+for 	$i = 1, 2, 3$ and $j = 1, 2$
+
+Where:
+
++ $y_{ij}$ - the *observed* lap time for the $j^{th}$ runner wearing the $i^{th}$ shoe type.
+
++	$\mu_i$ - the mean lap time for runners wearing the $i^{th}$ shoe type.
+
++	$\epsilon_{ij}$ - the experimental error associated with the $j^{th}$ runner wearing the $i^{th}$ shoe type.
+
+## Effects Model
+
+$$y_{ij} = \mu + \tau_i + \varepsilon_{ij} \text{ with } \varepsilon_{ij} \text{ iid } \sim N(0, \sigma^2)$$
+for 	$i = 1, 2, 3$ and $j = 1, 2$
+
+Where:
+
++ $y_{ij}$ - the *observed* lap time for the $j^{th}$ runner wearing the $i^{th}$ shoe type.
+
++	$\mu$ - the overall mean lap time.
+
++ $\tau_i$ - the effect of the $i^{th}$ shoe type.
+
++	$\epsilon_{ij}$ - the experimental error associated with the $j^{th}$ runner wearing the $i^{th}$ shoe type.
+
+## Assumptions: $\varepsilon_{ij} \text{ iid } \sim N(0, \sigma^2)$
+
+We assume:
+
+- Errors are independent and normally distributed *(iid ~ = identically and independently distributed)*
+- Mean zero  
+- Constant variance $\sigma^2$ (e.g., pooled t-test)
+
+All ANOVA inference depends on these assumptions.
+
+## Checking Model Assumptions: Constant Variance
+
+**Type of Plot:** Look at the residuals vs fitted/predicted values
+
+**Ideal Plot:** Equally spread in residuals across all treatments (e.g., horizontal band)
+
+```{r}
+#| out-width: 50%
+knitr::include_graphics("images/023-shoe-type-jmp-residual-vs-fitted.png")
+```
+
+## Checking Model Assumptions: Normality
+
+**Type of Plot:** Normal probability plot of the residuals (QQ-plot)
+
+**Ideal Plot:** Points fall close to the reference line
+
+```{r}
+#| out-width: 40%
+knitr::include_graphics("images/023-shoe-type-jmp-qq-plot.png")
+```
+
+## Estimating Model Parameters/Coefficients
+
+**Recall:** $y_{ij} = \mu + \tau_i + \varepsilon_{ij} \text{ with } \varepsilon_{ij} \text{ iid } \sim N(0, \sigma^2)$
+
+**Goal:** Use data to *estimate*:
+
++ $\mu$ (denoted $\hat \mu$),
++ $\tau$ (denoted $\hat \tau$), and
++ $\sigma^2$ (denoted $\hat \sigma^2$)
+
+Then we can make predictions/estimates with $\hat y_i = \hat \mu + \hat \tau_i$.
+
+## Identifiability Problem
+
+The model parameters are not unique unless we add a constraint.
+
+**Solutions:** Impose a constraint on $\tau_i$
+
++ Sum to zero (JMP default) *what we will use in this class*
++ Set to zero (R default) *need to change R settings when analyzing data*
+
+## Sum to Zero
+
+:::: columns
+::: {.column width=60%}
+Constraint: $\sum_i^t \tau_i = 0$
+
+<div style="font-size: 70%;">
++ $\hat \mu =$ _______ (overall mean)
++ $\hat \tau_1 =$ _______ (deviation of trt mean from overall mean)
++ $\hat \tau_2 =$ _______
++ $\hat \tau_3 =$ _______
+
+Then:
+
++ $\hat \mu_1 =$ _______
++ $\hat \mu_2 =$ _______
++ $\hat \mu_3 =$ _______
+</div>
+:::
+::: {.column width=40%}
+```{r}
+#| out-width: 100%
+knitr::include_graphics("images/023-shoe-type-sum-to-zero.png")
+```
+:::
+::::
+
+## Set to Zero
+
+:::: columns
+::: {.column width=60%}
+Constraint: Set $\tau_1 = 0$ (or another reference level, e.g. $\tau_3=0$)
+
+<div style="font-size: 70%;">
++ $\hat \mu =$ _______ (mean of reference level, e.g. $\hat \mu_1$)
++ $\hat \tau_1 =$ _______ (deviation of trt mean from mean of reference level)
++ $\hat \tau_2 =$ _______
++ $\hat \tau_3 =$ _______
+
+Then:
+
++ $\hat \mu_1 =$ _______
++ $\hat \mu_2 =$ _______
++ $\hat \mu_3 =$ _______
+</div>
+:::
+::: {.column width=40%}
+```{r}
+#| out-width: 100%
+knitr::include_graphics("images/023-shoe-type-set-to-zero.png")
+```
+:::
+::::
+
+## R (set to zero): Estimating Parameters
+
+```{r}
+#| echo: true
+shoe_mod <- lm(`Lap Time (seconds)` ~ Shoe, data = shoe_data)
+summary(shoe_mod)
+```
+
+## R (sum to zero): Estimating Parameters
+
+::: callout-caution
+### Change default settings to "sum to zero"
+
+```{r}
+#| code-line-numbers: "1,4"
+#| echo: true
+options(contrasts = c("contr.sum", "contr.poly"))
+shoe_mod <- lm(`Lap Time (seconds)` ~ Shoe, data = shoe_data)
+summary(shoe_mod)
+options(contrasts = c("contr.treatment", "contr.poly"))
+```
+:::
+
+## R: Estimating $\hat \sigma^2$
+
+```{r}
+#| echo: true
+options(contrasts = c("contr.sum", "contr.poly"))
+shoe_mod <- lm(`Lap Time (seconds)` ~ Shoe, data = shoe_data)
+anova(shoe_mod)
+```
+
+## JMP (sum to zero): Estimating Parameters
+
+`Analyze` > `Fit Model` > `Fill in Y (response) and Add (factor) + Effect Leverage Emphasis` > `Run`
+
+`r fontawesome::fa("caret-down", fill = "red")` `Expanded Estimates`
+
+:::: columns
+::: column
+```{r}
+#| out-width: 80%
+knitr::include_graphics("images/023-shoe-type-jmp-estimates.png")
+```
+:::
+::: column
+```{r}
+#| out-width: 80%
+knitr::include_graphics("images/023-shoe-type-jmp-expanded-estimates.png")
+```
+:::
+::::
+
+## JMP: Estimating $\hat \sigma^2$
+
+```{r}
+#| fig-align: center
+#| out-width: "50%"
+knitr::include_graphics("images/022-shoe-type-anova-jmp.png")
+```
+

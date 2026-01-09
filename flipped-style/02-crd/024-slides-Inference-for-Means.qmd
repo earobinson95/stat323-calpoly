@@ -1,6 +1,6 @@
 ---
 title: "Module 2: Completely Randomized Designs"
-subtitle: "Inference for Means"
+subtitle: "Inference for Treatment Means"
 format: 
   revealjs:
     # theme: simple # other modern-ish options: dark, simple, solarized
@@ -21,4 +21,179 @@ execute:
   message: false
 ---
 
-## 
+## Inference for Treatment Means
+
+ANOVA tells us whether *any* means differ.
+
+Now we want:
+
+- Estimates of each treatment mean ($\mu_i$)
+- Uncertainty of those treatment means (SEs + CIs)  
+- Interpretation in context
+
+## Example 2.1: Running Shoes
+
+```{r}
+#| include: false
+library(tidyverse)
+shoe_data <- read_csv("data/02-shoes.csv") %>% 
+  mutate(Shoe = as.factor(Shoe))
+```
+
+:::: columns
+::: column
+**Response:** Lap time (seconds)
+
+**Treatment structure:** 
+
++ One-way
++ Factor: Shoe type 
++ 3 Levels: control, lightweight, and stability
++ t = 3
+:::
+::: column
+**Experimental structure:** 
+
++ CRD
++ Experimental Unit: Individual (r = 2) 
++ Measurement Unit: Individual (N = 6)
+:::
+::::
+
+**Goal:** Determine whether shoe type affects mean lap time.
+
+## Example 2.1: Running Shoes (Blueprint)
+
+```{r}
+#| fig-align: center
+#| out-height: "100%"
+knitr::include_graphics("images/021-blueprint-shoe-type.png")
+```
+
+## Example 2.1: Running Shoes (Effects Model)
+
+$$y_{ij} = \mu + \tau_i + \varepsilon_{ij} \text{ with } \varepsilon_{ij} \text{ iid } \sim N(0, \sigma^2)$$
+for 	$i = 1, 2, 3$ and $j = 1, 2$
+
+Where:
+
++ $y_{ij}$ - the *observed* lap time for the $j^{th}$ runner wearing the $i^{th}$ shoe type.
+
++	$\mu$ - the overall mean lap time.
+
++ $\tau_i$ - the effect of the $i^{th}$ shoe type.
+
++	$\epsilon_{ij}$ - the experimental error associated with the $j^{th}$ runner wearing the $i^{th}$ shoe type.
+
+## What we Estimated
+
+Model Reminder: $y_{ij} = \mu + \tau_i + \varepsilon_{ij}$
+
+:::: columns
+::: column
+```{r}
+#| fig-align: center
+#| out-width: "50%"
+options(contrasts = c("contr.sum", "contr.poly"))
+shoe_mod <- lm(`Lap Time (seconds)` ~ Shoe, data = shoe_data)
+anova(shoe_mod)
+summary(shoe_mod)
+```
+:::
+::: column
+```{r}
+#| out-width: 80%
+knitr::include_graphics("images/022-shoe-type-anova-jmp.png")
+knitr::include_graphics("images/023-shoe-type-jmp-expanded-estimates.png")
+```
+:::
+::::
+
+
+## Estimating Treatment Means $\hat \mu_i$ (Balanced CRD)
+
+From the data, each treatment has a sample mean:
+
+$$\bar y_{i\cdot}$$
+
+From the model, each treatment has an estimated *least squares mean*:
+
+$$\hat\mu_i = \hat\mu + \hat\tau_i$$
+
+In a **balanced** CRD (i.e., each treatment has $r$ replications), these are the same quantity:
+
+$$\hat\mu_i = \bar y_{i\cdot}$$
+
+## Sampling Variability of $\bar y_{i\cdot}$
+
+Under the model:
+
+$$Var(\bar y_{i\cdot}) = \frac{\sigma^2}{r}$$
+
+We don’t know $\sigma^2$, so we estimate it with:
+
+$$\widehat{\sigma}^2 = MSE$$
+
+## Standard Error of a Treatment Mean $SE(\hat \mu_i)$
+
+Balanced CRD (each treatment has $r$ replications):
+
+$$SE(\hat\mu_i) = \sqrt{\frac{MSE}{r}}$$
+
+## Degrees of Freedom
+
+All inference uses the **error degrees of freedom**:
+
+$$df_E = N - t = (r-1)t$$
+
+This is the same df used for the F-test in ANOVA.
+
+## Confidence Interval for a Treatment Mean
+
+A CI for $\mu_i$:
+
+$$\hat\mu_i \pm t^*_{df_E, \alpha/2}\;SE(\hat\mu_i)$$
+
+where $t^*$ comes from the t distribution with $df_E = N-t = (r-1)t$ and the $\alpha/2$ quantile associated with the confidence level.
+
+## R: Estimated Means + SE + CI
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+#| message: false
+library(emmeans)
+shoe_lsmeans <- emmeans(shoe_mod, specs = ~ Shoe)
+shoe_lsmeans
+```
+:::
+::: column
+```{r}
+#| echo: true
+#| message: false
+#| fig-width: 6
+#| fig-height: 6
+emmip(shoe_mod, ~ Shoe, CIs = T) +
+  labs(y = "Estimated Lap Time (seconds)")
+```
+:::
+::::
+
+## JMP: Estimated Means + SE + CI
+
+`r fontawesome::fa("caret-down", fill = "red")` `Response` > `Multiple Comparisons` > `Click “Show Least Squares Means” Plot` > `OK`
+
+```{r}
+#| out-width: 50%
+knitr::include_graphics("images/023-shoe-type-est-means-jmp.png")
+```
+
+## Interpretation of Results
+
+The estimated mean 400m lap time for runners wearing the control shoe is 62 seconds (s.e. = 1.41). 
+
+We are 95% confident the population mean 400m lap time for all runners wearing the control shoe is between 51.5 and 60.5 seconds.
+
+These results apply to all runner similar to those in our study under similar conditions.
+

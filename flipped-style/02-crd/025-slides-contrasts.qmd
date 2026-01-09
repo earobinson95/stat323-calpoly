@@ -21,4 +21,276 @@ execute:
   message: false
 ---
 
-## 
+## From Means to Comparisons
+
+ANOVA tells us whether *any* means differ.
+
+Inference for means tells us *what each mean looks like*.
+
+**Contrasts let us ask specific questions about those means.**
+
+## What Is a Contrast?
+
+::: callout-note
+A **contrast** is a linear combination of treatment means:
+
+$$
+C = c_1 \mu_1 + c_2 \mu_2 + \cdots + c_t \mu_t
+$$
+
+with the constraint:
+
+$$
+\sum_{i=1}^t c_i = 0
+$$
+:::
+
+## What We Actually Estimate
+
+We estimate contrasts using the estimated least squares means $\hat \mu_i$:
+
+$$
+\hat C = c_1 \hat\mu_1 + c_2\hat\mu_2 + \cdots + c_t \hat\mu_t
+$$
+
+## Example 2.1: Running Shoes
+
+```{r}
+#| include: false
+library(tidyverse)
+shoe_data <- read_csv("data/02-shoes.csv") %>% 
+  mutate(Shoe = as.factor(Shoe))
+options(contrasts = c("contr.sum", "contr.poly"))
+shoe_mod <- lm(`Lap Time (seconds)` ~ Shoe, data = shoe_data)
+```
+
+:::: columns
+::: column
+**Response:** Lap time (seconds)
+
+**Treatment structure:** 
+
++ One-way
++ Factor: Shoe type 
++ 3 Levels: control, lightweight, and stability
++ t = 3
+:::
+::: column
+**Experimental structure:** 
+
++ CRD
++ Experimental Unit: Individual (r = 2) 
++ Measurement Unit: Individual (N = 6)
+:::
+::::
+
+## Example 2.1: Running Shoes ($\hat \mu_i$ + $\hat \sigma^2$)
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+#| message: false
+anova(shoe_mod)
+library(emmeans)
+shoe_lsmeans <- emmeans(shoe_mod, specs = ~ Shoe)
+shoe_lsmeans
+```
+:::
+::: column
+```{r}
+#| out-width: 100%
+knitr::include_graphics("images/022-shoe-type-anova-jmp.png")
+knitr::include_graphics("images/023-shoe-type-est-means-only-jmp.png")
+```
+:::
+::::
+
+## Contrast 1: Lightweight vs Stability
+
+> Does the mean lap time differ between lightweight and stability shoes?
+
+> $H_0:$
+
+> $H_A:$
+
+
+Contrast:
+
+$C =$ 
+
+Coefficients: $(0,\;1,\;-1)$
+
+
+## Standard Error of a Contrast (Balanced CRD)
+
+::: callout-note
+For a balanced CRD with $r$ replications per treatment:
+
+$$
+SE(\hat C) = \sqrt{ MSE \sum_{i=1}^t \frac{c_i^2}{r} }
+$$
+:::
+
+## Hypothesis Test for a Contrast
+
+$$
+H_0: \mu_2-\mu_3 = 0
+\qquad\text{vs}\qquad
+H_A: \mu_2-\mu_3 \neq 0
+$$
+
+Test statistic:
+
+$$
+t = \frac{\hat C}{SE(\hat C)}
+$$
+
+with $df = (r-1)t$.
+
+## Confidence Interval for a Contrast
+
+A CI for $C$:
+
+$$
+\hat C \pm t^*_{(r-1)t,
+\alpha/2} \; SE(\hat C)
+$$
+
+## R: Contrasts
+
+```{r}
+#| echo: true
+library(emmeans)
+shoe_mod <- lm(`Lap Time (seconds)` ~ Shoe, data = shoe_data)
+shoe_lsmeans <- emmeans(shoe_mod, ~ Shoe)
+levels(shoe_data$Shoe)
+contrast(shoe_lsmeans,
+         method = list("Lightweight vs Stability" = c(0, 1, -1)),
+         infer = c(TRUE, TRUE)
+)
+```
+
+## JMP: Contrasts
+
+`r fontawesome::fa("caret-down", fill = "red")` `Shoe` > `LSMeans Contrast`
+
+:::: columns
+::: column
+```{r}
+#| out-width: 70%
+knitr::include_graphics("images/023-shoe-type-contrast11-jmp.png")
+```
+:::
+::: column
+```{r}
+#| out-width: 70%
+knitr::include_graphics("images/023-shoe-type-contrast12-jmp.png")
+```
+:::
+::::
+
+## Interpretation: Lightweight vs Stability
+
+At an $\alpha = 0.05$, we have evidence to conclude the mean 400m lap time for lightweight shoes is 13 seconds (s.e. = 2) slower than the mean 400m lap time for stability shoes (t = 6.5; df = 3; p = 0.0074).
+
+We are 95% confident the population mean 400m lap time for lightweight shoes is between 6.64 and 19.4 seconds slower than for stability shoes.
+
+These results apply to all runner similar to those in our study under similar conditions.
+
+
+## Contrast 2: Average of Control + Stability vs Lightweight
+
+> Is the lightweight shoe different from the average of the other two?
+
+> $H_0:$
+
+> $H_A:$
+
+
+Contrast:
+
+$C =$ 
+
+Coefficients: $(0.5,\;-1,\;0.5)$
+
+## Contrast 2: Average of Control + Stability vs Lightweight
+
+$\hat C =$
+
+$SE(\hat C) =$
+
+$t =$
+
+## R: Contrasts
+
+```{r}
+#| echo: true
+contrast(shoe_lsmeans,
+         method = list("Control & Stability vs Lightweight" = c(0.5, -1, 0.5)),
+         infer = c(TRUE, TRUE)
+)
+```
+
+::: callout
+*Note: flipping the contrasts arounds just changes the direction of the estimate and t-statistic*
+
+```{r}
+#| echo: true
+contrast(shoe_lsmeans,
+         method = list("Control & Stability vs Lightweight" = c(-0.5, 1, -0.5)),
+         infer = c(TRUE, TRUE)
+)
+```
+:::
+
+## JMP: Contrasts
+
+`r fontawesome::fa("caret-down", fill = "red")` `Shoe` > `LSMeans Contrast`
+
+:::: columns
+::: column
+```{r}
+#| out-width: 70%
+knitr::include_graphics("images/023-shoe-type-contrast21-jmp.png")
+```
+:::
+::: column
+```{r}
+#| out-width: 70%
+knitr::include_graphics("images/023-shoe-type-contrast22-jmp.png")
+```
+:::
+::::
+
+## Interpretation: Average of Control + Stability vs Lightweight
+
+At an $\alpha = 0.05$, we have evidence to conclude the mean 400m lap time for control and stability shoes combined is 10.5 seconds (s.e. = 1.73) faster than the mean 400m lap time for lightweight shoes (t = -6.06; df = 3; p = 0.009).
+
+We are 95% confident the population mean 400m lap time for control and stability shoes combined is between 4.99 and 16 seconds faster than for lightweight shoes.
+
+These results apply to all runner similar to those in our study under similar conditions.
+
+## Preplanned vs Post Hoc Contrasts
+
+**Preplanned contrasts:**
+
+- Chosen before seeing the data  
+- Limited in number  
+- Do not require p-value multiplicity adjustment
+
+**Post hoc contrasts:**
+
+- Chosen after ANOVA  
+- Require multiplicity adjustment
+
+## Why Contrasts Matter
+
+Contrasts:
+
+- Align analysis with scientific questions  
+- Avoid unnecessary multiple testing  
+- Provide interpretable comparisons  
+
+They are often more informative than “all pairwise comparisons.”
+

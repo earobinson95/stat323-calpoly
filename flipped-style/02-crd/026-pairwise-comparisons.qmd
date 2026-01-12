@@ -21,4 +21,209 @@ execute:
   message: false
 ---
 
-## 
+## What Are Pairwise Comparisons?
+
+> Which treatment means differ from each other?
+
+Pairwise comparisons test:
+
+- $\mu_1$ vs $\mu_2$  
+- $\mu_1$ vs $\mu_3$  
+- $\mu_2$ vs $\mu_3$  
+
+For $t$ treatments, there are: $\binom{t}{2} = \frac{t(t-1)}{2}$ possible pairwise comparisons.
+
+
+## Example 2.1: Running Shoes
+
+```{r}
+#| include: false
+library(tidyverse)
+shoe_data <- read_csv("data/02-shoes.csv") %>% 
+  mutate(Shoe = as.factor(Shoe))
+options(contrasts = c("contr.sum", "contr.poly"))
+shoe_mod <- lm(`Lap Time (seconds)` ~ Shoe, data = shoe_data)
+```
+
+:::: columns
+::: column
+**Response:** Lap time (seconds)
+
+**Treatment structure:** 
+
++ One-way
++ Factor: Shoe type 
++ 3 Levels: control, lightweight, and stability
++ t = 3
+:::
+::: column
+**Experimental structure:** 
+
++ CRD
++ Experimental Unit: Individual (r = 2) 
++ Measurement Unit: Individual (N = 6)
+:::
+::::
+
+## Example 2.1: Shoes
+
+With $t = 3$ shoe types:
+
+- Control vs Lightweight  $(H_0: \mu_1 - \mu_2 = 0)$
+- Control vs Stability  $(H_0: \mu_1 - \mu_3 = 0)$
+- Lightweight vs Stability  $(H_0: \mu_2 - \mu_3 = 0)$
+
+That’s _______ comparisons.
+
+## Pairwise Comparisons as Contrasts
+
+Each pairwise comparison is a contrast:
+
+- Control vs Lightweight: $C = (1, -1, 0)$  
+- Control vs Stability: $C = (1, 0, -1)$  
+- Lightweight vs Stability: $C = (0, 1, -1)$
+
+## The Multiple Testing Problem
+
+Each comparison is a valid t-test.
+
+But performing *many tests* increases the chance of a:
+
+- Type I error (false positive)
+
+This is called the *family-wise error rate*.
+
+## Why Error Rates Inflate
+
+Suppose each test uses $\alpha = 0.05$. Then:
+
+- Probability of *no* false positives (i.e., correctly fail to reject the null): $1-\alpha = 1 - 0.05 = 0.95$
+  
+- Assuming independence, the probability of all tests leading to *no* false positives: $(1-\alpha)^\text{# tests}=(0.95)^3=0.857$
+
+- Probability of *at least one* false positive (i.e., a Type I error): $1-[(1-\alpha)^\text{# tests}] = 1-0.857=0.143$.
+
+Note this increases with the number of tests.
+
+## What We Need
+
+When doing many comparisons, we want to:
+
+- Control the overall Type I error rate  
+- While still detecting real differences  
+
+**Post Hoc Tests:** adjustments to the p-values (making them larger) and/or confidence intervals (making them wider).
+
+## Fisher’s Protected LSD
+
+1. First perform the overall ANOVA F-test
+2. Only if F is significant, perform all pairwise t-tests  
+
+::: callout
+Note: From the ANOVA on Example 2.1 Shoe Types: (F = 21.5; df = 2,3; p = 0.017)
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+#| message: false
+library(emmeans)
+shoe_lsmeans <- emmeans(shoe_mod, specs = ~ Shoe)
+pairs(shoe_lsmeans, infer = c(TRUE, TRUE), adjust = "none")
+library(multcomp)
+cld(shoe_lsmeans, adjust = "none", Letters = LETTERS, decreasing = T)
+```
+:::
+::: column
+
+`r fontawesome::fa("caret-down", fill = "red")` `Shoe` > `LSMeans Student’s t`
+
+`r fontawesome::fa("caret-down", fill = "red")` `LSMeans Differences Student’s t` > `Ordered Differences Report`
+
+```{r}
+#| out-width: 100%
+knitr::include_graphics("images/026-shoe-type-fishersLSD.png")
+```
+:::
+::::
+:::
+
+## Tukey’s Honestly Significant Difference (HSD)
+
+- Designed specifically for *all* pairwise comparisons  
+- Controls family-wise error rate  
+
+::: callout
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+#| message: false
+library(emmeans)
+shoe_lsmeans <- emmeans(shoe_mod, specs = ~ Shoe)
+pairs(shoe_lsmeans, infer = c(TRUE, TRUE), adjust = "tukey")
+cld(shoe_lsmeans, adjust = "tukey", Letters = LETTERS, decreasing = T)
+```
+:::
+::: column
+
+`r fontawesome::fa("caret-down", fill = "red")` `Shoe` > `LSMeans Tukey HSD`
+
+`r fontawesome::fa("caret-down", fill = "red")` `LSMeans Differences Tukey HSD` > `Ordered Differences Report`
+
+```{r}
+#| out-width: 100%
+knitr::include_graphics("images/026-shoe-type-tukeys.png")
+```
+:::
+::::
+:::
+
+## Bonferroni Adjustment
+
+Bonferroni controls error by:
+
+- Using a smaller significance level  
+
+$$
+\alpha^* = \frac{\alpha}{\text{number of tests}}
+$$
+
+Simple, but often conservative.
+
+
+## Dunnet's Test
+
+Useful when interest lies in comparing all treatments to a control.
+
+::: callout
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+#| message: false
+library(emmeans)
+shoe_lsmeans <- emmeans(shoe_mod, specs = ~ Shoe)
+contrast(shoe_lsmeans, 
+         method = "trt.vs.ctrl", # Treatment vs. control contrast
+         adjust = "dunnet", # Dunnett adjustment
+         infer = c(TRUE, TRUE),
+         ref = "Control"
+)
+```
+:::
+::: column
+
+`r fontawesome::fa("caret-down", fill = "red")` `Shoe` > `LSMeans Dunnet` > `Choose Level (Control)`
+
+```{r}
+#| out-width: 100%
+knitr::include_graphics("images/026-shoe-type-dunnet.png")
+```
+:::
+::::
+:::
+
+

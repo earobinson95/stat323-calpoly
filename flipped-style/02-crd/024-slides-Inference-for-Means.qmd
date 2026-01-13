@@ -174,7 +174,7 @@ shoe_lsmeans
 #| message: false
 #| fig-width: 6
 #| fig-height: 6
-#| out-width: 75%
+#| out-width: 60%
 emmip(shoe_mod, ~ Shoe, CIs = T) +
   labs(y = "Estimated Lap Time (seconds)")
 ```

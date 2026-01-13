@@ -5,6 +5,7 @@ format:
   html: default
   pdf: default
   docx: default
+embed-resources: true
 execute:
   message: false
   warning: false

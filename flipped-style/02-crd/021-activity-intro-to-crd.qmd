@@ -1,0 +1,143 @@
+---
+title: "Activity 2.1: ANOVA & Statistical Model for a CRD"
+subtitle: "Traffic Signals"
+format:
+  html: default
+  pdf: default
+  docx: default
+execute:
+  message: false
+  warning: false
+  echo: false
+---
+
+::: callout-note
+Submit via Gradescope, don't forget to assign pages to the questions in the outline!
+:::
+
+A traffic engineering study was conducted to investigate traffic delay at urban intersections. Three types of traffic signals were studied: pretimed, semi-actuated, and fully actuated. Each signal type is independently and randomly assigned to five intersections. The response variable was the average stopped time per vehicle (seconds) at each intersection.
+
+The following data is provided in `traffic_data.csv`:
+
+```{r}
+library(tidyverse)
+library(emmeans)
+options(contrasts = c("contr.sum", "contr.poly"))
+traffic_data <- read_csv("data/02_traffic_data.csv") %>% 
+  mutate(TrafficSignal = factor(TrafficSignal, levels = c("Pretimed", "Semi-actuated", "Fully actuated")))
+# traffic_mod <- lm(AvgStopTime_secs ~ TrafficSignal,
+#                   data = traffic_data)
+# anova(traffic_mod)
+# summary(traffic_mod)
+# emmeans(traffic_mod, ~ TrafficSignal)
+
+traffic_data |>
+  knitr::kable()
+```
+
+## a. Study Structure
+
+Describe the following components of the study.
+
+-   Treatment structure
+
+\vspace{0.6in}
+
+-   Design structure
+
+\vspace{0.6in}
+
+-   Response variable
+
+\vspace{0.4in}
+
+## b. Complete the skeleton ANOVA table below
+
+Make sure to use context of the data!
+
+| Source of Variation (SV) | DF: Total = \_\_\_\_\_\_\_\_\_\_\_ |
+|--------------------------|------------------------------------|
+|                          |                                    |
+|                          |                                    |
+|                          |                                    |
+|                          |                                    |
+|                          |                                    |
+
+## c. ANOVA Table
+
+Use the data provided to calculate the following (you can use R/JMP to obtain summary tables):
+
+$\bar y_{\cdot\cdot}$ = \_\_\_\_\_\_\_\_\_
+
+$\bar y_{1\cdot}$ = \_\_\_\_\_\_\_\_\_
+
+$\bar y_{2\cdot}$ = \_\_\_\_\_\_\_\_\_
+
+$\bar y_{3\cdot}$ = \_\_\_\_\_\_\_\_\_
+
+for $i=1$ (Pretimed), $i=2$ (Semi-actuated), $j=3$ (Fully actuated)
+
+-   Show (by hand, using a calculator) how the SSE is calculated:
+
+\vspace{0.6in}
+
+Then, use your SSE calculation and the provided information to fill out the ANOVA table below. *You can check your answers by running the ANOVA in JMP/R, but know where the values come from.*
+
+| Source | DF  | SS      | MS  | F   | Prob \> F |
+|--------|-----|---------|-----|-----|-----------|
+|        |     |         |     |     | \<0.0001  |
+|        |     |         |     |     |           |
+| Total  | 14  | 1349.45 |     |     |           |
+
+## d. Statistical Model
+
+Write the *effects model* for this study, make sure to provide the index values, assumptions, and clearly define each term in context.
+
+\vspace{1.8in}
+
+## e. Using JMP/R, obtain the parameter/coefficient estimates for the following:
+
+::: callout-caution
+## Warnings if using R!
+
+If using R, you need to change the default settings to use "sum to zero":
+
+```         
+options(contrasts = c("contr.sum", "contr.poly"))
+mod <- lm()
+```
+
+Also, be careful of order! The following may be useful for manipulating your data.
+
+```         
+mutate(TrafficSignal = factor(TrafficSignal, levels = c("Pretimed", "Semi-actuated", "Fully actuated")))
+```
+
+Then check your factor order with:
+
+```         
+levels(data$TrafficSignal)
+```
+:::
+
+-   $\hat \mu$ = \_\_\_\_\_\_\_\_\_\_\_
+
+-   $\hat \tau_1$ = \_\_\_\_\_\_\_\_\_\_\_
+
+-   $\hat \tau_2$ = \_\_\_\_\_\_\_\_\_\_\_
+
+-   $\hat \tau_3$ = \_\_\_\_\_\_\_\_\_\_\_
+
+for $i=1$ (Pretimed), $i=2$ (Semi-actuated), $j=3$ (Fully actuated).
+
+## f. Interpret Parameter Estimates
+
+In context of the data, provide an interpretation for $\hat \tau_1 = 12.02$. It may be helpful to think about what $\bar y_1\cdot$ was from (c).
+
+\vspace{1in}
+
+## g. Provide a conclusion
+
+In context of the data, write out your conclusion from the overall ANOVA F-test from (c). Make sure to provide all evidence -- (F = , df = , p = ).
+
+\vspace{1in}

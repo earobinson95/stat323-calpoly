@@ -26,11 +26,12 @@ library(emmeans)
 options(contrasts = c("contr.sum", "contr.poly"))
 traffic_data <- read_csv("data/02_traffic_data.csv") %>% 
   mutate(TrafficSignal = factor(TrafficSignal, levels = c("Pretimed", "Semi-actuated", "Fully actuated")))
-# traffic_mod <- lm(AvgStopTime_secs ~ TrafficSignal,
-#                   data = traffic_data)
+levels(traffic_data$TrafficSignal)
+traffic_mod <- lm(AvgStopTime_secs ~ TrafficSignal,
+                  data = traffic_data)
 # anova(traffic_mod)
-# summary(traffic_mod)
-# emmeans(traffic_mod, ~ TrafficSignal)
+summary(traffic_mod)
+emmeans(traffic_mod, ~ TrafficSignal)
 
 traffic_data |>
   knitr::kable()

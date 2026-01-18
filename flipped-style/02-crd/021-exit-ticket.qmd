@@ -1,0 +1,32 @@
+---
+title: "Exit Ticket"
+subtitle: "What is MSE?"
+format: pdf
+include-in-header:
+  - text: |
+      \usepackage{tikz}
+      \usetikzlibrary{shapes.geometric,shapes.misc}
+      % empty circle
+      \newcommand*{\emptycircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm);}
+      % filled circle
+      \newcommand*{\filledcircle}{\tikz[baseline=-0.6ex]\draw[thick, fill=black] (0,0) circle (0.2cm);}
+      % checked / crossed circle
+      \newcommand*{\checkedcircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm)
+        node[cross out, draw, thick, inner sep=0pt, minimum size=0.2cm]{};}
+execute:
+  message: false
+  warning: false
+  echo: false
+---
+
+Name: _______________________________
+
+Section: \hspace{0.5in} 2pm \hspace{0.5in} 4pm
+
+\vspace{0.1in}
+
+**In 2-3 sentences, explain what MSE (experimental error) measures (conceptually, not notationally) and how it affects detecting differences in treatment means.**
+
+You may chose to use an example from class (e.g., shoe types, traffic signals, fruit flies) to discuss this.
+
+*Entry/Exit tickets will be graded for intellectual engagement only, not correctness.*

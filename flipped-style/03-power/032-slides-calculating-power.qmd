@@ -1,0 +1,187 @@
+---
+title: "Module 3: Power"
+subtitle: "What is Power?"
+format: 
+  revealjs:
+    # theme: simple # other modern-ish options: dark, simple, solarized
+    theme: simple
+    slide-number: c/t 
+    chalkboard: true # lets you draw on top of slides (keyboard: c) or open a board (b)
+    width: 1200
+    height: 675
+    css: modern-slides.css
+    auto-stretch: false
+    embed-resources: true
+# format: 
+#   html:
+#     toc: true
+#   pdf:
+#     toc: false
+execute: 
+  warning: false
+  message: false
+---
+
+## Goal
+
+# Turn “power” into a number
+
+::: notes
+Now we connect power to the ANOVA F test.
+:::
+
+## Reminder: the ANOVA test
+
+# $F = \dfrac{\text{MSTrt}}{\text{MSE}}$
+
+::: notes
+Same test as before — we’re just asking a new question.
+:::
+
+## Distribution of $F$
+
+::: columns
+::: column
+### If $H_0$ is true
+
+$F \sim F(\text{df}_1,\text{df}_2)$  
+(Central $F$)
+:::
+
+::: column
+### If a specific $H_A$ is true
+
+$F \sim F(\text{df}_1,\text{df}_2,\lambda)$  
+(Noncentral $F$)
+:::
+:::
+
+::: notes
+Under an alternative, the F statistic is noncentral.
+:::
+
+## Degrees of freedom (CRD)
+
+If we have $t$ treatments and $r$ reps each:
+
+- $\text{df}_1 = t - 1$
+- $\text{df}_2 = t(r - 1)$
+
+::: notes
+These are straight from the ANOVA table.
+:::
+
+## The noncentrality parameter
+
+# $\displaystyle \lambda = \frac{\sum_{i=1}^{t}(\mu_i-\bar{\mu})^2}{\sigma^2 / r}$
+
+::: notes
+Explain what increases lambda:
+larger separation, smaller noise, larger sample size.
+:::
+
+## Sanity check
+
+# If all means are equal, then $\lambda = 0$
+
+::: notes
+So the noncentral F reduces to the central F.
+:::
+
+## Power as an area
+
+![](/mnt/data/mod3_fplot.png){width=90%}
+
+::: notes
+Power is the probability that F exceeds the critical value under the noncentral distribution.
+:::
+
+## Runner example (numbers)
+
+Assume:
+
+- $t = 4$, $r = 3$
+- $\alpha = 0.05$
+- $\sigma^2 \approx 17.5$
+- $\delta = 10$
+
+::: notes
+This anchors the example without derivations.
+:::
+
+## Mean patterns matter
+
+Even with the same max difference $\delta$…
+
+![](/mnt/data/mod3_configurations.png){width=90%}
+
+::: notes
+Different configurations lead to different values of lambda and power.
+:::
+
+## Power depends on the configuration
+
+| Mean pattern | Power (approx.) |
+|---|---:|
+| Maximum power | 0.78 |
+| Minimum power | 0.47 |
+| Equally spaced | 0.51 |
+| All but one equal | 0.65 |
+
+::: notes
+Worst-case power is often used for conservative planning.
+:::
+
+## Using JMP
+
+# DOE → Sample Size Explorers → Power → Power for ANOVA
+
+::: notes
+JMP automates the noncentral F calculation.
+:::
+
+## Two common planning questions
+
+::: columns
+::: column
+### How many reps do we need?
+
+Fix $\alpha$, $\sigma^2$, $\delta$  
+Solve for **$r$**
+:::
+
+::: column
+### What difference can we detect?
+
+Fix $\alpha$, $\sigma^2$, $r$  
+Solve for **$\delta$**
+:::
+:::
+
+::: notes
+These are exactly the two modes you’ll see in JMP.
+:::
+
+## Power in R (optional)
+
+- `pwr2::pwr.1way()`
+- `pwr2::ss.1way()`
+
+::: notes
+Same inputs, same logic — different interface.
+:::
+
+## Wrap-up
+
+# Power is a design choice
+
+It depends on:
+
+- the effect you care about
+- the noise you expect
+- how much data you collect
+- how cautious you want to be
+
+::: notes
+Next: in-class activity + learning quiz.
+:::

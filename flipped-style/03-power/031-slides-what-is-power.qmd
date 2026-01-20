@@ -112,7 +112,7 @@ If we have $t$ treatments and $r$ reps each:
 
 ## The noncentrality parameter
 
-$$\lambda = \frac{\sum_{i=1}^{t}(\mu_i-\bar{\mu})^2}{\sigma^2 / r}$$
+$$\lambda = \frac{\sum_{i=1}^{t}(\mu_i-\mu)^2}{\sigma^2 / r}$$
 
 + _____ = the mean of the $i^{th}$ treatment group
 + _____ = the overall mean
@@ -478,7 +478,7 @@ What is the the power of my test?
 library(pwr2)
 pwr.1way(
   k = 4,              # Number of groups
-  n = 2,              # Sample size per group
+  n = 3,              # Sample size per group
   alpha = 0.05,       # Significance level
   delta = 10,         # Difference in group means
   sigma = sqrt(17.46) # Standard devision of obs

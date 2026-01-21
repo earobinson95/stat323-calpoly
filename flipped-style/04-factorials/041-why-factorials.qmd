@@ -141,11 +141,8 @@ A **full factorial treatment structure** (e.g., 2x2x2, 3x2 or 2x2, etc.) is a st
 ## Treatment Structure for a Full Factorial
 
 + Name: 
-<div style="height: 0.5em;"></div>
 + Factors: 
-<div style="height: 0.5em;"></div>
 + Levels:
-<div style="height: 0.2em;"></div>
 + t = _____ with Treatments: 
 
 *A 2 x 4 full factorial with factors Diet (2 levels - Standard American, Mediterranean) and Medication (4 levels - Diuretic, ACE inhibitor, Beta blocker, and Placebo) for a total of t = 8 treatment combinations (e.g., Standard American x Diuretic, Standard American x ACE, ..., Mediterranean x Placebo).*
@@ -153,11 +150,8 @@ A **full factorial treatment structure** (e.g., 2x2x2, 3x2 or 2x2, etc.) is a st
 ## Experimental Structure for a Full Factorial
 
 + Name:
-<div style="height: 0.5em;"></div>
 + Experimental units: r = _____
-<div style="height: 0.5em;"></div>
 + Measurement unit:
-<div style="height: 0.5em;"></div>
 
 *Diet and Medication treatment combinations are assigned to middle-aged U.S. women with moderate hypertension who are otherwise healthy (e.u.) in a CRD with r = 25. The change in blood pressure (mmHg) is measured for each woman in the study (m.u.).*
 

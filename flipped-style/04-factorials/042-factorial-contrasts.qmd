@@ -33,7 +33,7 @@ bakery_data <- read_csv("data/04_bakery_data.csv")
 
 ## Study Design
 
-::::: columns
+:::: columns
 ::: column
 **Treatment Structure**
 
@@ -51,7 +51,7 @@ bakery_data <- read_csv("data/04_bakery_data.csv")
 knitr::include_graphics("images/042-bakerys.png")
 ```
 :::
-:::::
+::::
 
 ## Notation -- $y_{ijk}$
 
@@ -86,9 +86,11 @@ Since we added a factor, we add an index to denote our observations. Let $y_{ijk
 
 ## Interaction Plot of Mean Sales
 
+<span style="font-size:0.75em">
 We will revisit these!
+</span>
 
-::::: columns
+:::: columns
 ::: column
 ```{r}
 #| fig-height: 5
@@ -112,7 +114,6 @@ bakery_data %>%
   theme(aspect.ratio = 1)
 ```
 :::
-
 ::: column
 ```{r}
 #| fig-height: 5
@@ -136,7 +137,7 @@ bakery_data %>%
   theme(aspect.ratio = 1)
 ```
 :::
-:::::
+::::
 
 ## Simple Effects
 
@@ -148,9 +149,11 @@ A contrast comparing levels of one factor at a fixed level of the other factor.
 
 ## Simple Effect: Between Width | Height = Bottom  {.small}
 
+<span style="font-size:0.75em">
 *What contrast measures the difference in sales between Regular and Wide shelves when they are placed at the Bottom?*
+</span>
 
-::::: columns
+:::: columns
 ::: {.column width=30%}
 
 |            | Regular | Wide |
@@ -185,7 +188,6 @@ bakery_data %>%
 ```
 :::
 ::: {.column width=70%}
-
 <span style="font-size:0.75em">
 $C = \_\_\_\ \mu_{11} + \_\_\_\ \mu_{21} + \_\_\_\ \mu_{31}  + \_\_\_\ \mu_{21}  + \_\_\_\ \mu_{22}  + \_\_\_\ \mu_{32}$
 
@@ -194,7 +196,7 @@ $\hat C =$
 
 At Bottom, Regular shelves average 2 more sales than Wide.
 :::
-:::::
+::::
 
 ## Simple Effects: Between Width | Height
 
@@ -236,9 +238,11 @@ bakery_data %>%
 
 ## Simple Effect: Height (B v M) | Regular  {.small}
 
+<span style="font-size:0.75em">
 *What contrast measures the difference in sales between the Bottom and Top shelf when they both Regular? *
+</span>
 
-::::: columns
+:::: columns
 ::: {.column width=30%}
 
 |            | Regular | Wide |
@@ -281,7 +285,7 @@ $\hat C =$
 
 For Regular shelves, the Bottom shelves average 20 fewer sales than Middle shelves
 :::
-:::::
+::::
 
 ## Main Effects
 
@@ -294,7 +298,9 @@ A contrast comparing levels of one factor averaged over the other factor.
 
 ## Main Effects: Height  {.small}
 
+<span style="font-size:0.75em">
 *Do you think bottom, middle, or top shelves have more sales? *
+</span>
 
 :::: columns
 ::: column
@@ -351,7 +357,9 @@ bakery_data %>%
 
 ## Main Effects: Height  {.small}
 
+<span style="font-size:0.75em">
 *Do you think bottom or top shelves have more sales? *
+</span>
 
 :::: columns
 ::: {.column width=30%}
@@ -398,7 +406,9 @@ On average, bottom shelves sell 2 more loaves than top shelves.
 
 ## Main Effects: Width  {.small}
 
+<span style="font-size:0.75em">
 *Do you think regular or wide shelves have more sales?*
+</span>
 
 :::: columns
 ::: column
@@ -454,7 +464,9 @@ bakery_data %>%
 
 ## Main Effects: Width  {.small}
 
+<span style="font-size:0.75em">
 *Do you think regular or wide shelves have more sales?*
+</span>
 
 :::: columns
 ::: {.column width=30%}
@@ -510,9 +522,11 @@ When the difference between two levels of one factor is not the same at all leve
 
 ## Interaction Effects: (R v W | Bottom) - (R v W | Middle) {.small}
 
+<span style="font-size:0.75em">
 *Do you think the difference in mean sales between Regular and Wide shelves is the same given the Bottom shelf as it is given the Middle shelf?*
+</span>
 
-::::: columns
+:::: columns
 ::: {.column width=30%}
 
 |            | Regular | Wide |
@@ -556,13 +570,15 @@ $\hat C =$
 
 *The increase in sales achieved by using a Wide shelf instead of a Regular shelf is 6 loaves greater for the Middle as compared to the Bottom.*
 :::
-:::::
+::::
 
 ## Interaction Plot of Mean Sales
 
+<span style="font-size:0.75em">
 We often view graphics to investigate interaction effects
+</span>
 
-::::: columns
+:::: columns
 ::: column
 ```{r}
 #| fig-height: 5
@@ -586,7 +602,6 @@ bakery_data %>%
   theme(aspect.ratio = 1)
 ```
 :::
-
 ::: column
 ```{r}
 #| fig-height: 5
@@ -610,7 +625,7 @@ bakery_data %>%
   theme(aspect.ratio = 1)
 ```
 :::
-:::::
+::::
 
 ## Interaction Plots
 

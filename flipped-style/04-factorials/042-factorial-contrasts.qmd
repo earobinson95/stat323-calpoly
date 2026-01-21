@@ -22,4 +22,683 @@ execute:
   message: false
 ---
 
-## 
+## Example 4.2: Bakery
+
+> A bakery supplied Italian bread to a large number of supermarkets in a metropolitan area. An experiment was conducted to investigate the effects of the height of the shelf display (bottom, middle, or top) and the width of the shelf display (regular vs. wide) on the sales of this bakery’s bread. Twelve supermarkets, similar in terms of sales volume and clientele, were used in this study. The six treatment combinations were assigned at random to two stores, each according to a completely randomized design.
+
+```{r}
+library(tidyverse)
+bakery_data <- read_csv("data/04_bakery_data.csv")
+```
+
+## Study Design
+
+::::: columns
+::: column
+**Treatment Structure**
+
+[ A 3 x 2 full factorial with factors Shelf Height (3 levels - Bottom, Middle, Top) and Shelf Width (2 levels - Regular, Wide) for a total of t = 6 treatment combinations. ]{style="font-size:0.85em"}
+
+**Design Structure**
+
+[ Shelf height and width treatment combinations are assigned to supermarket stores (e.u.) in a CRD with r = 2. The sales (number of bakery's bread) are measured for each supermarket store (m.u.). ]{style="font-size:0.85em"}
+:::
+
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 90%
+knitr::include_graphics("images/042-bakerys.png")
+```
+:::
+:::::
+
+## Notation -- $y_{ijk}$
+
+::: callout-note
+Since we added a factor, we add an index to denote our observations. Let $y_{ijk}$ denote the observed response for the $k^{th}$ experimental unit given the $i^{th}$ level of Factor A and the $j^{th}$ level of Factor B.
+:::
+
+**Example 4.2:** $y_{ijk}$ denotes the observed number of bread sales at the $k^{th}$ supermarket store given the $i^{th}$ shelf height and $j^{th}$ shelf width.
+
+```{=html}
+<style>
+.reveal .slides .small table { font-size: 0.78em; line-height:1.05; }
+.reveal .slides .small table th, .reveal .slides .small table td { padding:6px 8px; }
+</style>
+```
+
+## Mean sales for each treatment combination {.small}
+
++-------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+--------------------------------------------------+
+|                                                                   | Regular                                            | Wide                                               | Height Means                                     |
+|                                                                   |                                                    |                                                    |                                                  |
+|                                                                   | **(j = 1)**                                        | **(j = 2)**                                        | $\mu_{i \cdot} \rightarrow \bar y_{i\cdot\cdot}$ |
++===================================================================+====================================================+====================================================+==================================================+
+| **Bottom (i = 1)**                                                | $\mu_{11} \rightarrow \bar y_{11\cdot}=45$         | $\mu_{12} \rightarrow \bar y_{12\cdot}=43$         | $\mu_{1\cdot} \rightarrow \bar y_{1\cdot\cdot}=$ |
++-------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+--------------------------------------------------+
+| **Middle (i = 2)**                                                | $\mu_{21} \rightarrow \bar y_{21\cdot}=65$         | $\mu_{22} \rightarrow \bar y_{22\cdot}=69$         | $\mu_{2\cdot} \rightarrow \bar y_{2\cdot\cdot}=$ |
++-------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+--------------------------------------------------+
+| **Top (i = 3)**                                                   | $\mu_{31} \rightarrow \bar y_{31\cdot}=40$         | $\mu_{32} \rightarrow \bar y_{32\cdot}=44$         | $\mu_{3\cdot} \rightarrow \bar y_{3\cdot\cdot}=$ |
++-------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+--------------------------------------------------+
+| **Width means** $\mu_{\cdot j} \rightarrow \bar y_{\cdot j\cdot}$ | $\mu_{\cdot 1} \rightarrow \bar y_{\cdot 1\cdot}=$ | $\mu_{\cdot 2} \rightarrow \bar y_{\cdot 2\cdot}=$ | $\mu \rightarrow \bar y_{\cdot\cdot\cdot}=$      |
++-------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+--------------------------------------------------+
+
+## Interaction Plot of Mean Sales
+
+We will revisit these!
+
+::::: columns
+::: column
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = height,
+             y = mean_sales,
+             color = width,
+             shape = width)) +
+  geom_point(size = 4) +
+  geom_line(aes(group = width)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Height",
+       y = "Mean Sales",
+       color = "Shelf Width",
+       shape = "Shelf Width") +
+  theme(aspect.ratio = 1)
+```
+:::
+
+::: column
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = width,
+             y = mean_sales,
+             color = height,
+             shape = height)) +
+  geom_point(size = 4) +
+  geom_line(aes(group = height)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Width",
+       y = "Mean Sales",
+       color = "Shelf Height",
+       shape = "Shelf Height") +
+  theme(aspect.ratio = 1)
+```
+:::
+:::::
+
+## Simple Effects
+
+::: callout-note
+A contrast comparing levels of one factor at a fixed level of the other factor.
+
+*“Hold one factor constant.”*
+:::
+
+## Simple Effect: Between Width | Height = Bottom  {.small}
+
+*What contrast measures the difference in sales between Regular and Wide shelves when they are placed at the Bottom?*
+
+::::: columns
+::: {.column width=30%}
+
+|            | Regular | Wide |
+|------------|---------|------|
+| **Bottom** |         |      |
+| **Middle** |         |      |
+| **Top**    |         |      |
+
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+#| out-width: 100%
+#| fig-align: left
+bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = height,
+             y = mean_sales,
+             color = width,
+             shape = width)) +
+  geom_point(size = 4) +
+  geom_line(aes(group = width)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Height",
+       y = "Mean Sales",
+       color = "Shelf Width",
+       shape = "Shelf Width") +
+  theme(aspect.ratio = 1)
+
+```
+:::
+::: {.column width=70%}
+
+<span style="font-size:0.75em">
+$C = \_\_\_\ \mu_{11} + \_\_\_\ \mu_{21} + \_\_\_\ \mu_{31}  + \_\_\_\ \mu_{21}  + \_\_\_\ \mu_{22}  + \_\_\_\ \mu_{32}$
+
+$\hat C =$
+</span>
+
+At Bottom, Regular shelves average 2 more sales than Wide.
+:::
+:::::
+
+## Simple Effects: Between Width | Height
+
+:::: columns
+::: {.column width=40%}
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+#| out-width: 100%
+#| fig-align: left
+bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = height,
+             y = mean_sales,
+             color = width,
+             shape = width)) +
+  geom_point(size = 4) +
+  geom_line(aes(group = width)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Height",
+       y = "Mean Sales",
+       color = "Shelf Width",
+       shape = "Shelf Width") +
+  theme(aspect.ratio = 1)
+
+```
+:::
+::: {.column width=60%}
++ Bottom: $\mu_{11} - \mu_{12} = 45-43=2$
++ Middle: $\mu_{21} - \mu_{22} = 65-69=-4$
++ Top: $\mu_{31} - \mu_{32}=40-44=-4$
+
+*Are these the same across heights?*
+:::
+::::
+
+## Simple Effect: Height (B v M) | Regular  {.small}
+
+*What contrast measures the difference in sales between the Bottom and Top shelf when they both Regular? *
+
+::::: columns
+::: {.column width=30%}
+
+|            | Regular | Wide |
+|------------|---------|------|
+| **Bottom** |         |      |
+| **Middle** |         |      |
+| **Top**    |         |      |
+
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+#| out-width: 100%
+#| fig-align: left
+bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = width,
+             y = mean_sales,
+             color = height,
+             shape = height)) +
+  geom_point(size = 4) +
+  geom_line(aes(group = height)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Width",
+       y = "Mean Sales",
+       color = "Shelf Height",
+       shape = "Shelf Height") +
+  theme(aspect.ratio = 1)
+```
+:::
+::: {.column width=70%}
+
+<span style="font-size:0.75em">
+$C = \_\_\_\ \mu_{11} + \_\_\_\ \mu_{21} + \_\_\_\ \mu_{31}  + \_\_\_\ \mu_{21}  + \_\_\_\ \mu_{22}  + \_\_\_\ \mu_{32}$
+
+$\hat C =$
+</span>
+
+For Regular shelves, the Bottom shelves average 20 fewer sales than Middle shelves
+:::
+:::::
+
+## Main Effects
+
+::: callout-note
+A contrast comparing levels of one factor averaged over the other factor.
+
+*“Average first, then compare.”*
+:::
+
+
+## Main Effects: Height  {.small}
+
+*Do you think bottom, middle, or top shelves have more sales? *
+
+:::: columns
+::: column
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+#| out-width: 80%
+#| fig-align: left
+
+
+bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = height,
+             y = mean_sales,
+             color = width,
+             shape = width)) +
+  geom_point(size = 4) +
+  geom_line(aes(group = width)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  theme(legend.position = "bottom") + 
+  labs(x = "Shelf Height",
+       y = "Mean Sales",
+       color = "Shelf Width",
+       shape = "Shelf Width") +
+  theme(aspect.ratio = 1)
+
+```
+:::
+::: column
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+#| out-width: 70%
+#| fig-align: left
+bakery_data %>% 
+  group_by(height) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = height,
+             y = mean_sales)) +
+  geom_point(size = 4, shape = "square") +
+  geom_line(group = 1) +
+  # scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Height",
+       y = "Mean Sales") +
+  theme(aspect.ratio = 1)
+```
+:::
+::::
+
+## Main Effects: Height  {.small}
+
+*Do you think bottom or top shelves have more sales? *
+
+:::: columns
+::: {.column width=30%}
+
+|            | Regular | Wide |
+|------------|---------|------|
+| **Bottom** |         |      |
+| **Middle** |         |      |
+| **Top**    |         |      |
+
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+#| out-width: 90%
+#| fig-align: left
+
+
+bakery_data %>% 
+  group_by(height) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = height,
+             y = mean_sales)) +
+  geom_point(size = 4, shape = "square") +
+  geom_line(group = 1) +
+  # scale_color_brewer(palette = "Dark2") +
+  theme_bw() +
+  labs(x = "Shelf Height",
+       y = "Mean Sales") +
+  theme(aspect.ratio = 1)
+
+```
+:::
+::: {.column width=70%}
+
+<span style="font-size:0.75em">
+$C = \_\_\_\ \mu_{11} + \_\_\_\ \mu_{21} + \_\_\_\ \mu_{31}  + \_\_\_\ \mu_{21}  + \_\_\_\ \mu_{22}  + \_\_\_\ \mu_{32}$
+
+$\hat C =$
+</span>
+
+On average, bottom shelves sell 2 more loaves than top shelves.
+:::
+::::
+
+## Main Effects: Width  {.small}
+
+*Do you think regular or wide shelves have more sales?*
+
+:::: columns
+::: column
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+#| out-width: 80%
+#| fig-align: left
+
+
+bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = width,
+             y = mean_sales,
+             color = height,
+             shape = height)) +
+  geom_point(size = 4) +
+  geom_line(aes(group = height)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Width",
+       y = "Mean Sales",
+       color = "Shelf Height",
+       shape = "Shelf Height") +
+  theme(aspect.ratio = 1)
+
+```
+:::
+::: column
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+#| out-width: 70%
+#| fig-align: left
+bakery_data %>% 
+  group_by(width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = width,
+             y = mean_sales)) +
+  geom_point(size = 4, shape = "square") +
+  geom_line(group = 1) +
+  # scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Width",
+       y = "Mean Sales") +
+  theme(aspect.ratio = 1)
+```
+:::
+::::
+
+## Main Effects: Width  {.small}
+
+*Do you think regular or wide shelves have more sales?*
+
+:::: columns
+::: {.column width=30%}
+
+|            | Regular | Wide |
+|------------|---------|------|
+| **Bottom** |         |      |
+| **Middle** |         |      |
+| **Top**    |         |      |
+
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+#| out-width: 90%
+#| fig-align: left
+
+
+bakery_data %>% 
+  group_by(width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = width,
+             y = mean_sales)) +
+  geom_point(size = 4, shape = "square") +
+  geom_line(group = 1) +
+  # scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Width",
+       y = "Mean Sales") +
+  theme(aspect.ratio = 1)
+
+```
+:::
+::: {.column width=70%}
+
+<span style="font-size:0.75em">
+$C = \_\_\_\ \mu_{11} + \_\_\_\ \mu_{21} + \_\_\_\ \mu_{31}  + \_\_\_\ \mu_{21}  + \_\_\_\ \mu_{22}  + \_\_\_\ \mu_{32}$
+
+$\hat C =$
+</span>
+
+On average, wide shelves sell 2 more loaves than regular shelves.
+:::
+::::
+
+## Interaction Effects
+
+::: callout-note
+When the difference between two levels of one factor is not the same at all levels of the other. The difference between two levels of a factor *depends* on the level of the other factor.
+
+*"Interaction = difference of differences"*
+:::
+
+## Interaction Effects: (R v W | Bottom) - (R v W | Middle) {.small}
+
+*Do you think the difference in mean sales between Regular and Wide shelves is the same given the Bottom shelf as it is given the Middle shelf?*
+
+::::: columns
+::: {.column width=30%}
+
+|            | Regular | Wide |
+|------------|---------|------|
+| **Bottom** |         |      |
+| **Middle** |         |      |
+| **Top**    |         |      |
+
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+#| out-width: 100%
+#| fig-align: left
+bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = height,
+             y = mean_sales,
+             color = width,
+             shape = width)) +
+  geom_point(size = 4) +
+  geom_line(aes(group = width)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Height",
+       y = "Mean Sales",
+       color = "Shelf Width",
+       shape = "Shelf Width") +
+  theme(aspect.ratio = 1)
+
+```
+:::
+::: {.column width=70%}
+
+<span style="font-size:0.75em">
+$C = \_\_\_\ \mu_{11} + \_\_\_\ \mu_{21} + \_\_\_\ \mu_{31}  + \_\_\_\ \mu_{21}  + \_\_\_\ \mu_{22}  + \_\_\_\ \mu_{32}$
+
+$\hat C =$
+</span>
+
+*The increase in sales achieved by using a Wide shelf instead of a Regular shelf is 6 loaves greater for the Middle as compared to the Bottom.*
+:::
+:::::
+
+## Interaction Plot of Mean Sales
+
+We often view graphics to investigate interaction effects
+
+::::: columns
+::: column
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = height,
+             y = mean_sales,
+             color = width,
+             shape = width)) +
+  geom_point(size = 4) +
+  geom_line(aes(group = width)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Height",
+       y = "Mean Sales",
+       color = "Shelf Width",
+       shape = "Shelf Width") +
+  theme(aspect.ratio = 1)
+```
+:::
+
+::: column
+```{r}
+#| fig-height: 5
+#| fig-width: 5
+bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = width,
+             y = mean_sales,
+             color = height,
+             shape = height)) +
+  geom_point(size = 4) +
+  geom_line(aes(group = height)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Width",
+       y = "Mean Sales",
+       color = "Shelf Height",
+       shape = "Shelf Height") +
+  theme(aspect.ratio = 1)
+```
+:::
+:::::
+
+## Interaction Plots
+
+```{r}
+p1 <- bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = height,
+             y = mean_sales,
+             color = width,
+             shape = width)) +
+  # geom_point(size = 4) +
+  # geom_line(aes(group = width)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Height",
+       y = "Mean Sales",
+       color = "Shelf Width",
+       shape = "Shelf Width",
+       title = "Interaction is present") +
+  theme(aspect.ratio = 1)
+
+p2 <- bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = height,
+             y = mean_sales,
+             color = width,
+             shape = width)) +
+  # geom_point(size = 4) +
+  # geom_line(aes(group = width)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Height",
+       y = "Mean Sales",
+       color = "Shelf Width",
+       shape = "Shelf Width",
+       title = "Main effect of height only is present") +
+  theme(aspect.ratio = 1)
+
+p3 <- bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = height,
+             y = mean_sales,
+             color = width,
+             shape = width)) +
+  # geom_point(size = 4) +
+  # geom_line(aes(group = width)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Height",
+       y = "Mean Sales",
+       color = "Shelf Width",
+       shape = "Shelf Width",
+       title = "Main effect of width only is present") +
+  theme(aspect.ratio = 1)
+
+p4 <- bakery_data %>% 
+  group_by(height, width) %>% 
+  summarize(mean_sales = mean(sales)) %>% 
+  ggplot(aes(x = height,
+             y = mean_sales,
+             color = width,
+             shape = width)) +
+  # geom_point(size = 4) +
+  # geom_line(aes(group = width)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(38,70), breaks = seq(40,70,5)) +
+  theme_bw() +
+  labs(x = "Shelf Height",
+       y = "Mean Sales",
+       color = "Shelf Width",
+       shape = "Shelf Width",
+       title = "Main effects of width and height\nare present",
+       subtitle = "(with no interaction)") +
+  theme(aspect.ratio = 1)
+```
+
+
+```{r}
+#| fig-align: center
+#| out-width: 100%
+#| fig-width: 15
+library(patchwork)
+p1 + p2 + p3 + p4 +   plot_layout(ncol = 4)
+```
+

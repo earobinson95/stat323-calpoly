@@ -1,0 +1,217 @@
+---
+title: "Module 4: Factorial Treatment Structure"
+subtitle: "Why Factorials? Treatment vs Design Structure"
+format: 
+  revealjs:
+    # theme: simple # other modern-ish options: dark, simple, solarized
+    theme: simple
+    slide-number: c/t 
+    # chalkboard: true # lets you draw on top of slides (keyboard: c) or open a board (b)
+    width: 1200
+    height: 675
+    css: modern-slides.css
+    auto-stretch: false
+    embed-resources: true
+# format: 
+#   html:
+#     toc: true
+#   pdf:
+#     toc: false
+execute: 
+  warning: false
+  message: false
+---
+
+## Recall One-way Treatment Structures
+
+**One Factor at a Time**
+
++ Multiple levels -> $t$ treatments
++ Compare the mean response between the treatments
+
+**What are we missing?**
+
++ Effects may depend on context
++ Optimal choice may change depending on that context
++ One factor doesn't always tell the full story
+
+## Example 4.1: Blood Pressure
+
+> Incidence of high blood pressure in the United States continues to rise, and optimal strategies for treatment remain an open question. Most physicians agree that effective treatment likely involves a combination of lifestyle changes and medication, rather than relying on a single approach.
+>
+> Researchers plan to study middle-aged U.S. women with moderate hypertension who are otherwise healthy (i.e., eating a standard diet and not taking regular medications).
+> 
+> **Goal:** Identify optimal combinations of diet and medication for lowering and maintaining blood pressure as measured by the change in blood pressure (mmHg) for each participant.
+
+## Example 4.1: Blood Pressure
+
+:::: columns
+::: column
+**Diet** *(2 levels):*
+
++ Mediterranean diet (low sodium, low fat)
++ Standard American diet
+:::
+::: column
+**Medication** *(4 levels):*
+
++ Diuretic (D): flushes excess water and salt
++ ACE inhibitor: widens blood vessels
++ Beta blocker (BB): reduces heart and vessel signaling
++ Placebo (P)
+:::
+::::
+
+> 200 volunteers who meet the study inclusion criteria are recruited.
+
+## Study Design A (A common first attempt)
+
+:::: columns
+::: column
++ First, 100 participants are randomly assigned to one of two diets
+(50 Mediterranean, 50 Standard American).
++ Separately, 100 participants are randomly assigned to one of four medications
+(25 per medication).
+:::
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 80%
+
+knitr::include_graphics("images/041-stick-figures-1.png")
+```
+```{r}
+#| fig-align: center
+#| out-width: 80%
+
+knitr::include_graphics("images/041-stick-figures-1.png")
+```
+:::
+::::
+
+## Study Design A (A common first attempt)
+
+Researchers then find:
+
+1. The Mediterranean diet lowers blood pressure, on average.
+2. ACE inhibitors lower blood pressure more than other medications, on average.
+
+Is the optimal strategy to recommend the Mediterranean diet and ACE inhibitors together?
+
+
+## Study Design B (A full factorial)
+
+Each participant is randomly assigned to one **combination** of:
+
+:::: columns
+::: column
++ Diet (2 levels)
++ Medication (4 levels)
+:::
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 70%
+
+knitr::include_graphics("images/041-stick-figures-2.png")
+```
+:::
+::::
+
+This results in t = _____ treatment combinations, with r = _____ participants per combination.
+
+What can we learn from Design B that we can't from Design A?
+
+## Full Factorial $(a \times b\times c \times ...)$
+
+::: callout-note
+### Definition: Full Factorial $(a \times b\times c \times ...)$
+
+A **full factorial treatment structure** (e.g., 2x2x2, 3x2 or 2x2, etc.) is a study in which there are two or more factors. Each factor will have at least two levels. The factor levels are combined to create the treatments (or treatment combinations).
+:::
+
+**Example:** 2 diets x 4 medications
+
++ _____ x _______ full factorial
+
+**Example (Extended):** 2 diets x 4 medications x 2 exercise routines
+
++ _____ x _______ x _______ full factorial
+
+## Treatment Structure for a Full Factorial
+
++ Name: 
+<div style="height: 0.5em;"></div>
++ Factors: 
+<div style="height: 1.2em;"></div>
++ Levels:
+<div style="height: 1.2em;"></div>
++ t = _____ with Treatments: 
+<div style="height: 0.5em;"></div>
+*A 2 x 4 full factorial with factors Diet (2 levels - Standard American, Mediterranean) and Medication (4 levels - Diuretic, ACE inhibitor, Beta blocker, and Placebo) for a total of t = 8 treatment combinations (e.g., Standard American x Diuretic, Standard American x ACE, ..., Mediterranean x Placebo).*
+
+## Experimental Structure for a Full Factorial
+
++ Name:
+<div style="height: 0.5em;"></div>
++ Experimental units: r = _____
+<div style="height: 0.5em;"></div>
++ Measurement unit:
+<div style="height: 0.5em;"></div>
+
+*Diet and Medication treatment combinations are assigned to middle-aged U.S. women with moderate hypertension who are otherwise healthy (e.u.) in a CRD with r = 25. The change in blood pressure (mmHg) is measured for each woman in the study (m.u.).*
+
+## Create a Full Factorial CRD in R
+
+```{r}
+#| echo: true
+#| output-location: column
+library(edibble)
+library(tidyverse)
+
+des <- design(name = "BP 2 x 4 Full Facotrial CRD") |> 
+  set_units(woman = 200) |>                  
+  set_trts(Diet = c("Standard American", 
+                    "Mediterranean"),
+           Medication = c("Diuretic", 
+                          "ACE", 
+                          "Beta blocker", 
+                          "Placebo")
+           ) |> 
+  allot_trts(Diet*Medication ~ woman) |>                
+  assign_trts("random")  
+
+factorial_table <- serve_table(des)
+factorial_table$change_bp <- NA
+
+head(factorial_table)
+```
+
+## Create a Full Factorial CRD in JMP
+
+`DOE` > `Classical` > `Full Factorial`
+
+
+:::: columns
+::: column
+```{r}
+#| out-width: 100%
+#| fig-align: center
+knitr::include_graphics("images/041-jmp-design-2x4-1.png")
+```
+:::
+::: column
+```{r}
+#| out-width: 60%
+#| fig-align: center
+knitr::include_graphics("images/041-jmp-design-2x4-2.png")
+```
+
+```{r}
+#| out-width: 60%
+#| fig-align: center
+knitr::include_graphics("images/041-jmp-design-2x4-3.png")
+```
+:::
+::::
+

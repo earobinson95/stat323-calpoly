@@ -69,19 +69,19 @@ knitr::include_graphics("images/042-bakerys.png")
 
 ## The Treatment Effects Model (Two-way Factorial)
 
-<span style="font-size:0.75em"> $$y_{ijk}=\mu+\alpha_i+\beta_j+\alpha\beta_{ij}+\epsilon_{ijk} \text{ with } \epsilon_{ijk} \sim \text{ iid }N(0,\sigma^2)$$
+<span style="font-size:0.7em"> $$y_{ijk}=\mu+\alpha_i+\beta_j+\alpha\beta_{ij}+\epsilon_{ijk} \text{ with } \epsilon_{ijk} \sim \text{ iid }N(0,\sigma^2)$$
 </span>
 
-<span style="font-size:0.75em">
+<span style="font-size:0.7em">
 $$\text{for } i=1,2,3,…,a; j=1,2,…,b;   k=1,2,….,r$$
 </span>
 
--   <span style="font-size:0.75em">$y_{ijk}$: is the response (sales) from the $k^{th}$ experimental unit (store) using the $i^{th}$ level of Factor A (height) and $j^{th}$ level of Factor B (width) combination</span>
--   <span style="font-size:0.75em">$\mu$: is the grand/overall mean sales</span>
--   <span style="font-size:0.75em">$\alpha_i$: is the effect of the $i^{th}$ level of factor A (height)</span>
--   <span style="font-size:0.75em">$\beta_j$: is the effect of the $j^{th}$ level of factor B (width)</span>
--   <span style="font-size:0.75em">$\alpha\beta_{ij}$: is the interaction effect between the $i^{th}$ level of A (height) and $j^{th}$ level of B (width)</span>
--   <span style="font-size:0.75em">$\epsilon_{ijk}$: the experimental error associated with the $k^{th}$ experimental unit (store) using the $i^{th}$ level of Factor A (height) and $j^{th}$ level of Factor B (width) combination </span>
+- <span style="font-size:0.7em">$y_{ijk}$: is the response (sales) from the $k^{th}$ experimental unit (store) using the $i^{th}$ level of Factor A (height) and $j^{th}$ level of Factor B (width) combination</span>
+-   <span style="font-size:0.7em">$\mu$: is the grand/overall mean sales</span>
+-   <span style="font-size:0.7em">$\alpha_i$: is the effect of the $i^{th}$ level of factor A (height)</span>
+-   <span style="font-size:0.7em">$\beta_j$: is the effect of the $j^{th}$ level of factor B (width)</span>
+-   <span style="font-size:0.7em">$\alpha\beta_{ij}$: is the interaction effect between the $i^{th}$ level of A (height) and $j^{th}$ level of B (width)</span>
+-   <span style="font-size:0.7em">$\epsilon_{ijk}$: the experimental error associated with the $k^{th}$ experimental unit (store) using the $i^{th}$ level of Factor A (height) and $j^{th}$ level of Factor B (width) combination </span>
 
 ## ANOVA for Two-way Factorials
 
@@ -110,6 +110,20 @@ For a factorial: $SSTrt = SSA + SSB + SSAB$
 #| out-width: 70%
 knitr::include_graphics("images/two-way-decision-flowchart.png")
 ```
+
+## What are we testing?
+
+**Interaction**
+
+$$H_0:\text{ All } \alpha\beta_{ij} = 0 \text{  vs  } H_A: \text{At least one } \alpha\beta_{ij} \ne 0$$
+
+**Main Effect of A**
+
+$$H_0:\text{ All } \alpha_{i} = 0 \text{  vs  } H_A: \text{At least one } \alpha_{i} \ne 0$$
+
+**Main Effect of B**
+
+$$H_0:\text{ All } \beta_{j} = 0 \text{  vs  } H_A: \text{At least one } \beta_{j} \ne 0$$
 
 ## Example 4.2: Skeleton ANOVA
 

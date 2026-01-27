@@ -22,4 +22,290 @@ execute:
   message: false
 ---
 
-## 
+## Example 4.3: Asphalt
+
+```{r}
+library(tidyverse)
+```
+
+> A civil engineer conducted an experiment to evaluate differences among a set of compaction methods for their effect on the tensile strength of test specimens and to determine to what extent the aggregate type affected the comparisons among the compaction methods.  Twenty-four specimens of the asphalt concrete were constructed, and the eight treatment combinations were randomly assigned to the specimens.
+>
+> Example 6.2 from Design of Experiments: Statistical Principles of Research Design and Analysis, 2nd Edition by Robert O. Kuehl.  
+
+## Example 4.3: Asphalt
+
+:::: columns
+::: column
+**Factors:**
++ *Aggregate Type:* Basalt, Silicous
++ *Compaction Method:* Static, Regular kneading, Low kneading, Very low kneading
+
+**Design:** CRD with $r=3$ specimens per treatment combination (N = 24)
+
+**Response:** Tensile strength
+:::
+::: column
+```{r}
+#| echo: true
+asphalt_data <- read_csv("data/04_asphalt_data.csv") |>
+  mutate(aggregate  = factor(aggregate),
+         compaction = factor(compaction))
+head(asphalt_data)
+levels(asphalt_data$aggregate)
+levels(asphalt_data$compaction)
+```
+:::
+::::
+
+## Example 4.3: Statistical Effects Model
+
+<span style="font-size:0.7em"> $$y_{ijk}=\mu+\alpha_i+\beta_j+\alpha\beta_{ij}+\epsilon_{ijk} \text{ with } \epsilon_{ijk} \sim \text{ iid }N(0,\sigma^2)$$
+</span>
+
+<span style="font-size:0.7em">
+$$\text{for } i=1,2; j=1,2,3,4;   k=1,2,3$$
+</span>
+
+- <span style="font-size:0.7em">$y_{ijk}$: is the observed tensile strength for the $k^{th}$s specimen receiving the $i^{th}$ Aggregate and $j^{th}$ Compaction</span>
+-   <span style="font-size:0.7em">$\mu$: is the overall mean tensile strength</span>
+-   <span style="font-size:0.7em">$\alpha_i$: is the effect of the $i^{th}$ level of Aggregate</span>
+-   <span style="font-size:0.7em">$\beta_j$: is the effect of the $j^{th}$ level of Compaction</span>
+-   <span style="font-size:0.7em">$\alpha\beta_{ij}$: is the interaction effect between the $i^{th}$ level of Aggregate and $j^{th}$ level of Compaction</span>
+-   <span style="font-size:0.7em">$\epsilon_{ijk}$: the experimental error associated with the $k^{th}$ specimen receiving the $i^{th}$ Aggregate and $j^{th}$ Compaction</span>
+
+## Decision Flowchart
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+knitr::include_graphics("images/two-way-decision-flowchart.png")
+```
+
+## ANOVA
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+options(contrasts = c("contr.sum", "contr.poly"))
+asphalt_mod <- lm(strength ~ aggregate*compaction, data = asphalt_data)
+anova(asphalt_mod)
+```
+:::
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 80%
+knitr::include_graphics("images/asphalt-jmp-anova.png")
+```
+:::
+::::
+
+We have evidence to conclude there is a significant interaction between aggregate and compaction on tensile strength (F = 1145; df = 3,16; p < 0.0001).
+
+> The effect of aggregate on tensile strength varies across different levels of compaction.
+
+## Where should we proceed?
+
+1. **Interaction:** We have evidence to conclude there is a significant interaction between aggregate and compaction on tensile strength (F = 1145; df = 3,16; p < 0.0001).
+2. Aggregate Main: don't care.. misleading.
+3. Compaction Main: don't care.. misleading.
+ 
+ > How does the mean tensile strength for aggregates change depending on the compaction method?
+ >
+ > What combination of aggregate and compaction lead to higher tensile strengths?
+ 
+## R: Interaction Plots
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
+library(emmeans)
+emmip(asphalt_mod, aggregate ~ compaction, CIs = TRUE, adjust = "tukey")
+```
+:::
+::: column
+```{r}
+#| echo: true
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
+emmip(asphalt_mod, compaction ~ aggregate, CIs = TRUE, adjust = "tukey")
+```
+:::
+::::
+
+## JMP: Interaction Plots
+
+:::: columns
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 35%
+knitr::include_graphics("images/045-asphalt-jmp-interaction1.png")
+```
+
+```{r}
+#| fig-align: center
+#| out-width: 65%
+knitr::include_graphics("images/045-asphalt-jmp-interaction2.png")
+```
+:::
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 35%
+knitr::include_graphics("images/045-asphalt-jmp-interaction3.png")
+```
+
+```{r}
+#| fig-align: center
+#| out-width: 65%
+knitr::include_graphics("images/045-asphalt-jmp-interaction4.png")
+```
+:::
+::::
+
+## Joint Pairwise Comparisons: Aggregate x Compaction
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+library(multcomp)
+axc_lsmeans <- emmeans(asphalt_mod, specs = ~ aggregate*compaction)
+cld(axc_lsmeans, Letters = LETTERS, decreasing = T, adjust = "tukey")
+```
+:::
+::: column
+<span style="font-size:0.6em">
+`r fontawesome::fa("caret-down", fill = "red")` `Aggregate*Compaction` > `LSMeans Tukey HSD` 
+</span>
+<span style="font-size:0.6em">
+`r fontawesome::fa("caret-down", fill = "red")` `LSMeans Differences` > `Ordered Differences` 
+</span>
+```{r}
+#| fig-align: center
+#| out-width: 60%
+knitr::include_graphics("images/045-asphalt-jmp-all-pairwise.png")
+```
+:::
+::::
+
+## R: Aggregate | Compaction
+
+:::: columns
+::: column
+**Slice Tests**
+
+```{r}
+#| echo: true
+#| output-location: column
+joint_tests(axc_lsmeans, 
+            by = "compaction")
+```
+
+```{r}
+#| echo: true
+#| fig-align: center
+#| out-width: 100%
+#| fig-height: 4
+#| fig-width: 6
+#| output-location: column
+emmip(asphalt_mod, 
+      compaction ~ aggregate, 
+      CIs = TRUE, 
+      adjust = "tukey")
+```
+:::
+::: column
+
+**Simple Effects**
+
+```{r}
+#| echo: true
+emmeans(asphalt_mod, specs = ~ aggregate | compaction) |> 
+  pairs(adjust = "tukey", infer = c(T,T))
+```
+:::
+::::
+
+## R: Compaction | Aggregate
+
+:::: columns
+::: column
+**Slice Tests**
+
+```{r}
+#| echo: true
+#| fig-align: center
+#| out-width: 60%
+joint_tests(axc_lsmeans, by = "aggregate")
+emmip(asphalt_mod, aggregate ~ compaction, CIs = TRUE, adjust = "tukey")
+```
+:::
+::: column
+
+**Simple Effects**
+
+```{r}
+#| echo: true
+emmeans(asphalt_mod, specs = ~ compaction | aggregate) |> 
+  pairs(adjust = "tukey", infer = c(T,T))
+```
+:::
+::::
+
+## JMP: Aggregate | Compaction
+
+:::: columns
+::: column
+**Slice Tests**
+
+<span style="font-size:0.6em">
+`r fontawesome::fa("caret-down", fill = "red")` `Aggregate*Compaction` > `Test Slices`
+</span>
+
+```{r}
+#| fig-align: center
+#| out-width: 60%
+knitr::include_graphics("images/045-asphalt-jmp-slice-by-aggregate.png")
+```
+:::
+::: column
+
+**Simple Effects**
+
+<span style="font-size:0.6em">
+`r fontawesome::fa("caret-down", fill = "red")` `Response` > `Multiple Comparisons`
+</span>
+```{r}
+#| fig-align: center
+#| out-width: 40%
+knitr::include_graphics("images/045-asphalt-jmp-slice-by-aggregate2.png")
+```
+:::
+::::
+
+## JMP: Compaction | Aggregate
+
+:::: columns
+::: column
+**Slice Tests**
+```{r}
+#| fig-align: center
+#| out-width: 50%
+knitr::include_graphics("images/045-asphalt-jmp-slice-by-compaction.png")
+```
+:::
+::: column
+:::
+::::
+
+
+
+

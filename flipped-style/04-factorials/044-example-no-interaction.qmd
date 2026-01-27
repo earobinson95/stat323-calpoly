@@ -192,6 +192,9 @@ cld(height_lsmeans, decreasing = F, Letters = LETTERS, adjust = "tukey")
 
 ## JMP: Main Effect of Height
 
+`r fontawesome::fa("caret-down", fill = "red")` `Height` > `LSMeans Tukey HSD` 
+`r fontawesome::fa("caret-down", fill = "red")` `LSMeans Differences` > `Ordered Differences` 
+
 :::: columns
 ::: column
 ```{r}

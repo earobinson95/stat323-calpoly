@@ -1,0 +1,55 @@
+---
+title: "Exit Ticket"
+subtitle: "Describe the Interaction"
+format: pdf
+include-in-header:
+  - text: |
+      \usepackage{tikz}
+      \usetikzlibrary{shapes.geometric,shapes.misc}
+      % empty circle
+      \newcommand*{\emptycircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm);}
+      % filled circle
+      \newcommand*{\filledcircle}{\tikz[baseline=-0.6ex]\draw[thick, fill=black] (0,0) circle (0.2cm);}
+      % checked / crossed circle
+      \newcommand*{\checkedcircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm)
+        node[cross out, draw, thick, inner sep=0pt, minimum size=0.2cm]{};}
+execute:
+  message: false
+  warning: false
+  echo: false
+---
+
+Name: _______________________________
+
+Section: \hspace{0.5in} 2pm \hspace{0.5in} 4pm
+
+\vspace{0.1in}
+
+**Scenario:** A study was carried out to investigate how thermal conditions of the mother (12 hours basking in the sun vs. 4 hours basking in the sun) and food availability (high food vs. low food) of the mother during gestation affect the weight of the offspring (in mg) in southern grass skinks. Forty southern grass skinks were randomly assigned to each of the 4 treatment combinations in this 2x2 full factorial design. 
+
+```{r}
+#| fig-align: center
+#| out-width: 40%
+library(tidyverse)
+library(emmeans)
+skink_data <- read_csv("data/skink_data.csv") |> 
+  mutate(across(Sample_ID:Basking_Hours, as.factor))
+
+# 2-way
+skink_mod0 <- lm(Mean_Mass ~ Basking_Hours*Food_Availability, 
+                data = skink_data)
+
+emmip(skink_mod0, Food_Availability ~ Basking_Hours, CIs = T) +
+  scale_color_manual(values = c("black", "gray")) +
+  theme_bw() +
+  theme(aspect.ratio = 0.8) +
+  labs(x = "Basking Hours",
+       y = "Mean Mass (mg)",
+       color = "Food Availability")
+```
+
+\vspace{0.1in}
+
+**Write 2-3 sentences describing the nature of the interaction shown in the plot, in the context of this study, so that someone with little to no experience with statistics (or math) can understand.**
+
+*Entry/Exit tickets will be graded for intellectual engagement only, not correctness.*

@@ -76,8 +76,6 @@ knitr::include_graphics("images/042-bakerys.png")
 $$\text{for } i=1,2,3,…,a; j=1,2,…,b;   k=1,2,….,r$$
 </span>
 
-<span style="font-size:0.75em"> where:</span>
-
 -   <span style="font-size:0.75em">$y_{ijk}$: is the response (sales) from the $k^{th}$ experimental unit (store) using the $i^{th}$ level of Factor A (height) and $j^{th}$ level of Factor B (width) combination</span>
 -   <span style="font-size:0.75em">$\mu$: is the grand/overall mean sales</span>
 -   <span style="font-size:0.75em">$\alpha_i$: is the effect of the $i^{th}$ level of factor A (height)</span>
@@ -224,7 +222,10 @@ $\hat\mu =$
 ```{r}
 #| out-width: 70%
 
-# Compute means at each level
+# Make sure placement is a factor in the right order
+bakery_data <- bakery_data |>
+  mutate(placement = factor(placement))
+
 overall_mean <- bakery_data |> 
   summarise(mean_sales = mean(sales))
 
@@ -239,10 +240,6 @@ height_means <- bakery_data |>
 placement_means <- bakery_data |>
   group_by(height, width, placement) |>
   summarise(mean_sales = mean(sales))
-
-# Make sure placement is a factor in the right order
-bakery_data <- bakery_data |>
-  mutate(placement = factor(placement))
 
 placement_means <- placement_means |>
   mutate(x = as.numeric(placement))
@@ -267,23 +264,19 @@ bakery_data |>
   ggplot(aes(x = placement, y = sales)) +
   geom_point(size = 3, aes(shape = width)) +
   
-  # 1️⃣ Overall mean (dotted black line)
   geom_hline(
     data = overall_mean,
     aes(yintercept = mean_sales),
     color = "black", linetype = "solid", linewidth = 1
   ) +
   
-  # 2️⃣ Width means (blue)
   geom_hline(
     data = width_means,
     aes(yintercept = mean_sales),
     color = "steelblue", linewidth = 1.2,
     linetype = "dashed"
   ) +
-  # facet_wrap(~width, scales = "free_x") +
-  
-  # 3️⃣ Height means (orange dashed)
+
   geom_segment(
     data = height_means,
     aes(x = xmin - 0.4, xend = xmax + 0.4,
@@ -291,7 +284,6 @@ bakery_data |>
     color = "darkorange", linetype = "dashed", linewidth = 1.2
   ) +
   
-  # 4️⃣ Placement (width × height) means (solid black)
   geom_segment(
     data = placement_means,
     aes(x = x - 0.4, xend = x + 0.4,

@@ -22,4 +22,313 @@ execute:
   message: false
 ---
 
-## 
+## Example 4.2: Bakery
+
+```{=html}
+<style>
+.reveal .slides .small table { font-size: 0.78em; line-height:1.05; }
+.reveal .slides .small table th, .reveal .slides .small table td { padding:6px 8px; }
+</style>
+```
+
+::::: columns
+::: column
+**Treatment Structure:** 3 x 2 Full Factorial
+
+-   Shelf Height (Bottom, Middle, Top)
+-   Shelf Width (Regular, Wide)
+
+**Design Structure:** CRD with r = 2 stores per treatment combination.
+
+**Response:** Bread Sales
+:::
+
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 90%
+
+library(tidyverse)
+library(emmeans)
+library(multcompView)
+library(multcomp)
+
+knitr::include_graphics("images/042-bakerys.png")
+```
+:::
+:::::
+
+## What changes when we add a factor?
+
+-   We add:
+    -   Another main effect
+    -   An interaction term
+-   We must decide what effects are present *before* interpreting the treatment means.
+
+> The goal of the analysis is to decide which effects matter.
+
+## The Treatment Effects Model (Two-way Factorial)
+
+<span style="font-size:0.75em"> $$y_{ijk}=\mu+\alpha_i+\beta_j+\alpha\beta_{ij}+\epsilon_{ijk} \text{ with } \epsilon_{ijk} \sim \text{ iid }N(0,\sigma^2)$$
+</span>
+
+<span style="font-size:0.75em">
+$$\text{for } i=1,2,3,…,a; j=1,2,…,b;   k=1,2,….,r$$
+</span>
+
+<span style="font-size:0.75em"> where:</span>
+
+-   <span style="font-size:0.75em">$y_{ijk}$: is the response (sales) from the $k^{th}$ experimental unit (store) using the $i^{th}$ level of Factor A (height) and $j^{th}$ level of Factor B (width) combination</span>
+-   <span style="font-size:0.75em">$\mu$: is the grand/overall mean sales</span>
+-   <span style="font-size:0.75em">$\alpha_i$: is the effect of the $i^{th}$ level of factor A (height)</span>
+-   <span style="font-size:0.75em">$\beta_j$: is the effect of the $j^{th}$ level of factor B (width)</span>
+-   <span style="font-size:0.75em">$\alpha\beta_{ij}$: is the interaction effect between the $i^{th}$ level of A (height) and $j^{th}$ level of B (width)</span>
+-   <span style="font-size:0.75em">$\epsilon_{ijk}$: the experimental error associated with the $k^{th}$ experimental unit (store) using the $i^{th}$ level of Factor A (height) and $j^{th}$ level of Factor B (width) combination </span>
+
+## ANOVA for Two-way Factorials
+
+Just like one-way ANOVA: $SST = SSTrt + SSE$
+
+For a factorial: $SSTrt = SSA + SSB + SSAB$
+
+-   Main effect of factor A (Height): $SSA = rb\sum_i(\bar y_{i\cdot\cdot}-\bar y_{\cdot\cdot\cdot})^2$
+-   Main effect of factor B (Width): $SSB = ra\sum_j(\bar y_{\cdot j\cdot}-\bar y_{\cdot\cdot\cdot})^2$
+-   AB Interaction Effect (Height x Width): $SSAB = SST - SSE - SSA - SSB$
+
+## Full ANOVA Table (Two-way) {.small}
+
+| Source (SV) | df | SS | MS | F |   |
+|----|----|----|----|----|----|
+| A | $a-1$ | SSA | MSA $=\frac{SSA}{a-1}$ | $\frac{MSA}{MSE}$ | Do avg sales differ across shelf heights? |
+| B | $b-1$ | SSB | MSB $=\frac{SSB}{b-1}$ | $\frac{MSB}{MSE}$ | Do avg sales differ across shelf widths? |
+| AB | $(a-1)(b-1)$ | SSAB | MSAB $=\frac{SSAB}{(a-1)(b-1)}$ | $\frac{MSAB}{MSE}$ | Does the effect of width *depend* on height? |
+| Error: e.u.(AB) | $(r-1)ab$ | SSE | MSE $=\frac{SSE}{(r-1)ab}$ |  |  |
+| Total | $N-1$ | SST |  |  |  |
+
+## Decision Flowchart
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+knitr::include_graphics("images/two-way-decision-flowchart.png")
+```
+
+## Example 4.2: Skeleton ANOVA
+
+| Source of Variation | DF = 12 stores - 1 = 11 total df |
+|---------------------|----------------------------------|
+|                     |                                  |
+
+## R: Fitting the Model
+
+Let's prep the data...
+
+```{r}
+#| echo: true
+bakery_data <- read_csv("data/04_bakery_data.csv") %>% 
+  mutate(height = factor(height, levels = c("bottom", "middle", "top")),
+         width = factor(width, levels = c("regular", "wide")))
+head(bakery_data)
+levels(bakery_data$height)
+levels(bakery_data$width)
+```
+
+## R: Fitting the Model
+
+```{r}
+#| echo: true
+options(contrasts = c("contr.sum", "contr.poly"))
+bakery_mod <- lm(sales ~ height + width + height:width, data = bakery_data)
+```
+
+::::: columns
+::: column
+```{r}
+#| echo: true
+anova(bakery_mod)
+```
+:::
+
+::: column
+```{r}
+#| echo: true
+summary(bakery_mod)
+```
+:::
+:::::
+
+## JMP: Fitting the Model
+
+`r fontawesome::fa("caret-down", fill = "red")` `Analyze` \> `Fit Model` \> `Assign Y = Response` + `Highlight both treatment factors and click Macros > Full Factorial`
+
+::::: columns
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 80%
+knitr::include_graphics("images/bakery-mod-jmp1.png")
+```
+:::
+
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 80%
+knitr::include_graphics("images/bakery-mod-jmp2.png")
+knitr::include_graphics("images/bakery-mod-jmp3.png")
+```
+:::
+:::::
+
+## JMP: Fitting the Model
+
+`r fontawesome::fa("caret-down", fill = "red")` `Response` \> `Expanded Estimates`
+
+```{r}
+#| fig-align: center
+#| out-width: 60%
+knitr::include_graphics("images/bakery-mod-jmp4.png")
+```
+
+## Recall, "sum to zero" {.small}
+
+$\hat\mu =$
+
+::::: columns
+::: column
+| Height |                   |
+|--------|-------------------|
+| Bottom | $\hat\alpha_1=7$  |
+| Middle | $\hat\alpha_2=16$ |
+| Top    | $\hat\alpha_3=$   |
+:::
+
+::: column
+| Width   |                  |
+|---------|------------------|
+| Regular | $\hat\beta_1=-1$ |
+| Wide    | $\hat\beta_2=$   |
+:::
+:::::
+
+|            | Regular                         | Wide                          |
+|------------|---------------------------------|-------------------------------|
+| **Bottom** | $\widehat{\alpha\beta}_{11}=2$  | $\widehat{\alpha\beta}_{12}=$ |
+| **Middle** | $\widehat{\alpha\beta}_{21}=-1$ | $\widehat{\alpha\beta}_{22}=$ |
+| **Top**    | $\widehat{\alpha\beta}_{31}=$   | $\widehat{\alpha\beta}_{32}=$ |
+
+## Decomposition of Model Effects
+
+<span style="font-size:0.75em">Recall our statistical effects model: $y_{ijk} = \mu +\alpha_i +\beta_j + \alpha\beta_{ij} + \epsilon_{ijk}$</span>
+
+```{r}
+#| out-width: 70%
+
+# Compute means at each level
+overall_mean <- bakery_data |> 
+  summarise(mean_sales = mean(sales))
+
+width_means <- bakery_data |>
+  group_by(width) |>
+  summarise(mean_sales = mean(sales))
+
+height_means <- bakery_data |>
+  group_by(height) |>
+  summarise(mean_sales = mean(sales))
+
+placement_means <- bakery_data |>
+  group_by(height, width, placement) |>
+  summarise(mean_sales = mean(sales))
+
+# Make sure placement is a factor in the right order
+bakery_data <- bakery_data |>
+  mutate(placement = factor(placement))
+
+placement_means <- placement_means |>
+  mutate(x = as.numeric(placement))
+
+# Map each width/height to the range of x positions for its levels
+width_x_ranges <- placement_means |>
+  group_by(width) |>
+  summarise(xmin = min(x),
+            xmax = max(x))
+
+height_x_ranges <- placement_means |>
+  group_by(height) |>
+  summarise(xmin = min(x),
+            xmax = max(x))
+
+# Merge ranges with the mean data
+width_means <- left_join(width_means, width_x_ranges, by = "width")
+height_means <- left_join(height_means, height_x_ranges, by = "height")
+
+# ---- PLOT ----
+bakery_data |> 
+  ggplot(aes(x = placement, y = sales)) +
+  geom_point(size = 3, aes(shape = width)) +
+  
+  # 1️⃣ Overall mean (dotted black line)
+  geom_hline(
+    data = overall_mean,
+    aes(yintercept = mean_sales),
+    color = "black", linetype = "solid", linewidth = 1
+  ) +
+  
+  # 2️⃣ Width means (blue)
+  geom_hline(
+    data = width_means,
+    aes(yintercept = mean_sales),
+    color = "steelblue", linewidth = 1.2,
+    linetype = "dashed"
+  ) +
+  # facet_wrap(~width, scales = "free_x") +
+  
+  # 3️⃣ Height means (orange dashed)
+  geom_segment(
+    data = height_means,
+    aes(x = xmin - 0.4, xend = xmax + 0.4,
+        y = mean_sales, yend = mean_sales),
+    color = "darkorange", linetype = "dashed", linewidth = 1.2
+  ) +
+  
+  # 4️⃣ Placement (width × height) means (solid black)
+  geom_segment(
+    data = placement_means,
+    aes(x = x - 0.4, xend = x + 0.4,
+        y = mean_sales, yend = mean_sales),
+    color = "black", linewidth = 1.2,
+    linetype = "dotted"
+  ) +
+  
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(
+    x = "",
+    y = "Sales",
+    title = "Model Effects Decomposition"
+  )
+
+```
+
+## Model Diagnostics
+
+::::: columns
+::: column
+```{r}
+#| echo: true
+
+par(mfrow = c(2,2))
+plot(bakery_mod)
+par(mfrow = c(1,1))
+```
+:::
+
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 70%
+knitr::include_graphics("images/bakery-mod-jmp-resid-vs-pred.png")
+knitr::include_graphics("images/bakery-mod-jmp-qq.png")
+```
+:::
+:::::

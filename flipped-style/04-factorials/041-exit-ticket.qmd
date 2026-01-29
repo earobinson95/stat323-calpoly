@@ -21,15 +21,13 @@ execute:
 
 Name: _______________________________
 
-Section: \hspace{0.5in} 2pm \hspace{0.5in} 4pm
-
 \vspace{0.1in}
 
 **Scenario:** A study was carried out to investigate how thermal conditions of the mother (12 hours basking in the sun vs. 4 hours basking in the sun) and food availability (high food vs. low food) of the mother during gestation affect the weight of the offspring (in mg) in southern grass skinks. Forty southern grass skinks were randomly assigned to each of the 4 treatment combinations in this 2x2 full factorial design. 
 
 ```{r}
 #| fig-align: center
-#| out-width: 40%
+#| out-width: 60%
 library(tidyverse)
 library(emmeans)
 skink_data <- read_csv("data/skink_data.csv") |> 
@@ -47,8 +45,6 @@ emmip(skink_mod0, Food_Availability ~ Basking_Hours, CIs = T) +
        y = "Mean Mass (mg)",
        color = "Food Availability")
 ```
-
-\vspace{0.1in}
 
 **Write 2-3 sentences describing the nature of the interaction shown in the plot, in the context of this study, so that someone with little to no experience with statistics (or math) can understand.**
 

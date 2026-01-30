@@ -49,3 +49,70 @@ emmip(skink_mod0, Food_Availability ~ Basking_Hours, CIs = T) +
 **Write 2-3 sentences describing the nature of the interaction shown in the plot, in the context of this study, so that someone with little to no experience with statistics (or math) can understand.**
 
 *Entry/Exit tickets will be graded for intellectual engagement only, not correctness.*
+
+
+
+```{r}
+#| eval: false
+# Load libraries ---------------------------------------------------------------
+
+library(tidyverse)
+library(emmeans)
+library(multcompView)
+library(multcomp)
+
+# 2-way
+skink_mod0 <- lm(Mean_Mass ~ Basking_Hours*Food_Availability, 
+                data = skink_data)
+anova(skink_mod0)
+
+emmip(skink_mod0, Food_Availability ~ Basking_Hours, CIs = T) +
+  scale_color_manual(values = c("black", "gray")) +
+  theme_bw() +
+  theme(aspect.ratio = 0.8) +
+  labs(x = "Basking Hours",
+       y = "Mean Mass (mg)",
+       color = "Food Availability")
+
+
+library(multcomp)
+
+emmip(skink_mod0, ~ Food_Availability, CIs = T, lines = F)
+emmeans(skink_mod0, specs = ~ Food_Availability) |>
+  pairs()
+
+emmeans(skink_mod0, specs = ~ Food_Availability | Basking_Hours) |>
+  pairs()
+
+library(multcomp)
+emmeans(skink_mod0, specs = ~ Food_Availability:Basking_Hours) |>
+  cld(Letters = LETTERS, decreasing = T, adjust = "tukey")
+
+
+emmeans(skink_mod0, specs = ~ Basking_Hours:Food_Availability) |> 
+  cld(Letters = LETTERS, decreasing = T)
+
+emmip(skink_mod0, ~ Food_Availability, CIs = T) +
+  scale_color_manual(values = c("black", "gray")) +
+  theme_bw() +
+  theme(aspect.ratio = 0.8) +
+  labs(x = "Food Availability",
+       y = "Mean Mass (mg)")
+
+emmeans(skink_mod0, specs = ~ Food_Availability) |> 
+  cld(Letters = LETTERS, decreasing = T)
+
+# 3-way
+skink_mod <- lm(Mean_Mass ~ Temperature*Basking_Hours*Food_Availability, 
+                  data = skink_data)
+
+library(emmeans)
+emmip(skink_mod, Food_Availability ~ Basking_Hours | Temperature, CIs = F) +
+  scale_color_manual(values = c("black", "gray")) +
+  theme_bw() +
+  theme(aspect.ratio = 0.8) +
+  labs(x = "Basking Hours",
+       y = "Mean Mass (mg)",
+       color = "Food Availability")
+
+```

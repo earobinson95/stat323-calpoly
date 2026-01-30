@@ -1,0 +1,29 @@
+---
+title: "Entry Ticket"
+subtitle: "Island Lab 2: Write your Methods"
+format: pdf
+include-in-header:
+  - text: |
+      \usepackage{tikz}
+      \usetikzlibrary{shapes.geometric,shapes.misc}
+      % empty circle
+      \newcommand*{\emptycircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm);}
+      % filled circle
+      \newcommand*{\filledcircle}{\tikz[baseline=-0.6ex]\draw[thick, fill=black] (0,0) circle (0.2cm);}
+      % checked / crossed circle
+      \newcommand*{\checkedcircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm)
+        node[cross out, draw, thick, inner sep=0pt, minimum size=0.2cm]{};}
+execute:
+  message: false
+  warning: false
+  echo: false
+---
+
+Name: _______________________________
+
+\vspace{0.1in}
+
+**Write 3-4 full sentences (a paragraph, if you will) describing the the methods of your CRD island lab data collection process. Include your treatment structure, design structure, direct controls, etc.**
+
+*Entry/Exit tickets will be graded for intellectual engagement only, not correctness.*
+

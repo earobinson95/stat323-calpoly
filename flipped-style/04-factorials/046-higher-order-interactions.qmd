@@ -183,7 +183,13 @@ knitr::include_graphics("images/046-jmp-anova.png")
 
 ## JMP: Fit 3-way Analysis
 
-These are your parameter estimates!
+`r fontawesome::fa("caret-down", fill = "red")` `Response` > `Estimates` > `Expanded Estimates`
+
+```{r}
+#| fig-align: center
+#| out-width: 60%
+knitr::include_graphics("images/046-jmp-stress-parmests.png")
+```
 
 ## Check Model Assumptions: $\epsilon_{ijkl} iid \sim N(0, \sigma^2)$
 

@@ -120,7 +120,7 @@ where... continued on next slide!
 |---------|-----------------|-------|------------|-----------|
 | A       | a-1             | SSA   | MSA        | MSA/MSE   |
 | B       | b-1             | SSB   | MSB        | MSB/MSE   |
-| C       | c-a             | SSC   | MSC        | MSC/MSE   |
+| C       | c-1             | SSC   | MSC        | MSC/MSE   |
 | AB      | (a-1)(b-1)      | SSAB  | MSAB       | MSAB/MSE  |
 | AC      | (a-1)(c-1)      | SSAC  | MSAC       | MSAC/MSE  |
 | BC      | (b-1)(c-1)      | SSBC  | MSBC       | MSBC/MSE  |

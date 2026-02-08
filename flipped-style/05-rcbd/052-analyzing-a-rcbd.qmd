@@ -17,6 +17,8 @@ execute:
   message: false
 ---
 
+## Example 5.1: Cookie Recipes
+
 ```{=html}
 <style>
 .reveal .slides .small table { font-size: 0.78em; line-height:1.05; }
@@ -24,5 +26,239 @@ execute:
 </style>
 ```
 
-## ddd
+```{r}
+#| fig-align: center
+#| out-width: 70%
+library(tidyverse)
+library(emmeans)
+library(multcomp)
+knitr::include_graphics("images/cookies-ovens-rcbd.png")
+```
 
+::: {style="font-size:0.8em"}
+**Treatment Structure:** One-way with recipe (3-levels: classic butter, brown butter, coconut oil)
+
+**Design Structure:** Recipe randomly assigned to tray (e.u.) in an RCBD with r = 4 ovens (blocking factor). Texture recorded for each tray (m.u.).
+:::
+
+## Cookie Recipes
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+cookie_data <- read_csv("data/cookie_rcbd_data.csv")
+cookie_data
+```
+:::
+::: column
+```{r}
+#| fig-width: 5
+#| fig-height: 5
+#| fig-align: center
+cookie_data |> 
+  ggplot(aes(x = recipe, 
+             y = texture,
+             color = oven,
+             shape = oven)
+         ) +
+  geom_point(size = 3) +
+  theme_bw() +
+  theme(aspect.ratio = 1) +
+  scale_color_brewer(palette = "Dark2") +
+  labs(x = "Recipe",
+       y = "Cookie Texture",
+       color = "Oven",
+       shape = "Oven")
+```
+:::
+::::
+
+## What changes from a CRD?
+
+If we analyze *ignoring* the effect of oven...
+
+::: callout-caution
+### Incorrect Analysis: CRD
+
+$y_{ij} = \mu + \tau_i + \epsilon_{ij} \text{ where } \epsilon_{ij} \text{iid}\sim N(0,\sigma^2)$
+
+```{r}
+#| echo: true
+oven_crd_mod <- lm(texture ~ recipe, data = cookie_data)
+anova(oven_crd_mod)
+```
+:::
+
+## Statistical Effects Model
+
+$$y_{ij} = \mu + \tau_i + \rho_j + \epsilon_{ij} \text{ where } \epsilon_{ij} \text{iid}\sim N(0,\sigma^2)$$ for $i = 1, 2, 3$ and $j = 1, 2, 3, 4$
+
+where:
+
+-   $y_{ij}$ is the observed texture of the cookie tray baked in the $j^{th}$ oven with the $i^{th}$ recipe.
+-   $\mu$ is the overall mean texture
+-   $\tau_i$ is the effect of the $i^{th}$ recipe
+-   $\epsilon_{ij}$ is the experimental error associated with the cookie tray baked in the $j^{th}$ oven with the $i^{th}$ recipe.
+
+## What Blocking does to the variability
+
+$$SST = SSTrt + SSBlk + SSE$$
+
+-   $SST = \sum_i\sum_j(y_{ij}-\bar y_{\cdot\cdot})^2$
+-   $SSTrt = r \sum_i(\bar y_{i\cdot}-\bar y_{\cdot\cdot})^2$
+-   $SSBlk = t\sum_j(\bar y_{\cdot j}-\bar y_{\cdot\cdot})^2$
+-   $SSE = t\sum_j(y_{ij}-\bar y_{i\cdot} - \bar y_{\cdot j} + \bar y_{\cdot\cdot})^2$
+
+## ANOVA Table {.small}
+
+| Source of Variation | DF | SS | MS | F |
+|----|----|----|----|----|
+| Block | r - 1 | SSBlk | MSBlk | MSBlk/MSE |
+| Treatment | t - 1 | SSTrt | MSTrt | MSTrt/MSE |
+| Block x Treatment $\rightarrow$ error | (r - 1)(t - 1) | SSE | MSE $\rightarrow \sigma^2$ |  |
+| **Total (N = rt)** | **N - 1** | SST |  |  |
+
+> Blocking is a *design tool*, not usually a research question.
+
+## Skeleton ANOVA
+
+| Source of Variation | DF  |
+|---------------------|-----|
+|                     |     |
+
+## R: RCBD Analysis
+
+::::: columns
+::: column
+```{r}
+#| echo: true
+oven_rcbd_mod <- lm(texture ~ recipe + oven, data = cookie_data)
+anova(oven_rcbd_mod)
+emmip(oven_rcbd_mod, ~ recipe, CI = T)
+```
+:::
+
+::: column
+```{r}
+#| echo: true
+emmeans(oven_rcbd_mod, ~ recipe) |> 
+  cld(Letters = LETTERS, decreasing = T, adjust = "tukey")
+```
+:::
+:::::
+
+## JMP: RCBD Analysis
+
+:::: columns
+::: {.column width=40%}
+```{r}
+#| fig-align: center
+#| out-width: 100%
+knitr::include_graphics("images/cookie_jmp_dialog.png")
+```
+:::
+::: {.column width=30%}
+```{r}
+#| fig-align: center
+#| out-width: 100%
+knitr::include_graphics("images/cookie_anova_jmp.png")
+```
+:::
+::: {.column width=30%}
+```{r}
+#| fig-align: center
+#| out-width: 100%
+knitr::include_graphics("images/cookies_lsmeans.png")
+```
+:::
+::::
+
+## Check Model Assumptions -- $\epsilon_{ij} \text{iid} \sim N(0,\sigma^2)$
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+par(mfrow = c(2,2))
+plot(oven_rcbd_mod)
+```
+
+```{r}
+par(mfrow = c(1,1))
+```
+:::
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 70%
+knitr::include_graphics("images/cookie_jmp_resids.png")
+```
+:::
+::::
+
+## RCBD vs CRD
+
+<div style="font-size:0.75em">
+
+::::: columns
+::: column
+If we ignore ovens (CRD):
+
+-   Oven variability inflates MSE
+-   Harder to detect recipe differences
+
+```{r}
+anova(oven_crd_mod)
+```
+:::
+
+::: column
+With RCBD:
+
+-   Oven variability is removed from error
+-   Smaller MSE
+-   More power *(if blocks are different)*
+
+```{r}
+anova(oven_rcbd_mod)
+```
+:::
+:::::
+
+</div>
+
+## Why is this model additive? (no interaction)
+
+:::: columns
+::: column
+-   Each recipe appears *once* per oven
+-   No replication within recipe-oven combinations
+-   Interaction is not estimable
+
+> Recall: The experimental error comes from the block x treatment term.
+
+:::
+::: column
+```{r}
+#| fig-width: 5
+#| fig-height: 5
+#| fig-align: center
+cookie_data |> 
+  ggplot(aes(x = recipe, 
+             y = texture,
+             color = oven,
+             shape = oven)
+         ) +
+  geom_point(size = 3) +
+  geom_line(aes(group = oven)) +
+  theme_bw() +
+  theme(aspect.ratio = 1) +
+  scale_color_brewer(palette = "Dark2") +
+  labs(x = "Recipe",
+       y = "Cookie Texture",
+       color = "Oven",
+       shape = "Oven")
+```
+:::
+::::

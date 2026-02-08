@@ -92,14 +92,18 @@ anova(oven_crd_mod)
 
 ## Statistical Effects Model
 
+<div style="font-size:0.75em">
+
 $$y_{ij} = \mu + \tau_i + \rho_j + \epsilon_{ij} \text{ where } \epsilon_{ij} \text{iid}\sim N(0,\sigma^2)$$ for $i = 1, 2, 3$ and $j = 1, 2, 3, 4$
 
 where:
 
--   $y_{ij}$ is the observed texture of the cookie tray baked in the $j^{th}$ oven with the $i^{th}$ recipe.
--   $\mu$ is the overall mean texture
--   $\tau_i$ is the effect of the $i^{th}$ recipe
--   $\epsilon_{ij}$ is the experimental error associated with the cookie tray baked in the $j^{th}$ oven with the $i^{th}$ recipe.
++ $y_{ij}$ is the observed texture of the cookie tray baked in the $j^{th}$ oven with the $i^{th}$ recipe.
++ $\mu$ is the overall mean texture
++ $\tau_i$ is the effect of the $i^{th}$ recipe
++ $\epsilon_{ij}$ is the experimental error associated with the cookie tray baked in the $j^{th}$ oven with the $i^{th}$ recipe.
+
+</div>
 
 ## What Blocking does to the variability
 
@@ -133,6 +137,9 @@ $$SST = SSTrt + SSBlk + SSE$$
 ::: column
 ```{r}
 #| echo: true
+#| fig-width: 7
+#| fig-height: 5
+#| out-width: 55%
 oven_rcbd_mod <- lm(texture ~ recipe + oven, data = cookie_data)
 anova(oven_rcbd_mod)
 emmip(oven_rcbd_mod, ~ recipe, CI = T)

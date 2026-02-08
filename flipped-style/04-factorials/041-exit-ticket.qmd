@@ -105,9 +105,10 @@ emmeans(skink_mod0, specs = ~ Food_Availability) |>
 # 3-way
 skink_mod <- lm(Mean_Mass ~ Temperature*Basking_Hours*Food_Availability, 
                   data = skink_data)
+anova(skink_mod)
 
 library(emmeans)
-emmip(skink_mod, Food_Availability ~ Basking_Hours | Temperature, CIs = F) +
+emmip(skink_mod, Food_Availability ~ Basking_Hours | Temperature, CIs = T) +
   scale_color_manual(values = c("black", "gray")) +
   theme_bw() +
   theme(aspect.ratio = 0.8) +
@@ -115,4 +116,7 @@ emmip(skink_mod, Food_Availability ~ Basking_Hours | Temperature, CIs = F) +
        y = "Mean Mass (mg)",
        color = "Food Availability")
 
+library(multcomp)
+emmeans(skink_mod, ~ Food_Availability:Basking_Hours | Temperature) |>
+  cld(adjust = "Tukey", Letters = LETTERS, decreasing = T)
 ```

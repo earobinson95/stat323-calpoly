@@ -69,9 +69,13 @@ knitr::include_graphics("images/ovens.png")
 knitr::include_graphics("images/cookies-ovens-crd.png")
 ```
 
+<div style="font-size:0.8em">
+
 + Suppose Oven A runs slightly hotter than the others. How will this affect the results if that oven happens to get more Brown Butter trays?
 
 + Suppose Oven B runs cooler and happens to bake most of the Coconut Oil trays. How will this affect the results?
+
+</div>
 
 ## Where the CRD breaks down
 
@@ -114,6 +118,8 @@ knitr::include_graphics("images/cookies-ovens-rcbd.png")
 
 ## Why Block?
 
+<div style="font-size:0.8em">
+
 **Advantages**
 
 + Effective blocking can lead to reduced experimental error and more precise estimates of treatment effects.
@@ -123,6 +129,8 @@ knitr::include_graphics("images/cookies-ovens-rcbd.png")
 **Disadvantages**
 
 + The degrees of freedom for experimental error are not as large as for a CRD.
+
+</div>
 
 ## Example 5.1: Study Structure
 

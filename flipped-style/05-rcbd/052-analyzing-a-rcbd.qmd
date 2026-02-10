@@ -270,3 +270,13 @@ cookie_data |>
 ```
 :::
 ::::
+
+
+```{r}
+#| include: false
+
+
+oven_rcbd_mod2 <- lm(texture ~ recipe + oven + recipe:oven, data = cookie_data)
+anova(oven_rcbd_mod2)
+
+```

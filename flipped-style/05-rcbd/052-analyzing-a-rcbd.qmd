@@ -101,6 +101,7 @@ where:
 + $y_{ij}$ is the observed texture of the cookie tray baked in the $j^{th}$ oven with the $i^{th}$ recipe.
 + $\mu$ is the overall mean texture
 + $\tau_i$ is the effect of the $i^{th}$ recipe
++ $\rho_j$ is the effect of the $j^{th}$ oven
 + $\epsilon_{ij}$ is the experimental error associated with the cookie tray baked in the $j^{th}$ oven with the $i^{th}$ recipe.
 
 </div>

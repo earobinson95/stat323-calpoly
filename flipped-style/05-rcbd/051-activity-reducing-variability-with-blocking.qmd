@@ -1,0 +1,125 @@
+---
+title: "Activity 5.1: Reducing Variability with Blocking"
+subtitle: "Advertising Strategies"
+format:
+  html: default
+  pdf: default
+  docx: default
+embed-resources: true
+execute:
+  message: false
+  warning: false
+  echo: false
+---
+
+::: callout-note
+Submit via Gradescope, don't forget to assign pages to the questions in the outline!
+:::
+
+A marketing team for a regional grocery chain wants to compare the impact of four advertising strategies on sales.
+
+The four strategies are:
+
+-   (Discount) Discount-Driven Ads – highlight weekly price specials.
+-   (Storytelling) Brand Storytelling – focus on local farms and family ownership.
+-   (Digital) Digital-Only – social media and email ads only.
+-   (Events) Community Events – in-person promotions like pop-up tastings.
+
+There are 16 cities interested in participating in the study. Each city will use one advertising strategy for a 6-week campaign, and overall sales volume during that period will be recorded. However, cities differ greatly in their population size and baseline sales. Larger cities naturally have higher sales, regardless of the advertising strategy.
+
+# Part A: Setup
+
+## 1. How would you create blocks for this experiment?
+
+## 2. Sketch a design blueprint
+
+Clearly draw the blocks, show the experimental units, and how treatments are randomly assigned.
+
+## 3. Describe the treatment structure
+
+## 4. Describe the experimental structure
+
+# Part B: Incorrect Analysis
+
+## 5. Run a one-way ANOVA CRD analysis (ignroing block) and record the following:
+
+$$y_ij = \mu + \tau_{i} +\epsilon_{ij}$$
+
+-   SST = \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+-   SSTrt = \_\_\_\_\_\_\_\_\_\_\_\_\_\_
+-   SSE = \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ (This is what we want to reduce!)
+
+# Part C: Treatment and Block Means
+
+The observed sales volumes (in thousands of dollars) are shown below.
+
+### Original Sales
+
++------------------------------------------------------------------------------+------------------------+-------------+-------------+-----------------------+-------------------------------------------+
+| Advertising Strategy                                                         | Block j = 1 (Smallest) | Block j = 2 | Block j = 3 | Block j = 4 (Largest) | Treatment Mean Sales ($\bar{y}_{i\cdot}$) |
++==============================================================================+========================+=============+=============+=======================+===========================================+
+| Digital                                                                      | 136                    | 153         | 203         | 200                   |                                           |
++------------------------------------------------------------------------------+------------------------+-------------+-------------+-----------------------+-------------------------------------------+
+| Discount                                                                     | 147                    | 146         | 217         | 225                   |                                           |
++------------------------------------------------------------------------------+------------------------+-------------+-------------+-----------------------+-------------------------------------------+
+| Events                                                                       | 162                    | 189         | 231         | 228                   |                                           |
++------------------------------------------------------------------------------+------------------------+-------------+-------------+-----------------------+-------------------------------------------+
+| Storytelling                                                                 | 184                    | 208         | 251         | 257                   |                                           |
++------------------------------------------------------------------------------+------------------------+-------------+-------------+-----------------------+-------------------------------------------+
+| **Block Mean Sales (**$\bar{y}_{\cdot j}$)                                   |                        |             |             |                       | $\bar{y}_{\cdot\cdot} =$                  |
++------------------------------------------------------------------------------+------------------------+-------------+-------------+-----------------------+-------------------------------------------+
+| **Block Effects** ($\hat \rho_j = \bar{y}_{\cdot j} - \bar{y}_{\cdot\cdot}$) |                        |             |             |                       |                                           |
++------------------------------------------------------------------------------+------------------------+-------------+-------------+-----------------------+-------------------------------------------+
+
+## 6. Compute the treatment mean sales $\bar y_{i\cdot}$ for each advertising strategy and record them below. Record in the table above.
+
+## 7. Compute the block mean sales $\bar y_{\cdot j}$ for each city size block. Record in the table above.
+
+## 8. Compute the overall mean sales volume $\bar y_{\cdot\cdot}$. Record in the table above.
+
+# Part C: Block Effects
+
+## 9. Compute the block effect for each block. Record in the table above.
+
+$$\hat \rho_j = \bar{y}_{\cdot j} - \bar{y}_{\cdot\cdot}$$
+
+## 10. Use the block effects to compute SSBlk
+
+*Notice: the* $(\bar y_{\cdot j} - \bar y_{\cdot \cdot})$ inside the parentheses is the $\hat \rho_j$ you computed in (9).
+
+$$SSBlk = t\sum_j(\bar y_{\cdot j} - \bar y_{\cdot \cdot})^2=$$ ::: callout-note Recall, the purpose of the block design is to “remove” the variation explained by the blocking variable from the SSE, thus reducing the experimental error variation (MSE). :::
+
+## Part D: Block Adjusted Sales
+
+## 11. Using the block effects from the table above, adjust each observed sales volume value by the associated block effect $(y_{ij}-\rho_j)$. Record in the table below.
+
+*Note, you are essentially "removing" the effect of city from the sales.*
+
+### Block-adjusted Sales
+
++----------------------+------------------------+-------------+-------------+-----------------------+-----------------+
+| Advertising Strategy | Block j = 1 (Smallest) | Block j = 2 | Block j = 3 | Block j = 4 (Largest) | Block-adjusted\ |
+|                      |                        |             |             |                       | Treatment Mean\ |
+|                      |                        |             |             |                       | Sales           |
++======================+========================+=============+=============+=======================+=================+
+| Digital              |                        |             |             |                       |                 |
++----------------------+------------------------+-------------+-------------+-----------------------+-----------------+
+| Discount             |                        |             |             |                       |                 |
++----------------------+------------------------+-------------+-------------+-----------------------+-----------------+
+| Events               |                        |             |             |                       |                 |
++----------------------+------------------------+-------------+-------------+-----------------------+-----------------+
+| Storytelling         |                        |             |             |                       |                 |
++----------------------+------------------------+-------------+-------------+-----------------------+-----------------+
+
+## 12. Calculate the block adjusted mean sales. Record in the table above.
+
++ What do you notice about the block-adjusted mean sales compared to the original mean sales?
+
++ Would the SSTrt change when using the block-adjusted mean sales? Recall $SSTrt= r\sum_i(\bar y_{i\cdot}-\bar y_{\cdot\cdot})^2$.
+
+## 13. What do you notice about the variability of the block-adjusted sales within each advertising strategy compared to the original variability of sales (without block-adjusted sales)?
+
+```{r}
+knitr::include_graphics()
+```
+

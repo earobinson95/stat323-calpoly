@@ -1,6 +1,6 @@
 ---
-title: "Module 5: Randomized Complete Block Designs (RCBD)"
-subtitle: "Designing a RCBD"
+title: "Module 6: Random Effects & Mixed Models"
+subtitle: "Introduction to Random Effects"
 format: 
   revealjs:
     # theme: simple # other modern-ish options: dark, simple, solarized
@@ -17,7 +17,7 @@ execute:
   message: false
 ---
 
-## Example 5.1: Cookies in Ovens
+## Fixed Effects
 
 ```{=html}
 <style>
@@ -26,211 +26,56 @@ execute:
 </style>
 ```
 
-:::: columns
-::: column
+Up to this point, we have been concerned exclusively with **fixed effects** models.
 
-> A bakery wants to compare three different cookie recipes for a new product line. The recipes differ in type of fat used: Classic Butter, Brown Butter, and Coconut Oil. Cookie quality is evaluated based on texture scores from a tasting panel.
+What were we always testing?
 
-:::
-::: column
-```{r}
-#| fig-align: center
-#| out-width: 70%
-knitr::include_graphics("images/cookies.png")
-```
-:::
-::::
+## Fixed Effects
 
-## Example 5.1: The Complication
+Fixed effects are appropriate when:
 
-:::: columns
-::: {.column width=65%}
-> But...the bakery uses multiple ovens
->
-> The ovens are known to differ slightly in temperature calibration and air circulation. These differences can affect how cookies bake. For example, some ovens may run hotter, producing crispier cookies, while others bake more slowly and yield softer cookies. Although one oven may be relatively consistent, overall consistency between ovens is unlikely.
++ Interest centers on the effects of the specific factor levels chosen.
++ If the experiment were to be repeated, the same levels would be chosen.
++ Interest is focused on means.
 
-:::
-::: {.column width=35%}
-```{r}
-#| fig-align: center
-#| out-width: 100%
-knitr::include_graphics("images/ovens.png")
-```
-:::
-::::
+## Random Effects
 
-## Suppose there were *no restrictions* on recipe randomization
+Random effects are appropriate when:
 
-**Completely Randomized Design (CRD)**
++ The factor levels are a sample from a larger population of potential factor levels, and inferences are desired about the population of factor levels.
++ If the experiment were to be repeated, a new set of levels would be chosen.
++ Interest is focused on variances.
 
-```{r}
-#| fig-align: center
-#| out-width: 70%
-knitr::include_graphics("images/cookies-ovens-crd.png")
-```
+## The Conceptual Contrast
 
-<div style="font-size:0.8em">
+| Fixed                   | Random                                |
+| ----------------------- | ------------------------------------- |
+| Specific levels         | Sample of levels                      |
+| Same levels if repeated | New levels if repeated                |
+| Focus: means            | Focus: variances                      |
+| Compare ($\mu_i$)       | Estimate ($\sigma^2_{\text{factor}}$) |
 
-+ Suppose Oven A runs slightly hotter than the others. How will this affect the results if that oven happens to get more Brown Butter trays?
 
-+ Suppose Oven B runs cooler and happens to bake most of the Coconut Oil trays. How will this affect the results?
+## Example 6.1: Retail Store. 
 
-</div>
+> Consider an experiment conducted by a company that owns several hundred retail stores.  Approximately 50 of the stores are selected at random, and employees in each store was asked to evaluate management. The company is NOT interested in just the 50 stores chosen – it wants to generalize the results to ALL of its stores. Further, suppose that employees were asked from each department (e.g., clothing, kitchen, etc.) in all 50 stores. Therefore, the company is interested in the employee evaluations of management by *department* and *store*.
 
-## Where the CRD breaks down
+## Is store fixed or random?
 
-> Key Idea: We can’t separate recipe effects from oven effects.
++ Were stores randomly selected?
++ Do we care about only these 50 stores?
++ If repeated, would we choose the same stores?
 
-CRD assumes:
+## Is department fixed or random?
 
-+ Experimental units are homogeneous
++ Were departments randomly sampled?
++ Do these departments represent all *possible* departments?
++ If repeated, would we choose different departments?
 
-But here:
+## It turns out that whether a factor is fixed or random:
 
-+ Trays within an oven are similar
-+ Trays across ovens are *not* similar
+Does NOT change the design much
 
-## The Solution: Block on oven
+But...Changes the analysis.
 
-**Randomized Complete Block Design (RCBD)**
 
-Why ovens? big source of variation, not scientifically interesting, known before the experiment
-
-```{r}
-#| fig-align: center
-#| out-width: 70%
-knitr::include_graphics("images/cookies-ovens-rcbd.png")
-```
-
-> Key Idea: Block on what you can’t control but can identify.
-
-## What ‘Randomized Complete’ means
-
-::: callout-note
-## Elements of a RCBD
-
-+ **Block:** This is a homogeneous group of experimental units. A RCBD consists of first sorting the experimental units into blocks.
-
-+ **Complete:** Each block consists of one complete replication of the set of treatments. Therefore, each treatment will show up once within each block.
-
-+ **Randomized:** The treatments are randomly assigned to experimental units separately within each block.
-:::
-
-## Why Block?
-
-<div style="font-size:0.8em">
-
-**Advantages**
-
-+ Effective blocking can lead to reduced experimental error and more precise estimates of treatment effects.
-+ The RCBD can accommodate any number of treatments and replications.
-+ The statistical analysis is relatively simple.
-
-**Disadvantages**
-
-+ The degrees of freedom for experimental error are not as large as for a CRD.
-
-</div>
-
-## Example 5.1: Study Structure
-
-**Treatment structure**
-
-One-way treatment structure with cookie recipes (3 levels – classic butter, brown butter, and coconut oil).
-
-**Experimental structure**
-
-Cookie recipe treatments are randomly assigned to trays (e.u.) in a RCBD (randomized complete block design) with r = 4 replications (blocks) where the blocking factor is oven. The texture score is recorded for each tray (m.u.).
-
-## Designing a RCBD
-
-```{r}
-#| fig-align: center
-#| out-width: 90%
-knitr::include_graphics("images/cookies-ovens-randomization.png")
-```
-
-## R: Designing a RCBD
-
-```{r}
-#| echo: true
-#| output-location: column
-library(tidyverse)
-library(edibble)
-
-des <- design("Cookies in Ovens") |>
-  set_units(oven  = c("Oven A", "Oven B", "Oven C", "Oven D"),
-            tray  = nested_in(oven, 3)) |>
-  set_trts(recipe = c("Classic Butter", "Brown Butter", "Coconut Oil")) |>
-  allot_trts(recipe ~ tray) |>
-  assign_trts("random")
-
-cookie_data <- serve_table(des)
-cookie_data$texture <- NA
-cookie_data
-```
-
-## R: Check your RCBD
-
-<div style="font-size:0.8em">
-
-:::: columns
-::: column
-
-**Does each oven have 3 trays?**
-
-```{r}
-#| echo: true
-cookie_data |> 
-  count(oven)
-```
-
-**Does each recipe appear r = 4 times?**
-
-```{r}
-#| echo: true
-cookie_data |> 
-  count(recipe)
-```
-:::
-::: column
-
-**Does each recipe appear *once* in each oven?**
-
-```{r}
-#| echo: true
-cookie_data |> 
-  count(oven, recipe)
-```
-:::
-::::
-
-</div>
-
-## JMP: Designing a RCBD
-
-`r fontawesome::fa("caret-down", fill = "red")` `DOE` > `Custom Design`
-
-```{r}
-#| fig-align: center
-#| out-width: 60%
-knitr::include_graphics("images/jmp-cookies-doe1.png")
-```
-
-## JMP: Designing a RCBD
-
-```{r}
-#| fig-align: center
-#| out-width: 65%
-knitr::include_graphics("images/jmp-cookies-doe2.png")
-```
-
-## JMP: Designing a RCBD
-
-```{r}
-#| fig-align: center
-#| out-width: 60%
-knitr::include_graphics("images/jmp-cookies-doe-table.png")
-```
-
-Then use `Tables` > `Summary` to check RCBD.

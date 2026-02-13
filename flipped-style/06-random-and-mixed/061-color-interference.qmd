@@ -44,5 +44,41 @@ The data found in two formats `06-color-interference-long.csv` and `06-color-int
 Ensure `subject` is categorical.
 :::
 
+a.	Identify the following:
+
+i.	Treatment structure:
+
+ii.	Design structure: *Hint: this should be a RCBD, what is your blocking factor?
+
+b.	Why is it important the researchers randomized the order in which the forms (black or color_ were given to subjects?
+
+
+::: callout-tip
+## Technology Tip
+Probably use `06-color-interference-wide.csv`
+
++ JMP: [Performing a Piared t-Test](https://community.jmp.com/t5/Learning-Library/Performing-a-Paired-t-Test/ta-p/271914)
+
++ R: `t.test(paired = TRUE)`
+:::
+
+c.	Using the tools from your Stat I/II course, fit a paired t-test to the data. Report the following:
+i.	t-statistic, df, and p-value.
+ii.	Estimated mean difference in time (black text – color text).
+iii.	Estimated standard error of the mean.
+
+::: callout-tip
+Probably use `06-color-interference-long.csv`
+:::
+
+d.	Now, using the tools you learned in Module 6 and the treatment and design structure you specified in (a), fit the appropriate model. Report the following:
+i.	Estimated block variance.
+ii.	F-test for testing (F, df, p-value).
+iii.	Estimated difference in mean time between black and colored text (i.e., ordered difference report/pairs).
+iv.	Estimated standard error in the difference in mean time between black and colored text (i.e., ordered difference report/pairs).
+
+e.	Compare your results between (c) and (d).
+
+
 
 

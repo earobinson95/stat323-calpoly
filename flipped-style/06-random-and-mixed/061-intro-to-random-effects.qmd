@@ -1,0 +1,236 @@
+---
+title: "Module 5: Randomized Complete Block Designs (RCBD)"
+subtitle: "Designing a RCBD"
+format: 
+  revealjs:
+    # theme: simple # other modern-ish options: dark, simple, solarized
+    theme: simple
+    slide-number: c/t 
+    # chalkboard: true # lets you draw on top of slides (keyboard: c) or open a board (b)
+    width: 1200
+    height: 675
+    css: modern-slides.css
+    auto-stretch: false
+    embed-resources: true
+execute: 
+  warning: false
+  message: false
+---
+
+## Example 5.1: Cookies in Ovens
+
+```{=html}
+<style>
+.reveal .slides .small table { font-size: 0.78em; line-height:1.05; }
+.reveal .slides .small table th, .reveal .slides .small table td { padding:6px 8px; }
+</style>
+```
+
+:::: columns
+::: column
+
+> A bakery wants to compare three different cookie recipes for a new product line. The recipes differ in type of fat used: Classic Butter, Brown Butter, and Coconut Oil. Cookie quality is evaluated based on texture scores from a tasting panel.
+
+:::
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 70%
+knitr::include_graphics("images/cookies.png")
+```
+:::
+::::
+
+## Example 5.1: The Complication
+
+:::: columns
+::: {.column width=65%}
+> But...the bakery uses multiple ovens
+>
+> The ovens are known to differ slightly in temperature calibration and air circulation. These differences can affect how cookies bake. For example, some ovens may run hotter, producing crispier cookies, while others bake more slowly and yield softer cookies. Although one oven may be relatively consistent, overall consistency between ovens is unlikely.
+
+:::
+::: {.column width=35%}
+```{r}
+#| fig-align: center
+#| out-width: 100%
+knitr::include_graphics("images/ovens.png")
+```
+:::
+::::
+
+## Suppose there were *no restrictions* on recipe randomization
+
+**Completely Randomized Design (CRD)**
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+knitr::include_graphics("images/cookies-ovens-crd.png")
+```
+
+<div style="font-size:0.8em">
+
++ Suppose Oven A runs slightly hotter than the others. How will this affect the results if that oven happens to get more Brown Butter trays?
+
++ Suppose Oven B runs cooler and happens to bake most of the Coconut Oil trays. How will this affect the results?
+
+</div>
+
+## Where the CRD breaks down
+
+> Key Idea: We can’t separate recipe effects from oven effects.
+
+CRD assumes:
+
++ Experimental units are homogeneous
+
+But here:
+
++ Trays within an oven are similar
++ Trays across ovens are *not* similar
+
+## The Solution: Block on oven
+
+**Randomized Complete Block Design (RCBD)**
+
+Why ovens? big source of variation, not scientifically interesting, known before the experiment
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+knitr::include_graphics("images/cookies-ovens-rcbd.png")
+```
+
+> Key Idea: Block on what you can’t control but can identify.
+
+## What ‘Randomized Complete’ means
+
+::: callout-note
+## Elements of a RCBD
+
++ **Block:** This is a homogeneous group of experimental units. A RCBD consists of first sorting the experimental units into blocks.
+
++ **Complete:** Each block consists of one complete replication of the set of treatments. Therefore, each treatment will show up once within each block.
+
++ **Randomized:** The treatments are randomly assigned to experimental units separately within each block.
+:::
+
+## Why Block?
+
+<div style="font-size:0.8em">
+
+**Advantages**
+
++ Effective blocking can lead to reduced experimental error and more precise estimates of treatment effects.
++ The RCBD can accommodate any number of treatments and replications.
++ The statistical analysis is relatively simple.
+
+**Disadvantages**
+
++ The degrees of freedom for experimental error are not as large as for a CRD.
+
+</div>
+
+## Example 5.1: Study Structure
+
+**Treatment structure**
+
+One-way treatment structure with cookie recipes (3 levels – classic butter, brown butter, and coconut oil).
+
+**Experimental structure**
+
+Cookie recipe treatments are randomly assigned to trays (e.u.) in a RCBD (randomized complete block design) with r = 4 replications (blocks) where the blocking factor is oven. The texture score is recorded for each tray (m.u.).
+
+## Designing a RCBD
+
+```{r}
+#| fig-align: center
+#| out-width: 90%
+knitr::include_graphics("images/cookies-ovens-randomization.png")
+```
+
+## R: Designing a RCBD
+
+```{r}
+#| echo: true
+#| output-location: column
+library(tidyverse)
+library(edibble)
+
+des <- design("Cookies in Ovens") |>
+  set_units(oven  = c("Oven A", "Oven B", "Oven C", "Oven D"),
+            tray  = nested_in(oven, 3)) |>
+  set_trts(recipe = c("Classic Butter", "Brown Butter", "Coconut Oil")) |>
+  allot_trts(recipe ~ tray) |>
+  assign_trts("random")
+
+cookie_data <- serve_table(des)
+cookie_data$texture <- NA
+cookie_data
+```
+
+## R: Check your RCBD
+
+<div style="font-size:0.8em">
+
+:::: columns
+::: column
+
+**Does each oven have 3 trays?**
+
+```{r}
+#| echo: true
+cookie_data |> 
+  count(oven)
+```
+
+**Does each recipe appear r = 4 times?**
+
+```{r}
+#| echo: true
+cookie_data |> 
+  count(recipe)
+```
+:::
+::: column
+
+**Does each recipe appear *once* in each oven?**
+
+```{r}
+#| echo: true
+cookie_data |> 
+  count(oven, recipe)
+```
+:::
+::::
+
+</div>
+
+## JMP: Designing a RCBD
+
+`r fontawesome::fa("caret-down", fill = "red")` `DOE` > `Custom Design`
+
+```{r}
+#| fig-align: center
+#| out-width: 60%
+knitr::include_graphics("images/jmp-cookies-doe1.png")
+```
+
+## JMP: Designing a RCBD
+
+```{r}
+#| fig-align: center
+#| out-width: 65%
+knitr::include_graphics("images/jmp-cookies-doe2.png")
+```
+
+## JMP: Designing a RCBD
+
+```{r}
+#| fig-align: center
+#| out-width: 60%
+knitr::include_graphics("images/jmp-cookies-doe-table.png")
+```
+
+Then use `Tables` > `Summary` to check RCBD.

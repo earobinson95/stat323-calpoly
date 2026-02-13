@@ -1,0 +1,74 @@
+---
+title: "RCBD Concepts"
+subtitle: "Cheese"
+format: pdf
+include-in-header:
+  - text: |
+      \usepackage{tikz}
+      \usetikzlibrary{shapes.geometric,shapes.misc}
+      % empty circle
+      \newcommand*{\emptycircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm);}
+      % filled circle
+      \newcommand*{\filledcircle}{\tikz[baseline=-0.6ex]\draw[thick, fill=black] (0,0) circle (0.2cm);}
+      % checked / crossed circle
+      \newcommand*{\checkedcircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm)
+        node[cross out, draw, thick, inner sep=0pt, minimum size=0.2cm]{};}
+execute:
+  message: false
+  warning: false
+  echo: false
+---
+
+Name: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+\vspace{0.1in}
+
+*Entry/Exit tickets will be graded for intellectual engagement only, not correctness.*
+
+**Scenario:**
+
+An experiment is to be conducted to evaluate the effect of citric acid on the moisture content of mozzarella cheese. Blocks of mozzarella cheese will be made by using 4 different amounts of citric acid (1 tsp, 1.25 tsp, 1.5 tsp, 1.75 tsp). (Mozzarella cheese can be made by mixing 1 gallon of milk, 1/4 tsp of liquid rennet, 1 tsp of cheese salt and the citric acid.) After storage in a cooler for 3 months, the moisture content of each block will be measured at two different random locations within the block of cheese.
+
+The researchers would like to include different types of milk as a blocking factor in their study. They will use three types of organic cow's milk (O1, O2, O3) and three types of non-organic cow's milk (NO1, NO2, NO3) and will run a randomized complete block design making 4 blocks of cheese from each type of milk one block from each level of citric acid. The order of mixing/making each block of cheese will be randomized within each milk type.
+
+**a. Sketch a design blueprint**
+
+-   Clearly indicate the experimental units *and* measurement units
+-   Clearly indicate the blocking factor (show grouping)
+-   Show how treatments are assigned within blocks
+
+\vspace{1.2in}
+
+\newpage
+
+**b. In one sentence, explain why blocking is preferable to using milk type as an inclusion criterion.**
+
+\vspace{1in}
+
+**c. For the RCBD analysis in this module, how should the researchers use the two measurements from each cheese block?**
+
+\vspace{1in}
+
+**d. Provide the skeleton of the ANOVA table for the analysis of this experiment.**
+
+\begin{center}
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{|p{7cm}|p{4cm}|}
+\hline
+\textbf{Source of Variation} & \textbf{DF: Total =} \\
+\hline
+ & \\
+ & \\
+ & \\
+ & \\
+ & \\
+ & \\
+ & \\
+ & \\
+\hline
+\end{tabular}
+\end{center}
+
+**e. Suppose the researchers were also interested in whether the effect of citric acid depends on milk type. Why would this be difficult or impossible to assess using the current design?**
+
+\vspace{0.8in}

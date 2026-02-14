@@ -239,9 +239,7 @@ library(multcomp)
 anova(turkey_mod)
 turkey_emmeans <- emmeans(turkey_mod, ~ Diet, infer = c(T, T))
 turkey_emmeans |> 
-  cld(Letters = LETTERS, 
-      decreasing = T, 
-      adjust = 'tukey')
+  cld(Letters = LETTERS, decreasing = T, adjust = 'tukey')
 ```
 :::
 ::::
@@ -269,6 +267,6 @@ knitr::include_graphics("images/064-turkey-output.png")
 
 ```{r}
 #| fig-align: center
-#| out-width: 40%
+#| out-width: 35%
 knitr::include_graphics("images/064-turkey-lsmeans.png")
 ```

@@ -105,6 +105,16 @@ where:
 
 ## REML (Residual Maximum Likelihood) Estimation
 
+**Goal:** estimate variance components
+
+- $\sigma_t^2$ = variability **among officers**  
+- $\sigma_\epsilon^2$ = variability **within officer**  
+
+**Why REML?**
+
+- Ordinary ML tends to underestimate variance components (especially with small samples)
+- REML adjusts for estimating fixed effects (here, $\mu$) before estimating variances
+
 ## R: Fitting the Random Effects Model
 
 :::: columns

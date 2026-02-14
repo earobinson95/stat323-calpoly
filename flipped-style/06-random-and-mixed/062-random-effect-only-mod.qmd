@@ -1,6 +1,6 @@
 ---
 title: "Module 6: Random Effects & Mixed Models"
-subtitle: "Introduction to Random Effects"
+subtitle: "A Completely Randomized Design with Random Treatment Effects"
 format: 
   revealjs:
     # theme: simple # other modern-ish options: dark, simple, solarized
@@ -17,7 +17,8 @@ execute:
   message: false
 ---
 
-## 
+
+## Example 6.2: Fast Food Company
 
 ```{=html}
 <style>
@@ -26,3 +27,144 @@ execute:
 </style>
 ```
 
+<!-- > A company that builds fast-food restaurants leases franchises to individuals and provides management services.  This company also employs a large number of personnel officers who interview applicants for jobs in the restaurants. At the end of the interview, the officer assigns a rating between 0 and 100 to indicate the applicant’s potential value on the job.  Five personnel officers were selected at random, and each was assigned four candidates at random.  The company was interested in the extent of the variation in ratings among all personnel officers, and also the mean rating by all personnel officers. -->
+
+> A company employs many personnel officers.
+> 
+> + Five officers were selected at random.
+> + Each officer rated 4 candidates.
+>
+> Ratings are from 0–100.
+
+The company wants to know:
+
++ The overall mean rating
++ The extent of variability in ratings among officers
+
+   
+## Study Blueprint
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+knitr::include_graphics("images/062-employees.png")
+```
+
+**Treatment structure:**
+One-way: Officer (5 levels – officer A, B, C, D, E)
+
+**Experimental structure:**
+Officers were randomly assigned to interview r = 4 candidates (e.u.) in a CRD. The rating is recorded for each candidate (m.u.).
+
+## Officer = Random Treatment Effect
+
+:::: columns
+::: column
++ We are not comparing the mean ratings of officer A vs B vs C.
++ We are estimating variability among officers.
+:::
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 60%
+knitr::include_graphics("images/062-breakdown-var.png")
+```
+:::
+::::
+
+## The Data {.small}
+
+```{r}
+#| echo: true
+library(tidyverse)
+personnel_data <- read_csv("data/06-personnel-data.csv") |> 
+  mutate(across(officer:candidate, as.factor))
+personnel_data
+```
+
+## Statistical Random Effects Model
+
+::: {style="font-size:0.7em"}
+
+$$y_{ij}=\mu+t_i+\epsilon_{ij} \text{ for } i=1,2,3,4,5;	j=1,2,3,4$$
+
+with:
+
++ $t_i \sim$ independent $N(0,\sigma_t^2)$ 
++ $\epsilon_{ij} \sim$ independent $N(0,\sigma_\epsilon^2 )$
++ $t_i$ is independent $\epsilon_{ij}$
+
+where:
+
++ $y_{ij}$ is the rating of the $j^{th}$ candidate by the $i^{th}$ personnel officer
++ $\mu$ is the overall grand mean rating
++ $t_i$ is the effect of the $i^{th}$ personnel officer who is selected at random
++ $\epsilon_{ij}$ is the error associated with the $j^{th}$ candidate being rated by the $i^{th}$ personnel officer
+
+:::
+
+## REML (Residual Maximum Likelihood) Estimation
+
+## R: Fitting the Random Effects Model
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+library(lme4)
+personnel_mod <- lmer(rating ~ (1 | officer), 
+                      REML = TRUE, 
+                      data = personnel_data)
+summary(personnel_mod)
+```
+:::
+::: column
+
+::: {style="font-size:0.7em"}
+**Estimating Variances**
+
++ Total Variance = $\hat \sigma_t^2 + \hat \sigma_\epsilon^2 =$
++ What proportion of the total variance is due to personnel officer? $\frac{\hat\sigma_t^2}{\hat\sigma_t^2+\hat\sigma_\epsilon^2}=$
+
+**Estimating the Overall Mean**
+
++ $\hat \mu =$
+:::
+
+:::
+::::
+
+
+## JMP: Fitting the Random Effects Model
+
+::: {style="font-size:0.7em"}
+
++ `Analyze` > `Fit Model`
++ Highlight officer, then `Attributes` `r fontawesome::fa("caret-down", fill = "red")` > `Random Effect`
++ Set Method: `REML`
+
+:::
+
+:::: columns
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 70%
+knitr::include_graphics("images/062-officer-jmp-dialog.png")
+```
+
+:::
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 80%
+knitr::include_graphics("images/062-officer-jmp-reml.png")
+```
+
+```{r}
+#| fig-align: center
+#| out-width: 80%
+knitr::include_graphics("images/062-officer-jmp-parmests.png")
+```
+:::
+::::

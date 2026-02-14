@@ -18,40 +18,37 @@ Submit via Gradescope, don't forget to assign pages to the questions in the outl
 
 The abstract of the article *Studies of interference in serial verbal reactions* in the Journal of Experimental Psychology reads:
 
-In this study pairs of conflicting stimuli, both being inherent aspects of the same
-symbols, were presented simultaneously (a name of one color printed in the ink
-of another color—a word stimulus and a color stimulus). The difference in time
-for reading the words printed in colors and the same words printed in black is the
-measure of interference of color stimuli upon reading words. The interference of
-conflicting color stimuli upon the time for reading 100 words (each word naming
-a color unlike the ink-color of its print) caused an increase of 2.3 seconds or 5.6%
-over the normal time for reading the same words printed in black.
+In this study pairs of conflicting stimuli, both being inherent aspects of the same symbols, were presented simultaneously (a name of one color printed in the ink of another color—a word stimulus and a color stimulus). The difference in time for reading the words printed in colors and the same words printed in black is the measure of interference of color stimuli upon reading words. The interference of conflicting color stimuli upon the time for reading 100 words (each word naming a color unlike the ink-color of its print) caused an increase of 2.3 seconds or 5.6% over the normal time for reading the same words printed in black.
 
 ```{r}
-knitr::include_graphics("")
+#| fig-align: center
+#| out-width: 60%
+knitr::include_graphics("https://github.com/earobinson95/stat323-calpoly/blob/main/flipped-style/06-random-and-mixed/images/black-diffcol-texts.png?raw=true")
 ```
 
-The article reports on the results of a study in which seventy college undergraduates were given
-forms with 100 names of colors written in black ink, and the same 100 names of colors written
-in another color (i.e., the word purple written in green ink). The total time (in seconds) for
-reading the 100 words printed in black, and the total time (in seconds) for reading the 100
-words printed in different colors were recorded for each subject. The order in which the forms
-(black or color) were given was randomized to the subjects.           
+The article reports on the results of a study in which seventy college undergraduates were given forms with 100 names of colors written in black ink, and the same 100 names of colors written in another color (i.e., the word purple written in green ink). The total time (in seconds) for
+reading the 100 words printed in black, and the total time (in seconds) for reading the 100 words printed in different colors were recorded for each subject. The order in which the forms (black or color) were given was randomized to the subjects.           
 
-The data found in two formats `06-color-interference-long.csv` and `06-color-interference-wide.csv`.
+The data found on Canvas in two formats `06-color-interference-long.csv` and `06-color-interference-wide.csv`.
 
 ::: callout-warning
-Ensure `subject` is categorical.
+Ensure `subject` is categorical in JMP/R.
 :::
 
-a.	Identify the following:
+## a. Identify the following (it may be helpful to sketch a blueprint):
 
-i.	Treatment structure:
++ Treatment structure:
 
-ii.	Design structure: *Hint: this should be a RCBD, what is your blocking factor?
+\vspace{0.8in}
 
-b.	Why is it important the researchers randomized the order in which the forms (black or color_ were given to subjects?
++ Design structure:
 
+\vspace{0.8in}
+
+## b. Why is it important the researchers randomized the order in which the forms (black or different color) were given to subjects?
+
+
+\vspace{1in}
 
 ::: callout-tip
 ## Technology Tip
@@ -62,22 +59,49 @@ Probably use `06-color-interference-wide.csv`
 + R: `t.test(paired = TRUE)`
 :::
 
-c.	Using the tools from your Stat I/II course, fit a paired t-test to the data. Report the following:
-i.	t-statistic, df, and p-value.
-ii.	Estimated mean difference in time (black text – color text).
-iii.	Estimated standard error of the mean.
+## c.	Using the skills from your Stat I/II course, fit a paired t-test to the data. Report the following:
+
+\vspace{0.1in}
+
++ Supporting evidence: t = __________; df = ________; p = __________)
+
+\vspace{0.1in}
+
++ Estimated mean difference in time (black text – color text): __________________
+
+\vspace{0.1in}
+
++ Estimated standard error of the mean difference in time: _____________________
+
+\vspace{0.1in}
 
 ::: callout-tip
 Probably use `06-color-interference-long.csv`
 :::
 
-d.	Now, using the tools you learned in Module 6 and the treatment and design structure you specified in (a), fit the appropriate model. Report the following:
-i.	Estimated block variance.
-ii.	F-test for testing (F, df, p-value).
-iii.	Estimated difference in mean time between black and colored text (i.e., ordered difference report/pairs).
-iv.	Estimated standard error in the difference in mean time between black and colored text (i.e., ordered difference report/pairs).
+## d. Now, using the tools you learned in Module 6 and the treatment and design structure you specified in (a), fit the appropriate model. Report the following:
 
-e.	Compare your results between (c) and (d).
+\vspace{0.1in}
+
++ $\hat\sigma_{blk} =$ _____________ and $\hat\sigma_\epsilon =$ _______________
+
+\vspace{0.1in}
+
++ Supporting evidence: F = __________; df = ____, _____; p = __________)
+
+\vspace{0.1in}
+
++ Estimated difference in mean time between black and colored text (i.e., ordered difference report/pairs): ________________
+
+\vspace{0.1in}
+
++ Estimated standard error in the difference in mean time between black and colored text (i.e., ordered difference report/pairs): _____________
+
+\vspace{0.1in}
+
+## e. Compare your results between (c) and (d). What do you notice?
+
+\vspace{0.8in}
 
 
 

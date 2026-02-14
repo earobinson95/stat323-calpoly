@@ -1,6 +1,6 @@
 ---
-title: "Module 6: Random Effects & Mixed Models"
-subtitle: "Introduction to Random Effects"
+title: "Module 6: Random Effects & Linear Mixed Models"
+subtitle: "Linear Mixed Models"
 format: 
   revealjs:
     # theme: simple # other modern-ish options: dark, simple, solarized
@@ -17,7 +17,7 @@ execute:
   message: false
 ---
 
-## 
+## Example 6.3: Knee Brace
 
 ```{=html}
 <style>
@@ -26,3 +26,202 @@ execute:
 </style>
 ```
 
+::: {style="font-size:0.75em"}
+> Researchers study 4 knee braces: Control, Air Armor 2, Breg, Don Joy
+>
+> 10 high school running backs with previous ACL injury participate. Each player: Wears all 4 braces, Order randomized
+>
+> Time to complete 40-yard agility course recorded
+:::
+
+```{r}
+#| fig-align: center
+#| out-width: 90%
+knitr::include_graphics("images/063-knee-brace-blueprint.png")
+```
+
+## Example 6.3: Skeleton ANOVA
+
+Do we care only about these 10 running backs?
+
+| Source of Variation | DF  |
+|---------------------|-----|
+|                     |     |
+
+## When one factor is fixed and one is random
+
+::: callout-note
+### Linear Mixed Models (LMM)
+
+Mixed models come about when one factor is fixed and one factor is random. A mixed model should be used to study the effects of one factor on the population mean and the effects of another factor on the population variance.
+:::
+
+## Statistical Effecs Model
+
+
+::: {style="font-size:0.75em"}
+
+$$y_{ij} = \mu + \tau_i + p_j + \epsilon_{ij} \text{ with }  p_j \sim \text{iid } N(0,\sigma_{blk}^2) \text{ and } \epsilon_{ij} \sim \text{iid }  N(0,\sigma_\epsilon^2)$$
+
+for $i=1,2,3;	j=1,2,…,10$
+
+where:
+
++ $y_{ij}$ is the time to complete a 40-yard agility course for the $j^{th}$ running back wearing the $i^{th}$ knee brace
++ $\mu$ is the overall mean time to complete the agility course
++ $\tau_i$ is the fixed effect of the $i^{th}$ knee brace
++ $p_j$ is the random effect of the $j^{th}$ running back (block)
++ $\epsilon_{ij}$ is the random error term associated with the $j^{th}$ running back wearing the i^th knee brace 
+
+:::
+
+## Scope of Inference
+
+::: callout-note
++ If blocks were fixed: Inference limited to these 10 running backs
++ If blocks are random: Inference extends to *all* similar running backs 
+:::
+
+## The Data {.small}
+
+```{r}
+#| echo: true
+library(tidyverse)
+kneebrace_data <- read_csv("data/06-kneebrace-data.csv") |> 
+  mutate(across(RunningBack:KneeBrace, as.factor))
+head(kneebrace_data, n = 12)
+```
+
+## R: Fitting a LMM
+
+```{r}
+#| echo: true
+library(lme4)
+kneebrace_mod <- lmer(AgilityTime ~ KneeBrace + (1 | RunningBack), data = kneebrace_data)
+summary(kneebrace_mod)
+```
+
+## JMP: Fitting a LMM
+
+`Analyze` > `Fit Model`
+
+:::: columns
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 90%
+knitr::include_graphics("images/063-knee-brace-jmp-dialog.png")
+```
+:::
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 90%
+knitr::include_graphics("images/063-knee-brace-jmp-summary.png")
+```
+:::
+::::
+
+## Testing Hypotheses About the Treatment Means
+
+::: {style="font-size:0.7em"}
+
+$$H_0: \tau_1=\tau_2=\tau_3=\tau_4 \text{ vs } H_A: \text{ at least one } \tau_i \text{ differs}$$
+:::
+
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+library(lmerTest)
+anova(kneebrace_mod)
+```
+:::
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 90%
+knitr::include_graphics("images/063-knee-brace-anova.png")
+```
+:::
+::::
+
+## Estimating Treatment Means (balanced design)
+
+::: {style="font-size:0.75em"}
+
+Recall $y_{ij} = \mu + \tau_i + p_j + \epsilon_{ij}$
+
+In the mixed model:
+
++ $E[y_{ij}] = \hat\mu+\hat\tau_i$
++ $Var(y_{ij}) = \hat\sigma_{blk} + \hat\sigma_\epsilon^2$.
+
+Thus, the estimated mean and variance are given by:
+
++ Mean: $\hat\mu_i=\hat\mu+\hat\tau_i$
++ SE of Mean: $SE(\hat\mu_i)=\sqrt{\frac{\hat\sigma_{blk}^2+\hat\sigma_\epsilon^2}{r}}$
++ SE of Diff in Means: $SE(\hat\mu_i-\hat\mu_{i'})=\sqrt{\frac{2}{r}\sigma_\epsilon^2}$
+:::
+
+## Estimating Treatment Means 
+
+:::: columns
+::: column
+```{r}
+#| echo: true
+library(emmeans)
+library(multcomp)
+# emmip(kneebrace_mod, ~ KneeBrace, CI = T)
+emmeans(kneebrace_mod, specs = ~KneeBrace) |> 
+  cld(Letters = LETTERS, decreasing = T, adjust = "tukey")
+```
+:::
+::: column
+```{r}
+#| fig-align: center
+#| out-width: 70%
+knitr::include_graphics("images/063-knee-brace-means.png")
+```
+:::
+::::
+
+## Effect on Standard Errors
+
+::: {style="font-size:0.7em"}
+Treating blocks as random (instead of fixed) (1) Increases SE of treatment means (2) Does NOT change SE of treatment differences
+
+:::
+
+:::: columns
+::: column
+
+::: callout-note
+### Running back Fixed (LM)
+
+```{r}
+#| echo: true
+kneebrace_lm <- lm(AgilityTime ~ KneeBrace + RunningBack, 
+                      data = kneebrace_data)
+emmeans(kneebrace_lm, specs = ~KneeBrace)
+emmeans(kneebrace_lm, specs = ~KneeBrace) |> pairs()
+```
+:::
+
+:::
+::: column
+
+::: callout-note
+### Running back Random (LMM)
+```{r}
+#| echo: true
+kneebrace_lmer <- lmer(AgilityTime ~ KneeBrace + (1 | RunningBack), 
+                      data = kneebrace_data)
+emmeans(kneebrace_lmer, specs = ~KneeBrace)
+emmeans(kneebrace_lmer, specs = ~KneeBrace) |> pairs()
+```
+:::
+
+:::
+::::

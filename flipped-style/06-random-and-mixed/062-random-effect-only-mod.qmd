@@ -1,5 +1,5 @@
 ---
-title: "Module 6: Random Effects & Mixed Models"
+title: "Module 6: Random Effects & Linear Mixed Models"
 subtitle: "A Completely Randomized Design with Random Treatment Effects"
 format: 
   revealjs:

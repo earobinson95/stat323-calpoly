@@ -1,6 +1,6 @@
 ---
-title: "Activity 5.1: Reducing Variability with Blocking"
-subtitle: "Advertising Strategies"
+title: "Activity 6.1: Random Block Effect vs Paired t-test"
+subtitle: "Color Interference"
 format:
   html: default
   pdf: default

@@ -97,6 +97,7 @@ head(kneebrace_data, n = 12)
 ```{r}
 #| echo: true
 library(lme4)
+options(contrasts = c("contr.sum", "contr.poly"))
 kneebrace_mod <- lmer(AgilityTime ~ KneeBrace + (1 | RunningBack), data = kneebrace_data)
 summary(kneebrace_mod)
 ```

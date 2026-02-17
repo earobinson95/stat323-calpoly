@@ -141,6 +141,7 @@ $$SST = SSTrt + SSBlk + SSE$$
 #| fig-width: 7
 #| fig-height: 5
 #| out-width: 55%
+options(contrasts = c("contr.sum", "contr.poly"))
 oven_rcbd_mod <- lm(texture ~ recipe + oven, data = cookie_data)
 anova(oven_rcbd_mod)
 emmip(oven_rcbd_mod, ~ recipe, CI = T)

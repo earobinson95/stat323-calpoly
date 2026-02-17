@@ -1,0 +1,39 @@
+---
+title: "Final Project Brainstorm"
+format: 
+  html: default
+  pdf: default
+  docx: default
+# include-in-header:
+#   - text: |
+#       \usepackage{tikz}
+#       \usetikzlibrary{shapes.geometric,shapes.misc}
+#       % empty circle
+#       \newcommand*{\emptycircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm);}
+#       % filled circle
+#       \newcommand*{\filledcircle}{\tikz[baseline=-0.6ex]\draw[thick, fill=black] (0,0) circle (0.2cm);}
+#       % checked / crossed circle
+#       \newcommand*{\checkedcircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm)
+#         node[cross out, draw, thick, inner sep=0pt, minimum size=0.2cm]{};}
+execute:
+  message: false
+  warning: false
+  echo: false
+---
+
+Name: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+\vspace{0.1in}
+
+*Entry/Exit tickets will be graded for intellectual engagement only, not correctness.*
+
+Recall for your final project, you’ll design an experiment (no data collection) and convince an audience of stakeholders that your research question (RQ), experimental design, and proposed analysis are sound. 
+
+The key twist: your experimental units (and similarly, your blocking or subsampling) cannot be people or animals
+
+Before you leave, write down something you’ve wondered about recently that could be studied experimentally.
+
++ What could you randomize?
++ What might be the experimental unit?
++ Is there any natural grouping or hierarchy of units?
++ What other things might impact the variability?

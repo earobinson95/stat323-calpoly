@@ -83,7 +83,7 @@ Probably use `06-color-interference-long.csv`
 
 \vspace{0.1in}
 
-+ $\hat\sigma_{blk} =$ _____________ and $\hat\sigma_\epsilon =$ _______________
++ $\hat\sigma^2_{blk} =$ _____________ and $\hat\sigma^2_\epsilon =$ _______________
 
 \vspace{0.1in}
 

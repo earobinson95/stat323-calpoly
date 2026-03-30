@@ -40,7 +40,7 @@ question!
 + Section 70 at 2:10 - 4:00pm
 + Section 71 at 4:10 - 6:00pm
 
-**Room:** Erhart Agriculture (Building 10-225)
+**Room:** Erhart Agriculture (Building 10-221)
 
 **Office Hours** are held in my office (25-103) during the following times:
 
@@ -339,10 +339,10 @@ tribble(
   "Class Preparation, Participation, & Professionalism", "5%",
   "In-class Activities", "10%",
   "Island Labs", "15%",
-  "Final Project", "15%",
+  "Final Project", "10%",
   "Midterm Exam 1", "17.5%",
   "Midterm Exam 2", "17.5%",
-  "Final Exam", "20%"
+  "Final Exam", "25%"
 ) |> 
   knitr::kable()
 ```

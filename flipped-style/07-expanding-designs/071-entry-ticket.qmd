@@ -1,0 +1,59 @@
+---
+title: "Replicating Latin Squares"
+subtitle: "CO2 Emissions"
+format: 
+  html: default
+  pdf: 
+    pagestyle: empty
+  docx: default
+# include-in-header:
+#   - text: |
+#       \usepackage{tikz}
+#       \usetikzlibrary{shapes.geometric,shapes.misc}
+#       % empty circle
+#       \newcommand*{\emptycircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm);}
+#       % filled circle
+#       \newcommand*{\filledcircle}{\tikz[baseline=-0.6ex]\draw[thick, fill=black] (0,0) circle (0.2cm);}
+#       % checked / crossed circle
+#       \newcommand*{\checkedcircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm)
+#         node[cross out, draw, thick, inner sep=0pt, minimum size=0.2cm]{};}
+execute:
+  message: false
+  warning: false
+  echo: false
+---
+
+Name: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+\vspace{0.1in}
+
+*Entry/Exit tickets will be graded for intellectual engagement only, not correctness.*
+
+**Scenario:** Suppose researchers are interested in 2 gasoline blends (summer, winter), and an additive at 3 levels (2%, 3%, 4%).  The response is CO emission under real driving conditions. We know there will be differences in CO emission among types of cars, as well as among driving conditions/routes.
+
+1.	Identify the following:
+  
++ Response: _____________________________
++ Factor(s) + Levels:
+
+\vspace{0.3in}
+
++ Blocking factor 1: ________________________
++ Blocking factor 2: ________________________
+  
+2.	How many rows and column blocking factor levels should be included in a Latin Square design?
+  
+\vspace{0.3in}
+
+3. Sketch a possible study design for a standard unreplicated Latin Square (e.g., one "platform").
+
+\vspace{2in}
+
+4. Sketch a possible study design for replicating the latin square by reusing cars (i.e., increase the number of routes to 12).
+  
+\vspace{4in}
+
+5. Write out a skeleton ANOVA for the replicated latin square in (4).
+
+\vspace{4in}
+  

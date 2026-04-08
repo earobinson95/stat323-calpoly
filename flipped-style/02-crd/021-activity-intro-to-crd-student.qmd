@@ -104,10 +104,11 @@ mod <- lm()
 Also, be careful of order! The following may be useful for manipulating your data.
 
 ```         
-mutate(TrafficSignal = factor(TrafficSignal, levels = c("Pretimed", "Semi-actuated", "Fully actuated")))
+data <- read_csv("02_traffic_data.csv") |>
+  mutate(TrafficSignal = factor(TrafficSignal, levels = c("Pretimed", "Semi-actuated", "Fully actuated")))
 ```
 
-Then check your factor order with:
+Then check your factor order associated with `i = 1, 2, 3`:
 
 ```         
 levels(data$TrafficSignal)
@@ -132,6 +133,6 @@ In context of the data, provide an interpretation for $\hat \tau_1 = 12.02$. It 
 
 ## g. Provide a conclusion
 
-In context of the data, write out your conclusion from the overall ANOVA F-test from (c). Make sure to provide all evidence -- (F = , df = , p = ).
+In context of the data, write out your conclusion from the overall ANOVA F-test from (c). Make sure to provide all supporting evidence -- (F = , df = , p = ).
 
 \vspace{1in}

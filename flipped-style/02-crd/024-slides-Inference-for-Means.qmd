@@ -192,9 +192,9 @@ knitr::include_graphics("images/023-shoe-type-est-means-jmp.png")
 
 ## Interpretation of Results
 
-The estimated mean 400m lap time for runners wearing the control shoe is 62 seconds (s.e. = 1.41). 
+The estimated mean 400m lap time for runners wearing the control shoe is 61 seconds (s.e. = 1.41). 
 
-We are 95% confident the population mean 400m lap time for all runners wearing the control shoe is between 51.5 and 60.5 seconds.
-
+We are 95% confident the population mean 400m lap time for all runners wearing the control shoe is between 56.5 and 65.5 seconds.
+   
 These results apply to all runner similar to those in our study under similar conditions.
 

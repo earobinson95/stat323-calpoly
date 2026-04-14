@@ -44,13 +44,13 @@ question!
 
 **Office Hours** are held in my office (25-103) during the following times:
 
-::: column-margin
+<!-- ::: column-margin -->
 
-{{< video https://www.youtube.com/embed/yQq1-_ujXrM?si=sFpcpfT9Cey2-Eaf >}}
+<!-- {{< video https://www.youtube.com/embed/yQq1-_ujXrM?si=sFpcpfT9Cey2-Eaf >}} -->
 
-Introducing Faculty Office Hours
+<!-- Introducing Faculty Office Hours -->
 
-:::
+<!-- ::: -->
 
 | Day       | Time                   |
 |-----------|------------------------|
@@ -321,6 +321,8 @@ kableExtra::kable(caption = "Tentative schedule of class topics:", format = "sim
 | May 26                   | Mod 8: When assumptions are violated                 |
 | May 28, Jun 2            | Workday                                              |
 | Jun  4                   | Final project presentations                          |
+| Jun  9                   | 2pm Section Final at 4:10-7pm                        |
+| Jun  11                  | 12pm Section Final at 1:10-4pm                       |
 
 \newpage
 
@@ -349,14 +351,14 @@ tribble(
 
 Lower bounds for grade cutoffs are shown in the following table. I will not "round up" grades at the end of the quarter. See this [thread](https://twitter.com/drseanmullen/status/1604212304622518272?s=46&t=II3oNLTSSrljVPqptoe21g) for advice on *"Playing the lines. Don't be there."*
 
-::: column-margin
+<!-- ::: column-margin -->
 
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8">
-</script>
+<!-- <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"> -->
+<!-- </script> -->
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">When my 11yo daughter complains her opponent in tennis is calling calls out..<br><br>I tell her:<br><br>“Don’t play the lines.”<br><br>As a college student, eventually every professor has to draw some lines.<br><br>Don’t play them so close. Don’t be there.</p>&mdash; Dr. Sean Mullen (@drseanmullen) <a href="https://twitter.com/drseanmullen/status/1604212307260645376?ref_src=twsrc%5Etfw">December 17, 2022</a></blockquote>
+<!-- <blockquote class="twitter-tweet"><p lang="en" dir="ltr">When my 11yo daughter complains her opponent in tennis is calling calls out..<br><br>I tell her:<br><br>“Don’t play the lines.”<br><br>As a college student, eventually every professor has to draw some lines.<br><br>Don’t play them so close. Don’t be there.</p>&mdash; Dr. Sean Mullen (@drseanmullen) <a href="https://twitter.com/drseanmullen/status/1604212307260645376?ref_src=twsrc%5Etfw">December 17, 2022</a></blockquote> -->
 
-:::
+<!-- ::: -->
 
 | Letter grade | X +  | X   | X - |
 |--------------|------|-----|-----|

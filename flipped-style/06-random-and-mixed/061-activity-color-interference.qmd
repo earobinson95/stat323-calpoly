@@ -31,11 +31,42 @@ reading the 100 words printed in black, and the total time (in seconds) for read
 
 The data found on Canvas in two formats `06-color-interference-long.csv` and `06-color-interference-wide.csv`.
 
+::: callout-tip
+## Technology Tip
+Use `06-color-interference-wide.csv`
+
++ JMP: Performing a Paired t-Test <https://community.jmp.com/t5/Learning-Library/Performing-a-Paired-t-Test/ta-p/271914>
+
++ R: `t.test(paired = TRUE)`
+:::
+
+## a.	Using the skills from your Stat I/II course, conduct a paired t-test. Report the following:
+
+\vspace{0.1in}
+
++ Supporting evidence: t = __________; df = ________; p = __________)
+
+\vspace{0.1in}
+
++ Estimated mean difference in time ($\mu_{black text}$ – $\mu_{color text}$): __________________
+
+\vspace{0.1in}
+
++ Estimated standard error of the mean difference in time: _____________________
+
+\vspace{0.1in}
+
 ::: callout-warning
 Ensure `subject` is categorical in JMP/R.
 :::
 
-## a. Identify the following (it may be helpful to sketch a blueprint):
+## b. Thinking about this in the experimental design framework, draw a blueprint and identify the following:
+
++ Blueprint:
+
+\vspace{1.5in}
+
+\newpage
 
 + Treatment structure:
 
@@ -45,41 +76,21 @@ Ensure `subject` is categorical in JMP/R.
 
 \vspace{0.8in}
 
-## b. Why is it important the researchers randomized the order in which the forms (black or different color) were given to subjects?
-
+## c. Why is it important the researchers randomized the order in which the forms (black or different color) were given to subjects?
 
 \vspace{1in}
 
 ::: callout-tip
-## Technology Tip
-Probably use `06-color-interference-wide.csv`
-
-+ JMP: [Performing a Piared t-Test](https://community.jmp.com/t5/Learning-Library/Performing-a-Paired-t-Test/ta-p/271914)
-
-+ R: `t.test(paired = TRUE)`
+Use `06-color-interference-long.csv` for the rest of the assignment.
 :::
 
-## c.	Using the skills from your Stat I/II course, fit a paired t-test to the data. Report the following:
+## d. Based on your treatment and design structure above, write out the skeleton ANOVA. For each source of variability, indicate whether it is a fixed or random effect.
 
-\vspace{0.1in}
+\vspace{1in}
 
-+ Supporting evidence: t = __________; df = ________; p = __________)
+\newpage
 
-\vspace{0.1in}
-
-+ Estimated mean difference in time (black text – color text): __________________
-
-\vspace{0.1in}
-
-+ Estimated standard error of the mean difference in time: _____________________
-
-\vspace{0.1in}
-
-::: callout-tip
-Probably use `06-color-interference-long.csv`
-:::
-
-## d. Now, using the tools you learned in Module 6 and the treatment and design structure you specified in (a), fit the appropriate model. Report the following:
+## e. Now, fit the appropriate Linear Mixed Model (LMM) in JMP/R. Report the following:
 
 \vspace{0.1in}
 
@@ -87,7 +98,7 @@ Probably use `06-color-interference-long.csv`
 
 \vspace{0.1in}
 
-+ Supporting evidence: F = __________; df = ____, _____; p = __________)
++ Supporting evidence: F = __________; df = ____, _____; p = __________
 
 \vspace{0.1in}
 
@@ -99,7 +110,7 @@ Probably use `06-color-interference-long.csv`
 
 \vspace{0.1in}
 
-## e. Compare your results between (c) and (d). What do you notice?
+## f. Compare your results between (a) and (e). What do you notice?
 
 \vspace{0.8in}
 

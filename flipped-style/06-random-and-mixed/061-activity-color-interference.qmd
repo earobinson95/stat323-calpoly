@@ -48,7 +48,7 @@ Use `06-color-interference-wide.csv`
 
 \vspace{0.1in}
 
-+ Estimated mean difference in time ($\mu_{black text}$ – $\mu_{color text}$): __________________
++ Estimated mean difference in time ($\mu_\text{black text - color text}$): __________________
 
 \vspace{0.1in}
 

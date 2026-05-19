@@ -1,0 +1,60 @@
+---
+title: "Final Project Group Formation"
+format: 
+  html: default
+  pdf: default
+  docx: default
+include-in-header:
+  - text: |
+      \usepackage{tikz}
+      \usetikzlibrary{shapes.geometric,shapes.misc}
+      % empty circle
+      \newcommand*{\emptycircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm);}
+      % filled circle
+      \newcommand*{\filledcircle}{\tikz[baseline=-0.6ex]\draw[thick, fill=black] (0,0) circle (0.2cm);}
+      % checked / crossed circle
+      \newcommand*{\checkedcircle}{\tikz[baseline=-0.6ex]\draw[thick] (0,0) circle (0.2cm)
+        node[cross out, draw, thick, inner sep=0pt, minimum size=0.2cm]{};}
+execute:
+  message: false
+  warning: false
+  echo: false
+---
+
+Name: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+\vspace{0.1in}
+
+*Entry/Exit tickets will be graded for intellectual engagement only, not correctness.*
+
+Recall for your final project, you’ll design an experiment (no data collection) and convince an audience of stakeholders that your research question (RQ), experimental design, and proposed analysis are sound. 
+
+You will be completing and presenting these in a team of four. 
+
+\vspace{0.5in}
+
+Which of the following group formats do you want for the final projects? *(Select one)*
+
+
+\vspace{0.1in}
+
+\emptycircle  Keep island lab groups
+
+\vspace{0.1in}
+
+\emptycircle  New random assignment of groups
+
+
+\vspace{0.5in}
+
+How would you feel about the option of picking your own groups? I tend to avoid this option.
+
+\vspace{0.1in}
+
+\emptycircle  No, I want to keep our island groups
+
+\vspace{0.1in}
+
+\emptycircle  No, that is stressful for me
+
+\emptycircle  Yes, I'd love to pick who I work with

@@ -1,0 +1,46 @@
+---
+title: "Activity 7.1: Replicating Latin Squares"
+subtitle: "CO2 Emissions"
+format:
+  html: default
+  pdf: default
+  docx: default
+embed-resources: true
+execute:
+  message: false
+  warning: false
+  echo: false
+---
+
+::: callout-note
+Submit via Gradescope, don't forget to assign pages to the questions in the outline!
+:::
+
+Suppose researchers are interested in 2 gasoline blends (summer, winter), and an additive at 3 levels (2%, 3%, 4%).  The response is CO emission under real driving conditions. We know there will be differences in CO emission among types of cars, as well as among driving conditions/routes.
+
+### a.	Identify the following
+  
++ Response: _____________________________
++ Factor(s) + Levels:
+
+\vspace{0.3in}
+
++ Blocking factor 1: ________________________
++ Blocking factor 2: ________________________
+
+\vspace{0.3in}
+
++ How many rows and column blocking factor levels should be included in a Latin Square design for this study?
+  
+\vspace{0.2in}
+
+### b. Sketch a possible study design for a standard unreplicated Latin Square (e.g., one "platform").
+
+\vspace{2.2in}
+
+### c. Sketch a possible study design for replicating the latin square by reusing cars (i.e., increase the number of routes to 12).
+  
+\newpage
+
+### d. Write out a skeleton ANOVA for the replicated latin square in (4).
+
